@@ -7,11 +7,15 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 import os
 from LTODateConverterFunction import *
 from UpdateLTODatabase import *
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
+
+db = QSqlDatabase("QSQLITE")
+db.setDatabaseName("Databases\\LTO.db")
+db.open()
 
 class Ui_lto_database(object):
     def setupUi(self, lto_database):
@@ -47,7 +51,7 @@ class Ui_lto_database(object):
         font.setKerning(True)
         self.app_title.setFont(font)
         self.app_title.setStyleSheet("background-color: rgb(0, 35, 72);\n"
-"color: rgb(255, 255, 255);")
+                                     "color: rgb(255, 255, 255);")
         self.app_title.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.app_title.setFrameShadow(QtWidgets.QFrame.Plain)
         self.app_title.setMidLineWidth(0)
@@ -86,7 +90,7 @@ class Ui_lto_database(object):
         font.setPointSize(15)
         self.visualize_button.setFont(font)
         self.visualize_button.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 111, 196);")
+                                            "background-color: rgb(0, 111, 196);")
         self.visualize_button.setObjectName("visualize_button")
         self.update_button = QtWidgets.QPushButton(self.actions_frame)
         self.update_button.setGeometry(QtCore.QRect(1040, 10, 181, 51))
@@ -94,7 +98,7 @@ class Ui_lto_database(object):
         font.setPointSize(15)
         self.update_button.setFont(font)
         self.update_button.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 111, 196);")
+                                         "background-color: rgb(0, 111, 196);")
         self.update_button.setObjectName("update_button")
         self.update_label = QtWidgets.QLabel(self.actions_frame)
         self.update_label.setEnabled(True)
@@ -103,8 +107,8 @@ class Ui_lto_database(object):
         font.setPointSize(10)
         self.update_label.setFont(font)
         self.update_label.setStyleSheet("color: rgb(255, 255, 255);\n"
-"border-color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 85, 127);")
+                                        "border-color: rgb(255, 255, 255);\n"
+                                        "background-color: rgb(0, 85, 127);")
         self.update_label.setObjectName("update_label")
         self.tableload_label = QtWidgets.QLabel(self.actions_frame)
         self.tableload_label.setGeometry(QtCore.QRect(570, 0, 171, 21))
@@ -118,10 +122,13 @@ class Ui_lto_database(object):
         self.tableload_label.setStyleSheet("color: rgb(255, 255, 255);")
         self.tableload_label.setObjectName("tableload_label")
         self.verticalLayout.addWidget(self.actions_frame)
-        self.table_data = QtWidgets.QTableView(self.centralwidget)
+        self.table_data = QtWidgets.QTableView()
         self.table_data.setMinimumSize(QtCore.QSize(1581, 611))
         self.table_data.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.table_data.setObjectName("table_data")
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.table_data.setFont(font)
         self.verticalLayout.addWidget(self.table_data)
         lto_database.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(lto_database)
@@ -135,7 +142,20 @@ class Ui_lto_database(object):
         self.retranslateUi(lto_database)
         QtCore.QMetaObject.connectSlotsByName(lto_database)
 
+        self.model = QSqlTableModel(db=db)
+        self.model.setTable("lto")
+        self.model.setEditStrategy(QSqlTableModel.OnRowChange)
+
+        self.query = QSqlQuery(db=db)
+        self.query.prepare("SELECT * FROM lto ORDER BY launch") # setSort does not working, have to do through Query
+        self.query.exec_()
+        self.model.setQuery(self.query)
+
+        self.table_data.setModel(self.model)
+        self.table_data.resizeColumnsToContents()
+
         self.update_button.clicked.connect(self.update_lto_clicked)
+        self.query_lineedit.returnPressed.connect(self.update_query)
 
     def retranslateUi(self, lto_database):
         _translate = QtCore.QCoreApplication.translate
@@ -144,8 +164,9 @@ class Ui_lto_database(object):
         self.query_label.setText(_translate("lto_database", "Query Box (SQLite syntax)"))
         self.visualize_button.setText(_translate("lto_database", "Visualize displayed data"))
         self.update_button.setText(_translate("lto_database", "Update database"))
-        self.update_label.setText(_translate("lto_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
-        self.tableload_label.setText(_translate("lto_database", "lto2 table loaded"))
+        self.update_label.setText(
+            _translate("lto_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
+        self.tableload_label.setText(_translate("lto_database", "lto table loaded"))
 
     def update_lto_clicked(self):
         self.lto_dir_file = QtWidgets.QFileDialog.getOpenFileName(filter="*.xlsx")
@@ -176,6 +197,7 @@ class Ui_lto_database(object):
             return
 
         # Importing the excel data into the database ---ERROR HANDLING WHEN WE FIND A BUG HERE---
+        db.close() # We have to close the database first before writing in the new data
         self.lto_data_updated = updateLTO(self.lto_data_file)
 
         print("Succesfully written into database")
@@ -187,17 +209,34 @@ class Ui_lto_database(object):
         message.exec_()
         self.update_label.setText("Database updated!")
 
+        # After done writing, we re-open the file and load in the updated data into the table
+        # This is a literal copy from the main class
+        db.open()
+        self.model = QSqlTableModel(db=db)
+        self.model.setTable("lto")
+        self.model.setEditStrategy(QSqlTableModel.OnRowChange)
+
+        self.query.prepare("SELECT * from lto")
+        self.query.exec_()
+        self.model.setQuery(self.query)
+
+        self.table_data.setModel(self.model)
+        self.table_data.resizeColumnsToContents()
+
     def update_query(self):
         if not self.query_lineedit.text():
-            self.query.prepare("SELECT * FROM lto")
+            self.query.prepare("SELECT * FROM lto ORDER BY launch")
         else:
             self.query.prepare(self.query_lineedit.text())
 
         self.query.exec_()
-        #self.model.setQuery(self.query)
+        self.model.setQuery(self.query)
+        self.table_data.resizeColumnsToContents()
+
 
 if __name__ == "__main__":
     import sys
+
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle("Fusion")

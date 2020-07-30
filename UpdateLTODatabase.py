@@ -81,5 +81,3 @@ def updateLTO(workbook):
 
     return [new_adds, existing_adds, closed_adds, len(data)]
 
-oksir = pyxl.load_workbook("C:\\Users\\woens\\Desktop\\July Reporting\\test.xlsx")
-updateLTO(oksir)
