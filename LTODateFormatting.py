@@ -117,7 +117,7 @@ class Ui_lto_date(object):
         self.save_button.setEnabled(True)
 
     def save_clicked(self):
-        self.save_directory = QtWidgets.QFileDialog.getSaveFileName()
+        self.save_directory = QtWidgets.QFileDialog.getSaveFileName(filter="*.xlsx")
 
         if not self.save_directory[0]:
             return
