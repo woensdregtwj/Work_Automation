@@ -9,7 +9,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
-
+from LTODateConverterFunction import *
+from UpdateLTODatabase import *
+from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
 
 class Ui_lto_database(object):
     def setupUi(self, lto_database):
@@ -133,6 +135,8 @@ class Ui_lto_database(object):
         self.retranslateUi(lto_database)
         QtCore.QMetaObject.connectSlotsByName(lto_database)
 
+        self.update_button.clicked.connect(self.update_lto_clicked)
+
     def retranslateUi(self, lto_database):
         _translate = QtCore.QCoreApplication.translate
         lto_database.setWindowTitle(_translate("lto_database", "MainWindow"))
@@ -143,6 +147,54 @@ class Ui_lto_database(object):
         self.update_label.setText(_translate("lto_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
         self.tableload_label.setText(_translate("lto_database", "lto2 table loaded"))
 
+    def update_lto_clicked(self):
+        self.lto_dir_file = QtWidgets.QFileDialog.getOpenFileName(filter="*.xlsx")
+
+        if not self.lto_dir_file[0]:
+            self.update_label.setText("Update file not inserted.")
+            self.update_label.setStyleSheet("background-color: rgb(255, 0, 0);")
+            return
+
+        self.lto_dir_file = os.path.abspath(self.lto_dir_file[0])
+        self.update_label.setText(f"{os.path.basename(self.lto_dir_file)} - Updating database, please wait...")
+
+        # First making sure that the file is correctly formatted
+        try:
+            self.lto_data_file = lto_date_format(self.lto_dir_file)
+
+            if not self.lto_data_file:  # If the function returned False, it has failed the test.
+                error_dialog = QtWidgets.QErrorMessage()
+                error_dialog.showMessage("The file uploaded does not match the desired format. Please check whether "
+                                         "the correct file has been uploaded.")
+                error_dialog.exec_()
+                return
+        except (TypeError, ValueError):
+            error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.showMessage("TypeError has occured. File format was correct, but something went wrong "
+                                     "when re-formatting the data")
+            error_dialog.exec_()
+            return
+
+        # Importing the excel data into the database ---ERROR HANDLING WHEN WE FIND A BUG HERE---
+        self.lto_data_updated = updateLTO(self.lto_data_file)
+
+        print("Succesfully written into database")
+        message = QtWidgets.QMessageBox()
+        message.setText(f'New opportunities added: {self.lto_data_updated[0]}\n'
+                        f'Existing Opportunities updated: {self.lto_data_updated[1]}\n'
+                        f'Old opportunities deleted: {self.lto_data_updated[2]}\n'
+                        f'\nTotal opportunities active: {self.lto_data_updated[3]}\n')
+        message.exec_()
+        self.update_label.setText("Database updated!")
+
+    def update_query(self):
+        if not self.query_lineedit.text():
+            self.query.prepare("SELECT * FROM lto")
+        else:
+            self.query.prepare(self.query_lineedit.text())
+
+        self.query.exec_()
+        #self.model.setQuery(self.query)
 
 if __name__ == "__main__":
     import sys

@@ -103,11 +103,20 @@ class Ui_lto_date(object):
 
         try:
             self.lto_output_file = lto_date_format(self.lto_file)
+
+            if not self.lto_output_file: # If the function returned False, it has failed the test.
+                error_dialog = QtWidgets.QErrorMessage()
+                error_dialog.showMessage("The file uploaded does not match the desired format. Please check whether "
+                                         "the correct file has been uploaded.")
+                error_dialog.exec_()
+                return
+
             self.uploaded_label.setText(f"Formatting: {os.path.basename(self.lto_file)}...")
             self.uploaded_label.setStyleSheet("background-color: rgb(255, 69, 0);")
         except (TypeError, ValueError):
             error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.showMessage("TypeError has occured. You might have uploaded a wrong file.")
+            error_dialog.showMessage("TypeError has occured. File format was correct, but something went wrong "
+                                     "when re-formatting the data")
             error_dialog.exec_()
             return
 
