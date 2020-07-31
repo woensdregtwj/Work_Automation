@@ -12,6 +12,7 @@ import os
 from LTODateConverterFunction import *
 from UpdateLTODatabase import *
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
+import sqlite3
 
 db = QSqlDatabase("QSQLITE")
 db.setDatabaseName("Databases\\LTO.db")
@@ -84,14 +85,25 @@ class Ui_lto_database(object):
         self.query_label.setFont(font)
         self.query_label.setStyleSheet("color: rgb(255, 255, 255);")
         self.query_label.setObjectName("query_label")
+
         self.visualize_button = QtWidgets.QPushButton(self.actions_frame)
-        self.visualize_button.setGeometry(QtCore.QRect(790, 10, 181, 51))
+        self.visualize_button.setGeometry(QtCore.QRect(850, 10, 181, 51))
         font = QtGui.QFont()
         font.setPointSize(15)
         self.visualize_button.setFont(font)
         self.visualize_button.setStyleSheet("color: rgb(255, 255, 255);\n"
                                             "background-color: rgb(0, 111, 196);")
         self.visualize_button.setObjectName("visualize_button")
+
+        self.extract_button = QtWidgets.QPushButton(self.actions_frame)
+        self.extract_button.setGeometry(QtCore.QRect(740, 10, 100, 51))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.extract_button.setFont(font)
+        self.extract_button.setStyleSheet("color: rgb(255, 255, 255);\n"
+                                            "background-color: rgb(0, 111, 196);")
+        self.extract_button.setObjectName("visualize_button")
+
         self.update_button = QtWidgets.QPushButton(self.actions_frame)
         self.update_button.setGeometry(QtCore.QRect(1040, 10, 181, 51))
         font = QtGui.QFont()
@@ -163,6 +175,7 @@ class Ui_lto_database(object):
         self.app_title.setText(_translate("lto_database", "LTO Analysis - Doehler Japan"))
         self.query_label.setText(_translate("lto_database", "Query Box (SQLite syntax)"))
         self.visualize_button.setText(_translate("lto_database", "Visualize displayed data"))
+        self.extract_button.setText(_translate("lto_database,", "Extract shown data"))
         self.update_button.setText(_translate("lto_database", "Update database"))
         self.update_label.setText(
             _translate("lto_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
@@ -214,9 +227,9 @@ class Ui_lto_database(object):
         db.open()
         self.model = QSqlTableModel(db=db)
         self.model.setTable("lto")
-        self.model.setEditStrategy(QSqlTableModel.OnRowChange)
+        # self.model.setEditStrategy(QSqlTableModel.OnRowChange)
 
-        self.query.prepare("SELECT * from lto")
+        self.query.prepare("SELECT * from lto ORDER BY launch")
         self.query.exec_()
         self.model.setQuery(self.query)
 
@@ -237,7 +250,7 @@ class Ui_lto_database(object):
 if __name__ == "__main__":
     import sys
 
-    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "2"
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle("Fusion")
     lto_database = QtWidgets.QMainWindow()
