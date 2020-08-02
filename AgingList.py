@@ -10,6 +10,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
 import sqlite3
+from pathlib import Path
+import pprint
 import os
 from AgingListFunction import *
 
@@ -285,13 +287,13 @@ class Ui_AgingWindow(object):
             unknown_error.showMessage("An unknown error has occured while formatting the file. Please debug the code.")
 
         # If the 'return' is a string, then we know the format test has failed at some area. We write this in a dialog.
-        if isinstance(self.aging_file_formatted, str):
+        if isinstance(self.aging_file_formatted[0], str):
             print("A string has returned, setting up a error dialog box")
             error_dialog = QtWidgets.QErrorMessage()
             font = QtGui.QFont()
             font.setPointSize(15)
             error_dialog.setFont(font)
-            error_dialog.showMessage(self.aging_file_formatted)
+            error_dialog.showMessage(self.aging_file_formatted[0])
             error_dialog.exec_()
 
             self.upload_button.setEnabled(True)
@@ -313,7 +315,12 @@ class Ui_AgingWindow(object):
 
         self.upload_button.setEnabled(True)
 
-        self.aging_file_formatted.save(self.save_dir[0])
+        self.aging_file_formatted[0].save(self.save_dir[0])
+
+        # Saving the unmatched terms as a txt for reference if there are any unmatched.
+        if self.aging_file_formatted[1]:
+            with open(f"{os.path.dirname(self.save_dir[0])}\\{Path(self.save_dir[0]).stem} - Unmatched.txt", 'w') as f:
+                f.write(pprint.pformat(self.aging_file_formatted[1]))
 
         self.upload_label.setText("Succesfully saved.")
         self.upload_button.setEnabled(True)

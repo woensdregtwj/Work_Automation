@@ -13,10 +13,17 @@ from SalesForecastUpdate import *
 from SalesForecastUpdateEOM import *
 from SendForecast import *
 from LTODateFormatting import *
+from AgingList import *
 import datetime
 import webbrowser
 
 class Ui_Doehler_title(object):
+
+    def aging_upload_pushed(self):
+        self.AgingWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_AgingWindow()
+        self.ui.setupUi(self.AgingWindow)
+        self.AgingWindow.show()
 
     def sales_forecast_update_pushed(self):
         self.forecast_updater = QtWidgets.QMainWindow()
@@ -343,6 +350,7 @@ class Ui_Doehler_title(object):
         self.sforecast_button.clicked.connect(self.sales_forecast_update_pushed)
         self.sforecast_eom_button.clicked.connect(self.sales_forecast_EOM_pushed)
         self.legal_button.clicked.connect(self.local_fc_analysis_pushed)
+        self.bwaging_button.clicked.connect(self.aging_upload_pushed)
 
         self.pushButton_13.clicked.connect(self.lto_date_convert_pushed)
 

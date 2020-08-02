@@ -41,12 +41,13 @@ def convert_aging_list(workbook, month, type):
 
     payment_data = {}  # Data structure will be {customerid: Account Receivable}
     delete_payment_data = []  # Duplicates with "-1" in its cusid will be concatenated to its original and deleted
+    unmatched_customers = {}  # Data structure as {customername: customerid}
 
     is_correct_format = gx_format(ws)
     if isinstance(is_correct_format, str):
         print("We failed the format test. Returning error text to UI.")
         print(is_correct_format)
-        return is_correct_format  # This will be put in an error popup box so that the user can check the format.
+        return [is_correct_format]  # This will be put in an error popup box so that the user can check the format.
 
     # Defining the starting row with data. According to the GX file output.
     # It starts at row with string "Accounts Receivable" on column B.
@@ -99,16 +100,22 @@ def convert_aging_list(workbook, month, type):
 
         try:
             if not is_matched:
-                print("Not matched, payment term will be 60 days")
+                print("Not matched, payment term will be 60 days. Writing to unmatched dict for reference")
+
+                for cus_row in range(starting_row, ws.max_row + 1):  # This is from the uploaded wb, not new wb
+                    if ws.cell(row=cus_row, column=6).value == match_term:
+                        match_cus_term = ws.cell(row=cus_row, column=5).value
+
+                unmatched_customers.setdefault(match_cus_term, match_term)  # {customer name: customer id}
                 upload_ws.cell(row=term_cell, column=6).value = 60
             else:
                 print(f"{match_term} has a payment term of {is_matched}")
                 upload_ws.cell(row=term_cell, column=6).value = str(is_matched).strip("'[(,)]'")
         except:
             print(f"{is_matched} - Is this a duplicate?")
-            return f"{is_matched} shows up 2 times in the database, please remove and try again."
+            return [f"{is_matched} shows up 2 times in the database, please remove and try again."]
 
-    return upload_wb
+    return [upload_wb, unmatched_customers]
 
 
 # return workbook
