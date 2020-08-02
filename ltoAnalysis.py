@@ -250,7 +250,7 @@ class Ui_lto_database(object):
 if __name__ == "__main__":
     import sys
 
-    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "2"
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle("Fusion")
     lto_database = QtWidgets.QMainWindow()
