@@ -76,7 +76,7 @@ def updateLTO(workbook):
           f"Removed old data: {closed_adds}\n\n"
           f"Total in Table: {len(data)}")
 
-    c.close
+    c.close()
     connect.close()
 
     return [new_adds, existing_adds, closed_adds, len(data)]
