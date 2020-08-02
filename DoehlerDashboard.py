@@ -437,9 +437,6 @@ class Ui_Doehler_title(object):
         # self.monthly5_label.setText(_translate("Doehler_title", self.deadline_days_text[4]))
 
 
-
-
-
 if __name__ == "__main__":
     import sys
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
