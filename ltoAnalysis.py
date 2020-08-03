@@ -239,14 +239,25 @@ class Ui_lto_database(object):
         self.table_data.resizeColumnsToContents()
 
     def update_query(self):
-        if not self.query_lineedit.text():
-            self.query.prepare("SELECT * FROM lto ORDER BY launch")
+        if not self.query_lineedit.text():  # No input basically means the user wants to refresh the database
+            db.close()  # In order to refresh, we close and re-open the database
+            db.open()
+            self.model = QSqlTableModel(db=db)
+            self.model.setTable("lto")
+            # self.model.setEditStrategy(QSqlTableModel.OnRowChange)
+
+            self.query.prepare("SELECT * from lto ORDER BY launch")
+            self.query.exec_()
+            self.model.setQuery(self.query)
+
+            self.table_data.setModel(self.model)
+            self.table_data.resizeColumnsToContents()
         else:
             self.query.prepare(self.query_lineedit.text())
 
-        self.query.exec_()
-        self.model.setQuery(self.query)
-        self.table_data.resizeColumnsToContents()
+            self.query.exec_()
+            self.model.setQuery(self.query)
+            self.table_data.resizeColumnsToContents()
 
     def extract_query(self):
         self.extract_dir = QtWidgets.QFileDialog.getSaveFileName(filter="*.xlsx")
