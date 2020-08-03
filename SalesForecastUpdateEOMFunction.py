@@ -79,6 +79,7 @@ def UploadEOMResults(sales_file, forecast_file, reporting_month):
     forecast_wb = pyxl.load_workbook(forecast_file)
 
     forecast_sheet = forecast_wb['2020 All']
+    sales_summary_sheet = forecast_wb["Summary RESULTS"]  # For updating the trade business results in the summary table
 
     unmatched_sales = copy.deepcopy(sales_data)  # we want to keep the original sales_data dict as it is.
     # for this dict, we will take out all succesfull links and only keep the unmatched sales so that we can check manually
@@ -254,6 +255,44 @@ def UploadEOMResults(sales_file, forecast_file, reporting_month):
             # DeliveryStorage has no Cogs, so all profit
             print('Pasted trade profit.')
             break
+
+    # As a last step, we will go into the summary sheet and update the trade business results
+    trade_storage_delivery = 0  # There might be multiple similar cells, but we only want the first 3
+    volume_trade = []
+    # Finding the rows for Volume, sales and JM
+    for cell in range(1, sales_summary_sheet.max_row + 1):
+        if sales_summary_sheet.cell(row=cell, column=2).value == "Trade Business/Storage/Shipping":
+            print(f"Found Volume Trade/Storage/Shipping in row {cell}")
+            volume_trade.append(cell)
+            trade_storage_delivery += 1
+        if trade_storage_delivery == 3:
+            break
+
+    # Finding the column for Volume, Sales and JM
+    volume_trade_column = None
+    cell_content = ["Volume", "Net Sales", "Japan Margin"]
+    for content in cell_content:
+        for cell in range(1, sales_summary_sheet.max_row + 1):
+            if sales_summary_sheet.cell(row=cell, column=2).value == content:
+                # Found the row where we have to look for the correct month
+                for cell2 in range(2, sales_summary_sheet.max_column + 1):
+                    if sales_summary_sheet.cell(row=cell, column=cell2).value == reporting_month:
+                        volume_trade_column = cell2
+
+    # Pasting the trade volume, trade sales and trade profit in the summary
+    sales_summary_sheet.cell(row=volume_trade[0], column=volume_trade_column).value = storage_delivery_trade['trade_volume']
+    sales_summary_sheet.cell(row=volume_trade[1], column=volume_trade_column).value = storage_delivery_trade['trade_sales'] + \
+                                                             storage_delivery_trade[
+                                                                 'delivery_storage']
+    sales_summary_sheet.cell(row=volume_trade[2], column=volume_trade_column).value = storage_delivery_trade['trade_profit'] + \
+                                                             storage_delivery_trade['delivery_storage']
+
+
+
+
+
+
+
 
     # For some reason it makes the width of the columns too big...
     # forecast_sheet.column_dimensions.group(start="T", end="AE", outline_level=0)
