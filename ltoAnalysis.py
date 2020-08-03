@@ -13,6 +13,7 @@ from LTODateConverterFunction import *
 from UpdateLTODatabase import *
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
 import sqlite3
+from openpyxl.utils import get_column_letter
 
 db = QSqlDatabase("QSQLITE")
 db.setDatabaseName("Databases\\LTO.db")
@@ -168,6 +169,7 @@ class Ui_lto_database(object):
 
         self.update_button.clicked.connect(self.update_lto_clicked)
         self.query_lineedit.returnPressed.connect(self.update_query)
+        self.extract_button.clicked.connect(self.extract_query)
 
     def retranslateUi(self, lto_database):
         _translate = QtCore.QCoreApplication.translate
@@ -245,6 +247,68 @@ class Ui_lto_database(object):
         self.query.exec_()
         self.model.setQuery(self.query)
         self.table_data.resizeColumnsToContents()
+
+    def extract_query(self):
+        self.extract_dir = QtWidgets.QFileDialog.getSaveFileName(filter="*.xlsx")
+
+        if not self.extract_dir[0]:
+            return
+
+        connect = sqlite3.connect("Databases\\LTO.db")
+        c = connect.cursor()
+        print("Connected")
+
+        if not self.query_lineedit.text():
+            print("No query, setting default")
+            extract_query = "SELECT * FROM lto ORDER BY launch"
+        else:
+            print("Query found")
+            extract_query = self.query_lineedit.text()
+
+        c.execute(extract_query)
+        extract_data = c.fetchall()
+        column_headers = c.description  # c.description displays the column header in tuple ('column', None, None)
+        # Which is why it is important to only grab the [0][0] from the column_Headers.
+
+        self.database_columns = [column_header[0] for column_header in column_headers]  # Grabbing [0][0] and appending
+        print(self.database_columns)
+
+        extract = pyxl.Workbook()
+        extract_ws = extract.active
+
+        # Creating headers
+        for index, data in enumerate(self.database_columns):
+            extract_ws.cell(row=1, column=index + 1).value = data
+            print(data)
+
+        column_width = []
+        for index, data in enumerate(extract_data):
+            for index2, data2 in enumerate(data):
+                extract_ws.cell(row=index + 2, column=index2 + 1).value = data2  # +2 is because we start in row 2
+                if len(column_width) > index2:  # If the length of list is smaller than index, then we stil lhave to add column data
+                    if len(str(data2)) > column_width[index2]:  #
+                        column_width[index2] = len(str(data2))
+                else:
+                    column_width.append(len(str(data2)))
+
+        for index, column_sizing in enumerate(column_width):
+            extract_ws.column_dimensions[get_column_letter(index + 1)].width = column_sizing * 1.2
+
+        print(column_width)
+
+        extract.save(self.extract_dir[0])
+
+        # with open(self.extract_dir[0], "w", newline="", errors="ignore") as new:
+        #     print("opened")
+        #     writer = csv.writer(new, delimiter=";")
+        #     writer.writerow(self.database_columns)
+        #     for line in extract_data:
+        #         writer.writerow(line)
+
+
+
+
+
 
 
 if __name__ == "__main__":
