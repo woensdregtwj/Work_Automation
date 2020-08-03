@@ -43,6 +43,12 @@ def UploadSalesResult(sales_file, forecast_file):
 
         volume = sales_sheet.cell(row=cell, column=10).value
         sales = sales_sheet.cell(row=cell, column=12).value
+        # If for some reason a cell is empty in the volume/sales column, we make it 0 to prevent errors when converting
+        # to int() or float() in the section below
+        if not volume:
+            volume = 0
+        if not sales:
+            sales = 0
 
         # Now start filling up the dictionary with /getdefault
 
@@ -133,7 +139,7 @@ def UploadSalesResult(sales_file, forecast_file):
     print("Unmatched data loaded...")
     for cust in unmatched_sales:  # we will only need the total delivery/storage fee, so we concatinate all of them into a new dic
         for prodID in unmatched_sales[cust]:
-            if prodID in ['00001', '00003', '00008']:
+            if prodID in ['00001', '00003', '00008', '00001-A']:
                 for prodN in unmatched_sales[cust][prodID]:
                     storage_delivery_trade['delivery_storage'] += unmatched_sales[cust][prodID][prodN]['sales']
 
