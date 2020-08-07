@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from SendForecastFunction import *
 from SendForecastSummaryFunction import *
+from SalesDashboard import *
 import time
 
 
@@ -201,6 +202,7 @@ class Ui_individual_forecast(object):
         self.upload_button.clicked.connect(self.upload_forecast)
         self.extract_button.clicked.connect(self.extract_forecast)
         self.summary_button.clicked.connect(self.extract_summary)
+        self.dashboard_button.clicked.connect(self.open_dashboard)
 
 
     def retranslateUi(self, individual_forecast):
@@ -255,6 +257,7 @@ class Ui_individual_forecast(object):
             self.uploaded_label.setText(f"Loaded: {os.path.basename(self.forecast_file[0])}")
             self.uploaded_label.setStyleSheet("background-color: rgb(174, 217, 167);")
             self.forecast_file = os.path.abspath(self.forecast_file[0])
+            print(self.forecast_file)
 
             self.extract_button.setEnabled(True)
             self.summary_button.setEnabled(True)
@@ -388,6 +391,12 @@ class Ui_individual_forecast(object):
         self.summary.save(os.path.abspath(self.save_directory[0]))
         self.progress_bar.setProperty("value", 0)
         self.summary_button.setEnabled(True)
+
+    def open_dashboard(self):
+        self.FCWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_FCWindow()
+        self.ui.setupUi(self.FCWindow, self.forecast_file)
+        self.FCWindow.show()
 
 
 

@@ -9,12 +9,15 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+from SendForecast import *
+import openpyxl as pyxl
+import time
 
 
 class Ui_FCWindow(object):
-    def setupUi(self, FCWindow):
+    def setupUi(self, FCWindow, Forecast):
         FCWindow.setObjectName("FCWindow")
-        FCWindow.resize(1650, 967)
+        FCWindow.resize(1655, 967)
         FCWindow.setStyleSheet("background-color: rgb(0, 35, 72);")
         self.centralwidget = QtWidgets.QWidget(FCWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -33,7 +36,7 @@ class Ui_FCWindow(object):
         self.summary_frame.setGeometry(QtCore.QRect(0, 0, 1741, 905))
         self.summary_frame.setObjectName("summary_frame")
         self.jm_frame = QtWidgets.QFrame(self.summary_frame)
-        self.jm_frame.setGeometry(QtCore.QRect(10, 170, 1611, 351))
+        self.jm_frame.setGeometry(QtCore.QRect(10, 170, 1441, 351))
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.jm_frame.setFont(font)
@@ -44,7 +47,7 @@ class Ui_FCWindow(object):
         self.jm_frame.setMidLineWidth(10)
         self.jm_frame.setObjectName("jm_frame")
         self.jm_chart = QtWidgets.QGridLayout(self.jm_frame)
-        self.jm_chart.setGeometry(QtCore.QRect(10, 10, 1591, 331))
+        self.jm_chart.setGeometry(QtCore.QRect(10, 10, 1421, 331))
         self.jm_chart.setObjectName("jm_chart")
         self.kota_sum_frame = QtWidgets.QFrame(self.summary_frame)
         self.kota_sum_frame.setGeometry(QtCore.QRect(10, 30, 281, 131))
@@ -202,22 +205,49 @@ class Ui_FCWindow(object):
         self.yasuhiko_sum_vol_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.yasuhiko_sum_vol_label.setLineWidth(1)
         self.yasuhiko_sum_vol_label.setObjectName("yasuhiko_sum_vol_label")
-        self.contribution_frame = QtWidgets.QFrame(self.summary_frame)
-        self.contribution_frame.setGeometry(QtCore.QRect(1180, 30, 441, 131))
+        self.total_frame = QtWidgets.QFrame(self.summary_frame)
+        self.total_frame.setGeometry(QtCore.QRect(1170, 30, 281, 131))
         font = QtGui.QFont()
         font.setPixelSize(29)
-        self.contribution_frame.setFont(font)
-        self.contribution_frame.setStyleSheet("color: rgb(255, 255, 255);")
-        self.contribution_frame.setFrameShape(QtWidgets.QFrame.WinPanel)
-        self.contribution_frame.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.contribution_frame.setLineWidth(10)
-        self.contribution_frame.setMidLineWidth(10)
-        self.contribution_frame.setObjectName("contribution_frame")
-        self.contribution_chart = QtWidgets.QGridLayout(self.contribution_frame)
-        self.contribution_chart.setGeometry(QtCore.QRect(10, 10, 421, 111))
-        self.contribution_chart.setObjectName("contribution_chart")
+        self.total_frame.setFont(font)
+        self.total_frame.setStyleSheet("color: rgb(255, 255, 255);")
+        self.total_frame.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.total_frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.total_frame.setLineWidth(10)
+        self.total_frame.setMidLineWidth(10)
+        self.total_frame.setObjectName("total_frame")
+        self.total_sum_ns_label = QtWidgets.QLabel(self.total_frame)
+        self.total_sum_ns_label.setGeometry(QtCore.QRect(10, 70, 251, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(15)
+        self.total_sum_ns_label.setFont(font)
+        self.total_sum_ns_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.total_sum_ns_label.setObjectName("total_sum_ns_label")
+        self.yasuhiko_sum_label_3 = QtWidgets.QLabel(self.total_frame)
+        self.yasuhiko_sum_label_3.setGeometry(QtCore.QRect(10, 10, 241, 41))
+        font = QtGui.QFont()
+        font.setPixelSize(25)
+        font.setBold(True)
+        font.setWeight(75)
+        self.yasuhiko_sum_label_3.setFont(font)
+        self.yasuhiko_sum_label_3.setObjectName("yasuhiko_sum_label_3")
+        self.total_sum_jm_label = QtWidgets.QLabel(self.total_frame)
+        self.total_sum_jm_label.setGeometry(QtCore.QRect(10, 90, 251, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(15)
+        self.total_sum_jm_label.setFont(font)
+        self.total_sum_jm_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.total_sum_jm_label.setObjectName("total_sum_jm_label")
+        self.total_sum_vol_label = QtWidgets.QLabel(self.total_frame)
+        self.total_sum_vol_label.setGeometry(QtCore.QRect(10, 50, 251, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(15)
+        self.total_sum_vol_label.setFont(font)
+        self.total_sum_vol_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.total_sum_vol_label.setLineWidth(1)
+        self.total_sum_vol_label.setObjectName("total_sum_vol_label")
         self.ns_frame = QtWidgets.QFrame(self.summary_frame)
-        self.ns_frame.setGeometry(QtCore.QRect(10, 530, 771, 351))
+        self.ns_frame.setGeometry(QtCore.QRect(10, 530, 711, 351))
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.ns_frame.setFont(font)
@@ -228,10 +258,10 @@ class Ui_FCWindow(object):
         self.ns_frame.setMidLineWidth(10)
         self.ns_frame.setObjectName("ns_frame")
         self.ns_chart = QtWidgets.QGridLayout(self.ns_frame)
-        self.ns_chart.setGeometry(QtCore.QRect(10, 10, 751, 331))
+        self.ns_chart.setGeometry(QtCore.QRect(10, 10, 691, 331))
         self.ns_chart.setObjectName("ns_chart")
         self.vol_frame = QtWidgets.QFrame(self.summary_frame)
-        self.vol_frame.setGeometry(QtCore.QRect(800, 530, 821, 351))
+        self.vol_frame.setGeometry(QtCore.QRect(740, 530, 711, 351))
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.vol_frame.setFont(font)
@@ -242,8 +272,155 @@ class Ui_FCWindow(object):
         self.vol_frame.setMidLineWidth(10)
         self.vol_frame.setObjectName("vol_frame")
         self.vol_chart = QtWidgets.QGridLayout(self.vol_frame)
-        self.vol_chart.setGeometry(QtCore.QRect(10, 10, 801, 331))
+        self.vol_chart.setGeometry(QtCore.QRect(10, 10, 691, 331))
         self.vol_chart.setObjectName("vol_chart")
+        self.cont_frame = QtWidgets.QFrame(self.summary_frame)
+        self.cont_frame.setGeometry(QtCore.QRect(1470, 30, 151, 851))
+        font = QtGui.QFont()
+        font.setPixelSize(29)
+        self.cont_frame.setFont(font)
+        self.cont_frame.setStyleSheet("color: rgb(255, 255, 255);")
+        self.cont_frame.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.cont_frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.cont_frame.setLineWidth(10)
+        self.cont_frame.setMidLineWidth(10)
+        self.cont_frame.setObjectName("cont_frame")
+        self.cont_label1 = QtWidgets.QLabel(self.cont_frame)
+        self.cont_label1.setGeometry(QtCore.QRect(10, 10, 131, 31))
+        font = QtGui.QFont()
+        font.setPixelSize(24)
+        font.setBold(True)
+        font.setWeight(75)
+        self.cont_label1.setFont(font)
+        self.cont_label1.setObjectName("cont_label1")
+        self.cont_label2 = QtWidgets.QLabel(self.cont_frame)
+        self.cont_label2.setGeometry(QtCore.QRect(10, 40, 131, 31))
+        font = QtGui.QFont()
+        font.setPixelSize(24)
+        font.setBold(True)
+        font.setWeight(75)
+        self.cont_label2.setFont(font)
+        self.cont_label2.setObjectName("cont_label2")
+        self.cont_label3 = QtWidgets.QLabel(self.cont_frame)
+        self.cont_label3.setGeometry(QtCore.QRect(10, 70, 131, 31))
+        font = QtGui.QFont()
+        font.setPixelSize(24)
+        font.setBold(True)
+        font.setWeight(75)
+        self.cont_label3.setFont(font)
+        self.cont_label3.setObjectName("cont_label3")
+        self.kota_cont_label = QtWidgets.QLabel(self.cont_frame)
+        self.kota_cont_label.setGeometry(QtCore.QRect(10, 130, 131, 31))
+        font = QtGui.QFont()
+        font.setPixelSize(19)
+        self.kota_cont_label.setFont(font)
+        self.kota_cont_label.setObjectName("kota_cont_label")
+        self.kota_cont_vol_label = QtWidgets.QLabel(self.cont_frame)
+        self.kota_cont_vol_label.setGeometry(QtCore.QRect(10, 160, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.kota_cont_vol_label.setFont(font)
+        self.kota_cont_vol_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.kota_cont_vol_label.setLineWidth(1)
+        self.kota_cont_vol_label.setObjectName("kota_cont_vol_label")
+        self.kota_cont_ns_label = QtWidgets.QLabel(self.cont_frame)
+        self.kota_cont_ns_label.setGeometry(QtCore.QRect(10, 180, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.kota_cont_ns_label.setFont(font)
+        self.kota_cont_ns_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.kota_cont_ns_label.setObjectName("kota_cont_ns_label")
+        self.kota_cont_jm_label = QtWidgets.QLabel(self.cont_frame)
+        self.kota_cont_jm_label.setGeometry(QtCore.QRect(10, 200, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.kota_cont_jm_label.setFont(font)
+        self.kota_cont_jm_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.kota_cont_jm_label.setObjectName("kota_cont_jm_label")
+        self.seiichi_cont_vol_label = QtWidgets.QLabel(self.cont_frame)
+        self.seiichi_cont_vol_label.setGeometry(QtCore.QRect(10, 320, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.seiichi_cont_vol_label.setFont(font)
+        self.seiichi_cont_vol_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.seiichi_cont_vol_label.setLineWidth(1)
+        self.seiichi_cont_vol_label.setObjectName("seiichi_cont_vol_label")
+        self.seiichi_cont_jm_label = QtWidgets.QLabel(self.cont_frame)
+        self.seiichi_cont_jm_label.setGeometry(QtCore.QRect(10, 360, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.seiichi_cont_jm_label.setFont(font)
+        self.seiichi_cont_jm_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.seiichi_cont_jm_label.setObjectName("seiichi_cont_jm_label")
+        self.seiichi_cont_ns_label = QtWidgets.QLabel(self.cont_frame)
+        self.seiichi_cont_ns_label.setGeometry(QtCore.QRect(10, 340, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.seiichi_cont_ns_label.setFont(font)
+        self.seiichi_cont_ns_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.seiichi_cont_ns_label.setObjectName("seiichi_cont_ns_label")
+        self.seiichi_cont_label = QtWidgets.QLabel(self.cont_frame)
+        self.seiichi_cont_label.setGeometry(QtCore.QRect(10, 290, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(19)
+        self.seiichi_cont_label.setFont(font)
+        self.seiichi_cont_label.setObjectName("seiichi_cont_label")
+        self.takao_cont_jm_label = QtWidgets.QLabel(self.cont_frame)
+        self.takao_cont_jm_label.setGeometry(QtCore.QRect(10, 530, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.takao_cont_jm_label.setFont(font)
+        self.takao_cont_jm_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.takao_cont_jm_label.setObjectName("takao_cont_jm_label")
+        self.takao_cont_ns_label = QtWidgets.QLabel(self.cont_frame)
+        self.takao_cont_ns_label.setGeometry(QtCore.QRect(10, 510, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.takao_cont_ns_label.setFont(font)
+        self.takao_cont_ns_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.takao_cont_ns_label.setObjectName("takao_cont_ns_label")
+        self.takao_cont_label = QtWidgets.QLabel(self.cont_frame)
+        self.takao_cont_label.setGeometry(QtCore.QRect(10, 460, 131, 31))
+        font = QtGui.QFont()
+        font.setPixelSize(18)
+        self.takao_cont_label.setFont(font)
+        self.takao_cont_label.setObjectName("takao_cont_label")
+        self.takao_cont_vol_label = QtWidgets.QLabel(self.cont_frame)
+        self.takao_cont_vol_label.setGeometry(QtCore.QRect(10, 490, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.takao_cont_vol_label.setFont(font)
+        self.takao_cont_vol_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.takao_cont_vol_label.setLineWidth(1)
+        self.takao_cont_vol_label.setObjectName("takao_cont_vol_label")
+        self.yasuhiko_cont_jm_label = QtWidgets.QLabel(self.cont_frame)
+        self.yasuhiko_cont_jm_label.setGeometry(QtCore.QRect(10, 680, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.yasuhiko_cont_jm_label.setFont(font)
+        self.yasuhiko_cont_jm_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.yasuhiko_cont_jm_label.setObjectName("yasuhiko_cont_jm_label")
+        self.yasuhiko_cont_ns_label = QtWidgets.QLabel(self.cont_frame)
+        self.yasuhiko_cont_ns_label.setGeometry(QtCore.QRect(10, 660, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.yasuhiko_cont_ns_label.setFont(font)
+        self.yasuhiko_cont_ns_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.yasuhiko_cont_ns_label.setObjectName("yasuhiko_cont_ns_label")
+        self.yasuhiko_cont_label = QtWidgets.QLabel(self.cont_frame)
+        self.yasuhiko_cont_label.setGeometry(QtCore.QRect(10, 610, 131, 31))
+        font = QtGui.QFont()
+        font.setPixelSize(19)
+        self.yasuhiko_cont_label.setFont(font)
+        self.yasuhiko_cont_label.setObjectName("yasuhiko_cont_label")
+        self.yasuhiko_cont_vol_label = QtWidgets.QLabel(self.cont_frame)
+        self.yasuhiko_cont_vol_label.setGeometry(QtCore.QRect(10, 640, 131, 21))
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.yasuhiko_cont_vol_label.setFont(font)
+        self.yasuhiko_cont_vol_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.yasuhiko_cont_vol_label.setLineWidth(1)
+        self.yasuhiko_cont_vol_label.setObjectName("yasuhiko_cont_vol_label")
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -1060,7 +1237,7 @@ class Ui_FCWindow(object):
         self.verticalLayout.addWidget(self.tabWidget)
         FCWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(FCWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1650, 18))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1655, 18))
         self.menubar.setObjectName("menubar")
         FCWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(FCWindow)
@@ -1070,6 +1247,28 @@ class Ui_FCWindow(object):
         self.retranslateUi(FCWindow)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(FCWindow)
+
+        self.get_forecast(Forecast)
+
+        self.push_data()
+        self.fill_labels()
+
+
+        # # Sum of TOTAL PER MONTH
+        # self.sum_vol = self.get_data(18, 19)  # Monthly sum of volume
+        # self.sum_ns = self.get_data(36, 37)  # Monthly sum of net sales
+        # self.sum_jm = self.get_data(54, 55)  # Monthly sum of japan margin
+        #
+        # # Sum of Kota
+        # self.kota_vol = self.get_data(5, 6)
+        # self.kota_ns = self.get_data(23, 24)
+        # self.kota_jm = self.get_data(41, 42)
+
+
+
+
+
+
 
     def retranslateUi(self, FCWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1090,6 +1289,29 @@ class Ui_FCWindow(object):
         self.yasuhiko_sum_ns_label.setText(_translate("FCWindow", "Total NS:"))
         self.yasuhiko_sum_jm_label.setText(_translate("FCWindow", "Total JM:"))
         self.yasuhiko_sum_vol_label.setText(_translate("FCWindow", "Total Vol:"))
+        self.total_sum_ns_label.setText(_translate("FCWindow", "Total NS:"))
+        self.yasuhiko_sum_label_3.setText(_translate("FCWindow", "TOTAL NUMBERS"))
+        self.total_sum_jm_label.setText(_translate("FCWindow", "Total JM:"))
+        self.total_sum_vol_label.setText(_translate("FCWindow", "Total Vol:"))
+        self.cont_label1.setText(_translate("FCWindow", "Contribution"))
+        self.cont_label2.setText(_translate("FCWindow", "To"))
+        self.cont_label3.setText(_translate("FCWindow", "Forecast"))
+        self.kota_cont_label.setText(_translate("FCWindow", "Kota Takahashi"))
+        self.kota_cont_vol_label.setText(_translate("FCWindow", "Vol - "))
+        self.kota_cont_ns_label.setText(_translate("FCWindow", "NS - "))
+        self.kota_cont_jm_label.setText(_translate("FCWindow", "JM - "))
+        self.seiichi_cont_vol_label.setText(_translate("FCWindow", "Vol - "))
+        self.seiichi_cont_jm_label.setText(_translate("FCWindow", "JM - "))
+        self.seiichi_cont_ns_label.setText(_translate("FCWindow", "NS - "))
+        self.seiichi_cont_label.setText(_translate("FCWindow", "Seiichi Hiyoshi"))
+        self.takao_cont_jm_label.setText(_translate("FCWindow", "JM - "))
+        self.takao_cont_ns_label.setText(_translate("FCWindow", "NS - "))
+        self.takao_cont_label.setText(_translate("FCWindow", "Takao Yamamoto"))
+        self.takao_cont_vol_label.setText(_translate("FCWindow", "Vol - "))
+        self.yasuhiko_cont_jm_label.setText(_translate("FCWindow", "JM - "))
+        self.yasuhiko_cont_ns_label.setText(_translate("FCWindow", "NS - "))
+        self.yasuhiko_cont_label.setText(_translate("FCWindow", "Yasuhiko Suzuki"))
+        self.yasuhiko_cont_vol_label.setText(_translate("FCWindow", "Vol - "))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("FCWindow", "Summary"))
         self.kota_open_label.setText(_translate("FCWindow", "Open Opportunities"))
         self.kota_open_num_label.setText(_translate("FCWindow", "0"))
@@ -1149,8 +1371,159 @@ class Ui_FCWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("FCWindow", "Yasuhiko Suzuki"))
 
 
+    def get_forecast(self, insert_forecast):
+        self.wb = pyxl.load_workbook(insert_forecast, data_only=True)
+        print(self.wb)
+
+        try:
+            self.ws = self.wb["Summary RESULTS"]
+            print(self.ws)
+        except:
+            error = QtWidgets.QErrorMessage()
+            error.showMessage("Could not find the 'Summary RESULTS' sheet in the workbook.\n"
+                              "Please be sure to upload the correct forecast file")
+
+    def get_data(self, r1, r2, step=1):
+        for row in range(r1, r2, step):
+            copy_row = []
+            # Copying 1 row of data
+            for column in range(3, 15):
+                copy_row.append(int(self.ws.cell(row=row, column=column).value))
+
+        return copy_row
+
+    def sum_data(self, data):
+        sum_result = 0
+        for result in data:
+            sum_result += result
+
+        return sum_result
+
+
+    def push_data(self):
+        # Sum of TOTAL PER MONTH
+        self.sum_vol = self.get_data(18, 19)  # Monthly sum of volume
+        self.sum_ns = self.get_data(36, 37)  # Monthly sum of net sales
+        self.sum_jm = self.get_data(54, 55)  # Monthly sum of japan margin
+
+        self.sum_total_vol = self.sum_data(self.sum_vol)
+        self.sum_total_ns = self.sum_data(self.sum_ns)
+        self.sum_total_jm = self.sum_data(self.sum_jm)
+
+        # Sum of Kota
+        self.kota_vol = self.get_data(5, 6)  # Monthly sum
+        self.kota_ns = self.get_data(23, 24)
+        self.kota_jm = self.get_data(41, 42)
+
+        self.kota_total_vol = self.sum_data(self.kota_vol)  # Yearly sum(total)
+        self.kota_total_ns = self.sum_data(self.kota_ns)
+        self.kota_total_jm = self.sum_data(self.kota_jm)
+
+        self.kota_contribution_vol = round((self.kota_total_vol / self.sum_total_vol) * 100, 1)
+        self.kota_contribution_ns = round((self.kota_total_ns / self.sum_total_ns) * 100, 1)
+        self.kota_contribution_jm = round((self.kota_total_jm / self.sum_total_jm) * 100, 1)
+
+        # Sum of Seiichi
+        self.seiichi_vol = self.get_data(6, 7)  # Monthly sum
+        self.seiichi_ns = self.get_data(24, 25)
+        self.seiichi_jm = self.get_data(42, 43)
+
+        self.seiichi_total_vol = self.sum_data(self.seiichi_vol)  # Yearly sum (total)
+        self.seiichi_total_ns = self.sum_data(self.seiichi_ns)
+        self.seiichi_total_jm = self.sum_data(self.seiichi_jm)
+
+        self.seiichi_contribution_vol = round((self.seiichi_total_vol / self.sum_total_vol) * 100, 1)
+        self.seiichi_contribution_ns = round((self.seiichi_total_ns / self.sum_total_ns) * 100, 1)
+        self.seiichi_contribution_jm = round((self.seiichi_total_jm / self.sum_total_jm) * 100, 1)
+
+        # Sum of Takao
+        self.takao_vol = self.get_data(7, 8)  # Monthly sum
+        self.takao_ns = self.get_data(25, 26)
+        self.takao_jm = self.get_data(43, 44)
+
+        self.takao_total_vol = self.sum_data(self.takao_vol)  # Yearly sum (total)
+        self.takao_total_ns = self.sum_data(self.takao_ns)
+        self.takao_total_jm = self.sum_data(self.takao_jm)
+
+        self.takao_contribution_vol = round((self.takao_total_vol / self.sum_total_vol) * 100, 1)
+        self.takao_contribution_ns = round((self.takao_total_ns / self.sum_total_ns) * 100, 1)
+        self.takao_contribution_jm = round((self.takao_total_jm / self.sum_total_jm) * 100, 1)
+
+        # Sum of Yasuhiko
+        self.yasuhiko_vol = self.get_data(15, 16)  # Monthly sum
+        self.yasuhiko_ns = self.get_data(33, 34)
+        self.yasuhiko_jm = self.get_data(51, 52)
+
+        self.yasuhiko_total_vol = self.sum_data(self.yasuhiko_vol)  # Yearly sum(total)
+        self.yasuhiko_total_ns = self.sum_data(self.yasuhiko_ns)
+        self.yasuhiko_total_jm = self.sum_data(self.yasuhiko_jm)
+
+        self.yasuhiko_contribution_vol = round((self.yasuhiko_total_vol / self.sum_total_vol) * 100, 1)
+        self.yasuhiko_contribution_ns = round((self.yasuhiko_total_ns / self.sum_total_ns) * 100, 1)
+        self.yasuhiko_contribution_jm = round((self.yasuhiko_total_jm / self.sum_total_jm) * 100, 1)
+
+        # Sum of Trade Business
+        self.trade_vol = self.get_data(17, 18)  # Monthly sum
+        self.trade_ns = self.get_data(35, 36)
+        self.trade_jm = self.get_data(53, 54)
+
+        self.trade_total_vol = self.sum_data(self.trade_vol)  # Yearly sum (total)
+        self.trade_total_ns = self.sum_data(self.trade_ns)
+        self.trade_total_jm = self.sum_data(self.trade_jm)
+
+    def fill_labels(self):
+        # Kota in Summary Tab, total vol/ns/jm
+        self.kota_sum_vol_label.setText(f"Total Vol:        {self.kota_total_vol:,} KG")
+        self.kota_sum_ns_label.setText(f"Total NS:        {self.kota_total_ns:,} JPY")
+        self.kota_sum_jm_label.setText(f"Total JM:        {self.kota_total_jm:,} JPY")
+
+        # Seiichi in Summary Tab, total vol/ns/jm
+        self.seiichi_sum_vol_label.setText(f"Total Vol:        {self.seiichi_total_vol:,} KG")
+        self.seiichi_sum_ns_label.setText(f"Total NS:        {self.seiichi_total_ns:,} JPY")
+        self.seiichi_sum_jm_label.setText(f"Total JM:        {self.seiichi_total_jm:,} JPY")
+
+        # Takao in Summary Tab, total vol/ns/jm
+        self.takao_sum_vol_label.setText(f"Total Vol:        {self.takao_total_vol:,} KG")
+        self.takao_sum_ns_label.setText(f"Total NS:        {self.takao_total_ns:,} JPY")
+        self.takao_sum_jm_label.setText(f"Total JM:        {self.takao_total_jm:,} JPY")
+
+        # Yasuhiko in Summary Tab, total vol/ns/jm
+        self.yasuhiko_sum_vol_label.setText(f"Total Vol:        {self.yasuhiko_total_vol:,} KG")
+        self.yasuhiko_sum_ns_label.setText(f"Total NS:        {self.yasuhiko_total_ns:,} JPY")
+        self.yasuhiko_sum_jm_label.setText(f"Total JM:        {self.yasuhiko_total_jm:,} JPY")
+
+        # TOTAL NUMBERS in Summary Tab
+        self.total_sum_vol_label.setText(f"Total Vol:        {self.sum_total_vol:,} KG")
+        self.total_sum_ns_label.setText(f"Total NS:        {self.sum_total_ns:,} JPY")
+        self.total_sum_jm_label.setText(f"Total JM:        {self.sum_total_jm:,} JPY")
+
+        # Contribution to forecast
+        self.kota_cont_vol_label.setText(f"Vol -   {self.kota_contribution_vol} %")
+        self.kota_cont_ns_label.setText(f"NS -   {self.kota_contribution_ns} %")
+        self.kota_cont_jm_label.setText(f"JM -   {self.kota_contribution_jm} %")
+
+        self.seiichi_cont_vol_label.setText(f"Vol -   {self.seiichi_contribution_vol} %")
+        self.seiichi_cont_ns_label.setText(f"NS -   {self.seiichi_contribution_ns} %")
+        self.seiichi_cont_jm_label.setText(f"JM -   {self.seiichi_contribution_jm} %")
+
+        self.takao_cont_vol_label.setText(f"Vol -   {self.takao_contribution_vol} %")
+        self.takao_cont_ns_label.setText(f"NS -   {self.takao_contribution_ns} %")
+        self.takao_cont_jm_label.setText(f"JM -   {self.takao_contribution_jm} %")
+
+        self.yasuhiko_cont_vol_label.setText(f"Vol -   {self.yasuhiko_contribution_vol} %")
+        self.yasuhiko_cont_ns_label.setText(f"NS -   {self.yasuhiko_contribution_ns} %")
+        self.yasuhiko_cont_jm_label.setText(f"JM -   {self.yasuhiko_contribution_jm} %")
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     import sys
+
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle("Fusion")

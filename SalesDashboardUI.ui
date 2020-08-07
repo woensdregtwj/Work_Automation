@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1650</width>
+    <width>1655</width>
     <height>967</height>
    </rect>
   </property>
@@ -52,7 +52,7 @@
           <rect>
            <x>10</x>
            <y>170</y>
-           <width>1611</width>
+           <width>1441</width>
            <height>351</height>
           </rect>
          </property>
@@ -81,7 +81,7 @@
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>1591</width>
+            <width>1421</width>
             <height>331</height>
            </rect>
           </property>
@@ -543,12 +543,12 @@
           </property>
          </widget>
         </widget>
-        <widget class="QFrame" name="contribution_frame">
+        <widget class="QFrame" name="total_frame">
          <property name="geometry">
           <rect>
-           <x>1180</x>
+           <x>1170</x>
            <y>30</y>
-           <width>441</width>
+           <width>281</width>
            <height>131</height>
           </rect>
          </property>
@@ -572,14 +572,90 @@
          <property name="midLineWidth">
           <number>10</number>
          </property>
-         <widget class="QGridLayout" name="contribution_chart">
+         <widget class="QLabel" name="total_sum_ns_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>70</y>
+            <width>251</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>Total NS:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="yasuhiko_sum_label_3">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>421</width>
-            <height>111</height>
+            <width>241</width>
+            <height>41</height>
            </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>25</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>TOTAL NUMBERS</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="total_sum_jm_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>251</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>Total JM:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="total_sum_vol_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>50</y>
+            <width>251</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Total Vol:</string>
           </property>
          </widget>
         </widget>
@@ -588,7 +664,7 @@
           <rect>
            <x>10</x>
            <y>530</y>
-           <width>771</width>
+           <width>711</width>
            <height>351</height>
           </rect>
          </property>
@@ -617,7 +693,7 @@
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>751</width>
+            <width>691</width>
             <height>331</height>
            </rect>
           </property>
@@ -626,9 +702,9 @@
         <widget class="QFrame" name="vol_frame">
          <property name="geometry">
           <rect>
-           <x>800</x>
+           <x>740</x>
            <y>530</y>
-           <width>821</width>
+           <width>711</width>
            <height>351</height>
           </rect>
          </property>
@@ -657,9 +733,435 @@
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>801</width>
+            <width>691</width>
             <height>331</height>
            </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="cont_frame">
+         <property name="geometry">
+          <rect>
+           <x>1470</x>
+           <y>30</y>
+           <width>151</width>
+           <height>851</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QLabel" name="cont_label1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>131</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Contribution</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="cont_label2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>40</y>
+            <width>131</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>To</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="cont_label3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>70</y>
+            <width>131</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Forecast</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="kota_cont_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>130</y>
+            <width>131</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>19</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Kota Takahashi</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="kota_cont_vol_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>160</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Vol - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="kota_cont_ns_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>180</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>NS - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="kota_cont_jm_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>200</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>JM - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="seiichi_cont_vol_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>320</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Vol - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="seiichi_cont_jm_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>360</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>JM - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="seiichi_cont_ns_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>340</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>NS - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="seiichi_cont_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>290</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>19</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Seiichi Hiyoshi</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="takao_cont_jm_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>530</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>JM - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="takao_cont_ns_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>510</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>NS - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="takao_cont_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>460</y>
+            <width>131</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>18</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Takao Yamamoto</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="takao_cont_vol_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>490</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Vol - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="yasuhiko_cont_jm_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>680</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>JM - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="yasuhiko_cont_ns_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>660</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>NS - </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="yasuhiko_cont_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>610</y>
+            <width>131</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>19</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Yasuhiko Suzuki</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="yasuhiko_cont_vol_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>640</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Vol - </string>
           </property>
          </widget>
         </widget>
@@ -3002,7 +3504,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1650</width>
+     <width>1655</width>
      <height>18</height>
     </rect>
    </property>

@@ -55,7 +55,7 @@ def copy_paste(r1, r2, step=1):
             # Pasting 1 row of data
         index = 0
         for column_paste in range(2, 14):
-            if rate and r1 not in [5, 10, 15]:
+            if rate and r1 not in [5, 10, 15]:  # 5, 10, 15 is volume. We cant convert volume with fx rate
                 logging.debug(f"Rate conversion starting")
                 new_ws.cell(row=row, column=column_paste).value = copy_row[index] / rate
             else:
