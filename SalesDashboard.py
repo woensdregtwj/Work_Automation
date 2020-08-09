@@ -12,6 +12,7 @@ import os
 from SendForecast import *
 
 import openpyxl as pyxl
+import sqlite3
 
 import numpy as np
 import matplotlib
@@ -26,7 +27,7 @@ class Ui_FCWindow(object):
     def setupUi(self, FCWindow, Forecast):
         FCWindow.setObjectName("FCWindow")
         FCWindow.resize(1655, 967)
-        FCWindow.setStyleSheet("background-color: rgb(0, 35, 72);")
+        FCWindow.setStyleSheet("background-color: rgba(0, 35, 72, 10);")
         self.centralwidget = QtWidgets.QWidget(FCWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -48,7 +49,7 @@ class Ui_FCWindow(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.jm_frame.setFont(font)
-        self.jm_frame.setStyleSheet("color: rgb(255, 255, 255);")
+        self.jm_frame.setStyleSheet("color: rgb(255, 255, 255); background-color: rgba(0, 35, 72, 1);")
         self.jm_frame.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.jm_frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.jm_frame.setLineWidth(10)
@@ -552,9 +553,9 @@ class Ui_FCWindow(object):
         self.kota_win_num1_label.setFont(font)
         self.kota_win_num1_label.setObjectName("kota_win_num1_label")
         self.kota_win_num2_label = QtWidgets.QLabel(self.kota_win_frame)
-        self.kota_win_num2_label.setGeometry(QtCore.QRect(30, 80, 61, 21))
+        self.kota_win_num2_label.setGeometry(QtCore.QRect(30, 80, 141, 21))
         font = QtGui.QFont()
-        font.setPixelSize(30)
+        font.setPixelSize(24)
         self.kota_win_num2_label.setFont(font)
         self.kota_win_num2_label.setObjectName("kota_win_num2_label")
         self.kota_outstanding_frame = QtWidgets.QFrame(self.kota_frame)
@@ -627,7 +628,7 @@ class Ui_FCWindow(object):
         self.kota_total_label.setFont(font)
         self.kota_total_label.setObjectName("kota_total_label")
         self.kota_total_num_label = QtWidgets.QLabel(self.kota_total_frame)
-        self.kota_total_num_label.setGeometry(QtCore.QRect(20, 50, 61, 51))
+        self.kota_total_num_label.setGeometry(QtCore.QRect(20, 50, 151, 51))
         font = QtGui.QFont()
         font.setPixelSize(39)
         self.kota_total_num_label.setFont(font)
@@ -755,9 +756,9 @@ class Ui_FCWindow(object):
         self.seiichi_win_num1_label.setFont(font)
         self.seiichi_win_num1_label.setObjectName("seiichi_win_num1_label")
         self.seiichi_win_num2_label = QtWidgets.QLabel(self.seiichi_win_frame)
-        self.seiichi_win_num2_label.setGeometry(QtCore.QRect(30, 80, 61, 21))
+        self.seiichi_win_num2_label.setGeometry(QtCore.QRect(30, 80, 141, 21))
         font = QtGui.QFont()
-        font.setPixelSize(30)
+        font.setPixelSize(24)
         self.seiichi_win_num2_label.setFont(font)
         self.seiichi_win_num2_label.setObjectName("seiichi_win_num2_label")
         self.seiichi_outstanding_frame = QtWidgets.QFrame(self.seiichi_frame)
@@ -830,7 +831,7 @@ class Ui_FCWindow(object):
         self.seiichi_total_label.setFont(font)
         self.seiichi_total_label.setObjectName("seiichi_total_label")
         self.seiichi_total_num_label = QtWidgets.QLabel(self.seiichi_total_frame)
-        self.seiichi_total_num_label.setGeometry(QtCore.QRect(20, 50, 61, 51))
+        self.seiichi_total_num_label.setGeometry(QtCore.QRect(20, 50, 151, 51))
         font = QtGui.QFont()
         font.setPixelSize(39)
         self.seiichi_total_num_label.setFont(font)
@@ -960,7 +961,7 @@ class Ui_FCWindow(object):
         self.takao_win_num2_label = QtWidgets.QLabel(self.takao_win_frame)
         self.takao_win_num2_label.setGeometry(QtCore.QRect(30, 80, 141, 21))
         font = QtGui.QFont()
-        font.setPixelSize(30)
+        font.setPixelSize(24)
         self.takao_win_num2_label.setFont(font)
         self.takao_win_num2_label.setObjectName("takao_win_num2_label")
         self.takao_outstanding_frame = QtWidgets.QFrame(self.takao_frame)
@@ -1161,9 +1162,9 @@ class Ui_FCWindow(object):
         self.yasuhiko_win_num1_label.setFont(font)
         self.yasuhiko_win_num1_label.setObjectName("yasuhiko_win_num1_label")
         self.yasuhiko_win_num2_label = QtWidgets.QLabel(self.takao_win_frame_2)
-        self.yasuhiko_win_num2_label.setGeometry(QtCore.QRect(30, 80, 61, 21))
+        self.yasuhiko_win_num2_label.setGeometry(QtCore.QRect(30, 80, 141, 21))
         font = QtGui.QFont()
-        font.setPixelSize(30)
+        font.setPixelSize(24)
         self.yasuhiko_win_num2_label.setFont(font)
         self.yasuhiko_win_num2_label.setObjectName("yasuhiko_win_num2_label")
         self.takao_outstanding_frame_2 = QtWidgets.QFrame(self.takao_frame_2)
@@ -1236,7 +1237,7 @@ class Ui_FCWindow(object):
         self.yasuhiko_total_label.setFont(font)
         self.yasuhiko_total_label.setObjectName("yasuhiko_total_label")
         self.yasuhiko_total_num_label = QtWidgets.QLabel(self.yasuhiko_total_frame)
-        self.yasuhiko_total_num_label.setGeometry(QtCore.QRect(20, 50, 61, 51))
+        self.yasuhiko_total_num_label.setGeometry(QtCore.QRect(20, 50, 151, 51))
         font = QtGui.QFont()
         font.setPixelSize(39)
         self.yasuhiko_total_num_label.setFont(font)
@@ -1262,22 +1263,33 @@ class Ui_FCWindow(object):
         self.fill_labels()
 
         # for 1st argument, type JM, NS or VOL for where you want to add the chart
-        self.summary_test("JM", self.kota_jm, self.seiichi_jm, self.takao_jm, self.yasuhiko_jm)
-        self.summary_test("NS", self.kota_ns, self.seiichi_ns, self.takao_ns, self.yasuhiko_ns)
-        self.summary_test("VOL", self.kota_vol, self.seiichi_vol, self.takao_vol, self.yasuhiko_vol)
+        self.summary_charts("JM", self.kota_jm, self.seiichi_jm, self.takao_jm, self.yasuhiko_jm)
+        self.summary_charts("NS", self.kota_ns, self.seiichi_ns, self.takao_ns, self.yasuhiko_ns)
+        self.summary_charts("VOL", self.kota_vol, self.seiichi_vol, self.takao_vol, self.yasuhiko_vol)
 
+        # For argument 1, pick Kota/Seiichi/Takao/Yasuhiko, and it will create the charts for the specific tab
+        # For argument 2, pick JM/NS or VOL for where you want to add the chart
+        self.individual_charts("Kota", "JM", self.kota_jm)
+        self.individual_charts("Kota", "NS", self.kota_ns)
+        self.individual_charts("Kota", "VOL", self.kota_vol)
 
-        # # Sum of TOTAL PER MONTH
-        # self.sum_vol = self.get_data(18, 19)  # Monthly sum of volume
-        # self.sum_ns = self.get_data(36, 37)  # Monthly sum of net sales
-        # self.sum_jm = self.get_data(54, 55)  # Monthly sum of japan margin
-        #
-        # # Sum of Kota
-        # self.kota_vol = self.get_data(5, 6)
-        # self.kota_ns = self.get_data(23, 24)
-        # self.kota_jm = self.get_data(41, 42)
+        self.individual_charts("Seiichi", "JM", self.seiichi_jm)
+        self.individual_charts("Seiichi", "NS", self.seiichi_ns)
+        self.individual_charts("Seiichi", "VOL", self.seiichi_vol)
 
+        self.individual_charts("Takao", "JM", self.takao_jm)
+        self.individual_charts("Takao", "NS", self.takao_ns)
+        self.individual_charts("Takao", "VOL", self.takao_vol)
 
+        self.individual_charts("Yasuhiko", "JM", self.yasuhiko_jm)
+        self.individual_charts("Yasuhiko", "NS", self.yasuhiko_ns)
+        self.individual_charts("Yasuhiko", "VOL", self.yasuhiko_vol)
+
+        # Pulling data from database
+        self.database_data("Kota Takahashi")
+        self.database_data("Seiichi Hiyoshi")
+        self.database_data("Takao Yamamoto")
+        self.database_data("Yasuhiko Suzuki")
 
 
 
@@ -1526,19 +1538,26 @@ class Ui_FCWindow(object):
         self.yasuhiko_cont_ns_label.setText(f"NS -   {self.yasuhiko_contribution_ns} %")
         self.yasuhiko_cont_jm_label.setText(f"JM -   {self.yasuhiko_contribution_jm} %")
 
-    def summary_test(self, chart_pos, person1, person2, person3, person4):
+
+    def summary_charts(self, chart_pos, person1, person2, person3, person4):
         if chart_pos == "JM":
             chart_placement = "Japan Margin in JPY"
             table_scale = [0, -0.25, 1, 0.25]
             table_font = 7
             ylabel_scale = 12
             legend_scale = 10
+            plot_bscale = 0.2
+            plot_tscale = 0.99
+            plot_rscale = 0.95
 
         if chart_pos != "JM":
-            table_scale = [0, -0.25, 1, 0.25]
-            table_font = 5
-            ylabel_scale = 6
+            table_scale = [0, -0.4, 1, 0.4]
+            table_font = 5.7
+            ylabel_scale = 11
             legend_scale = 6
+            plot_bscale = 0.3
+            plot_tscale = 0.99
+            plot_rscale = 0.99
             if chart_pos == "NS":
                 chart_placement = "Net Sales in JPY"
             elif chart_pos == "VOL":
@@ -1592,6 +1611,7 @@ class Ui_FCWindow(object):
                                                  "Seiichi Hiyoshi",
                                                  "Takao Yamamoto",
                                                  "Yasuhiko Suzuki"],
+                                      cellLoc="center",
                                       colLabels=months,
                                       bbox=table_scale)
         the_table.auto_set_font_size(False)  # Canceling the font auto scaling, the font is too smal;
@@ -1615,7 +1635,7 @@ class Ui_FCWindow(object):
 
         # Scaling the chart so that the bars are perfectly aligned with the table underneath
         sum_jm_plot.set_xlim(0, len(x_indexes))
-        sum_jm_figure.subplots_adjust(bottom=0.2, top=0.99)
+        sum_jm_figure.subplots_adjust(bottom=plot_bscale, top=plot_tscale, right=plot_rscale)
 
         print("Chart scaled")
 
@@ -1633,6 +1653,190 @@ class Ui_FCWindow(object):
 
         print("DONE!")
 
+    def individual_charts(self, chart_tab, chart_placement, chart):
+        if chart_placement == "JM":
+            title = "Japan Margin in JPY"
+            ytitle = "JPY"
+        elif chart_placement == "NS":
+            title = "Net Sales in JPY"
+            ytitle = "JPY"
+        elif chart_placement == "VOL":
+            title = "Volume in KG"
+            ytitle = "KG"
+
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        months_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        x_indexes = np.arange(len(months_numbers))
+
+        # Calling the function to put the lists in a list for the table
+        cell_data = self.arrange_cell_data(chart)
+
+        # Creating the figure and the canvas for plotting
+        sum_jm_figure = Figure()
+        sum_jm_canvas = FigureCanvasQTAgg(sum_jm_figure)
+        sum_jm_plot = sum_jm_figure.add_subplot(111)
+
+        # Plotting the data
+        sum_jm_plot.plot(months_numbers, chart, linewidth=2, marker="D")
+
+        the_table = sum_jm_plot.table(cellText=cell_data,
+                                      cellLoc="center",
+                                      colLabels=months,
+                                      bbox=[0, -0.12, 1, 0.12])
+        the_table.auto_set_font_size(False)  # Canceling the font auto scaling, the font is too smal;
+        the_table.set_fontsize(6.7)
+
+        # Design adjusments
+        sum_jm_plot.set_xticks(months_numbers)
+        sum_jm_plot.set_xticklabels([])  # This hides the x labels, as the table has the labels.
+
+        sum_jm_plot.set_ylabel(ytitle, fontsize=12)  # label for the Y axis
+        sum_jm_plot.set_title(title)
+        sum_jm_plot.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+        # Decimal seperator for long numbers so it shows 10,000,000
+
+        sum_jm_plot.grid()
+        sum_jm_plot.tick_params(axis="y", labelsize=6)
+        sum_jm_plot.tick_params(axis="x", bottom=False)
+
+        # Scaling the chart so that the bars are perfectly aligned with the table underneath
+        sum_jm_figure.subplots_adjust(left=0.105, bottom=0.1, top=0.9, right=0.998)
+
+        sum_jm_canvas.draw()
+
+        if chart_tab == "Kota":
+            if chart_placement == "JM":
+                self.kota_jm_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "NS":
+                self.kota_ns_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "VOL":
+                self.kota_vol_chart.addWidget(sum_jm_canvas)
+        elif chart_tab == "Seiichi":
+            if chart_placement == "JM":
+                self.seiichi_jm_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "NS":
+                self.seiichi_ns_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "VOL":
+                self.seiichi_vol_chart.addWidget(sum_jm_canvas)
+        elif chart_tab == "Takao":
+            if chart_placement == "JM":
+                self.takao_jm_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "NS":
+                self.takao_ns_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "VOL":
+                self.takao_vol_chart.addWidget(sum_jm_canvas)
+        elif chart_tab == "Yasuhiko":
+            if chart_placement == "JM":
+                self.yasuhiko_jm_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "NS":
+                self.yasuhiko_ns_chart.addWidget(sum_jm_canvas)
+            elif chart_placement == "VOL":
+                self.yasuhiko_vol_chart.addWidget(sum_jm_canvas)
+
+    def database_data(self, kam):
+        connect = sqlite3.connect("Databases\\LTO.db")
+        c = connect.cursor()
+        print("Connected to DB")
+
+        # Open opportunities COUNT
+        c.execute(f"SELECT * FROM LTO WHERE kam = '{kam}'")
+        db_extract = c.fetchall()
+        open_opportunities = len(db_extract)
+        print("Fetched 1")
+
+        # LTO Total EURk SUM
+        c.execute(f"SELECT SUM(sales) FROM LTO WHERE kam = '{kam}'")
+        db_extract = c.fetchall()
+        if not db_extract[0][0]:
+            lto_total = '0'
+        else:
+            lto_total = format(db_extract[0][0], ",")
+        print("Fetched 2")
+
+        # Winnable COUNT
+        c.execute(f"SELECT * FROM LTO WHERE kam = '{kam}' AND status LIKE 'W%'")
+        db_extract = c.fetchall()
+        winnable_count = len(db_extract)
+        print("Fetched 3")
+
+        # Winnable SUM
+        c.execute(f"SELECT SUM(sales) FROM LTO WHERE kam = '{kam}' AND status LIKE 'W%'")
+        db_extract = c.fetchall()
+        if not db_extract[0][0]:
+            winnable_sum = '0'
+        else:
+            winnable_sum = format(db_extract[0][0], ",")
+        print("Fetched 4")
+
+        # LTO Outstanding COUNT
+        c.execute(f"SELECT * FROM LTO WHERE kam = '{kam}' AND status LIKE 'D%'")
+        db_extract = c.fetchall()
+        lto_doubt_count = len(db_extract)
+        print("Fetched 5")
+
+        # LTO Outstanding SUM
+        c.execute(f"SELECT SUM(sales) FROM LTO WHERE kam = '{kam}' AND status LIKE 'D%'")
+        db_extract = c.fetchall()
+        if not db_extract[0][0]:
+            lto_doubt_sum = '0'
+        else:
+            lto_doubt_sum = format(db_extract[0][0], ",")
+        print("Fetched 6")
+
+        # LTO Outstanding Uncommented
+        c.execute(f"SELECT * FROM LTO WHERE kam = '{kam}' AND comment = 'None'")
+        db_extract = c.fetchall()
+        lto_uncommented = len(db_extract)
+        print("Fetched 7")
+
+        c.close()
+        connect.close()
+
+        print("Closed DB")
+
+        if kam == "Kota Takahashi":
+            self.kota_open_num_label.setText(f"{open_opportunities}")
+            self.kota_total_num_label.setText(f"{lto_total}")
+            self.kota_win_num1_label.setText(f"{winnable_count}")
+            self.kota_win_num2_label.setText(f"{winnable_sum} EURk")
+            self.kota_doubts_num1_label.setText(f"{lto_doubt_count}")
+            self.kota_doubts_num2_label.setText(f"{lto_doubt_sum} EURk")
+            self.kota_uncommented_num_label.setText(f"{lto_uncommented}")
+        if kam == "Seiichi Hiyoshi":
+            self.seiichi_open_num_label.setText(f"{open_opportunities}")
+            self.seiichi_total_num_label.setText(f"{lto_total}")
+            self.seiichi_win_num1_label.setText(f"{winnable_count}")
+            self.seiichi_win_num2_label.setText(f"{winnable_sum} EURk")
+            self.seiichi_doubts_num1_label.setText(f"{lto_doubt_count}")
+            self.seiichi_doubts_num2_label.setText(f"{lto_doubt_sum} EURk")
+            self.seiichi_uncommented_num_label.setText(f"{lto_uncommented}")
+        if kam == "Takao Yamamoto":
+            self.takao_open_num_label.setText(f"{open_opportunities}")
+            self.takao_total_num_label.setText(f"{lto_total}")
+            self.takao_win_num1_label.setText(f"{winnable_count}")
+            self.takao_win_num2_label.setText(f"{winnable_sum} EURk")
+            self.takao_doubts_num1_label.setText(f"{lto_doubt_count}")
+            self.takao_doubts_num2_label.setText(f"{lto_doubt_sum} EURk")
+            self.takao_uncommented_num_label.setText(f"{lto_uncommented}")
+        if kam == "Yasuhiko Suzuki":
+            self.yasuhiko_open_num_label.setText(f"{open_opportunities}")
+            self.yasuhiko_total_num_label.setText(f"{lto_total}")
+            self.yasuhiko_win_num1_label.setText(f"{winnable_count}")
+            self.yasuhiko_win_num2_label.setText(f"{winnable_sum} EURk")
+            self.yasuhiko_doubts_num1_label.setText(f"{lto_doubt_count}")
+            self.yasuhiko_doubts_num2_label.setText(f"{lto_doubt_sum} EURk")
+            self.yasuhiko_uncommented_num_label.setText(f"{lto_uncommented}")
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1640,13 +1844,11 @@ class Ui_FCWindow(object):
         cell_data = []
 
         if not set2:
-            cell_data.append(format(i, ",") for i in set1)
-            #cell_data.append(set1)
+            cell_data.append([format(i, ",") for i in set1])
             return cell_data
 
         for set in [set1, set2, set3, set4]:
             cell_data.append([format(i, ",") for i in set])
-            #cell_data.append(set)
         return cell_data
 
 
