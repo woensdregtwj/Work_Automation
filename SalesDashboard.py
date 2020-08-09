@@ -10,8 +10,16 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from SendForecast import *
+
 import openpyxl as pyxl
-import time
+
+import numpy as np
+import matplotlib
+matplotlib.use('Qt5Agg')
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+from matplotlib import ticker as mticker
 
 
 class Ui_FCWindow(object):
@@ -1253,6 +1261,11 @@ class Ui_FCWindow(object):
         self.push_data()
         self.fill_labels()
 
+        # for 1st argument, type JM, NS or VOL for where you want to add the chart
+        self.summary_test("JM", self.kota_jm, self.seiichi_jm, self.takao_jm, self.yasuhiko_jm)
+        self.summary_test("NS", self.kota_ns, self.seiichi_ns, self.takao_ns, self.yasuhiko_ns)
+        self.summary_test("VOL", self.kota_vol, self.seiichi_vol, self.takao_vol, self.yasuhiko_vol)
+
 
         # # Sum of TOTAL PER MONTH
         # self.sum_vol = self.get_data(18, 19)  # Monthly sum of volume
@@ -1399,7 +1412,6 @@ class Ui_FCWindow(object):
 
         return sum_result
 
-
     def push_data(self):
         # Sum of TOTAL PER MONTH
         self.sum_vol = self.get_data(18, 19)  # Monthly sum of volume
@@ -1514,11 +1526,128 @@ class Ui_FCWindow(object):
         self.yasuhiko_cont_ns_label.setText(f"NS -   {self.yasuhiko_contribution_ns} %")
         self.yasuhiko_cont_jm_label.setText(f"JM -   {self.yasuhiko_contribution_jm} %")
 
+    def summary_test(self, chart_pos, person1, person2, person3, person4):
+        if chart_pos == "JM":
+            chart_placement = "Japan Margin in JPY"
+            table_scale = [0, -0.25, 1, 0.25]
+            table_font = 7
+            ylabel_scale = 12
+            legend_scale = 10
+
+        if chart_pos != "JM":
+            table_scale = [0, -0.25, 1, 0.25]
+            table_font = 5
+            ylabel_scale = 6
+            legend_scale = 6
+            if chart_pos == "NS":
+                chart_placement = "Net Sales in JPY"
+            elif chart_pos == "VOL":
+                chart_placement = "Volume in KG"
+
+        print(f"Chart placement is {chart_placement}")
+
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        months_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+        print("Months completed...")
+
+        # We need this so that the bars dont stack on top of each other + also for scaling correctly with the table columns
+        x_indexes = np.arange(len(months_numbers))
+        bar_grp_width = 0.2
+        center_adjust = 0.4
+
+        print("Widths and arange completed")
+
+        # Calling the function to put the lists in a list for the table
+        cell_data = self.arrange_cell_data(person1, person2, person3, person4)
+
+        print("Cell Data complete...")
+
+        # Creating the figure and the canvas for plotting
+        sum_jm_figure = Figure()
+        sum_jm_canvas = FigureCanvasQTAgg(sum_jm_figure)
+        sum_jm_plot = sum_jm_figure.add_subplot(111)
+
+        print("Figure, canvas and plot completed")
+
+        # Plotting the data
+        sum_jm_plot.bar(x_indexes - bar_grp_width + center_adjust, person1,
+                        width=bar_grp_width,
+                        label="Kota Takahashi")
+        sum_jm_plot.bar(x_indexes + center_adjust, person2,
+                        width=bar_grp_width,
+                        label="Seiichi Hiyoshi")
+        sum_jm_plot.bar(x_indexes + bar_grp_width + center_adjust, person3,
+                        width=bar_grp_width,
+                        label="Takao Yamamoto")
+        sum_jm_plot.bar(x_indexes + bar_grp_width + bar_grp_width + center_adjust, person4,
+                        width=bar_grp_width,
+                        label="Yasuhiko Suzuki")
+
+        print("Plotted the bars...")
+
+        # Creating the table with data that goes under the chart
+        the_table = sum_jm_plot.table(cellText=cell_data,
+                                      rowLabels=["Kota Takahashi",
+                                                 "Seiichi Hiyoshi",
+                                                 "Takao Yamamoto",
+                                                 "Yasuhiko Suzuki"],
+                                      colLabels=months,
+                                      bbox=table_scale)
+        the_table.auto_set_font_size(False)  # Canceling the font auto scaling, the font is too smal;
+        the_table.set_fontsize(table_font)
+
+        print("Created table...")
+
+        # Design adjusments
+        sum_jm_plot.set_xticks(months_numbers)
+        sum_jm_plot.set_xticklabels([])  # This hides the x labels, as the table has the labels.
+
+        sum_jm_plot.set_ylabel(chart_placement, fontsize=ylabel_scale)  # label for the Y axis
+        sum_jm_plot.legend(prop={"size":legend_scale})
+        sum_jm_plot.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+        # Decimal seperator for long numbers so it shows 10,000,000
+
+        sum_jm_plot.grid()
+        sum_jm_plot.tick_params(axis="both", labelsize=6)
+
+        print("Adjusted designs")
+
+        # Scaling the chart so that the bars are perfectly aligned with the table underneath
+        sum_jm_plot.set_xlim(0, len(x_indexes))
+        sum_jm_figure.subplots_adjust(bottom=0.2, top=0.99)
+
+        print("Chart scaled")
+
+        # Drawing the plot and adding it into the designated chart placement
+        sum_jm_canvas.draw()
+
+        print("Drawing canvas")
+
+        if chart_pos == "JM":
+            self.jm_chart.addWidget(sum_jm_canvas)
+        elif chart_pos == "NS":
+            self.ns_chart.addWidget(sum_jm_canvas)
+        elif chart_pos == "VOL":
+            self.vol_chart.addWidget(sum_jm_canvas)
+
+        print("DONE!")
 
 
 
 
+    def arrange_cell_data(self, set1, set2=None, set3=None, set4=None):
+        cell_data = []
 
+        if not set2:
+            cell_data.append(format(i, ",") for i in set1)
+            #cell_data.append(set1)
+            return cell_data
+
+        for set in [set1, set2, set3, set4]:
+            cell_data.append([format(i, ",") for i in set])
+            #cell_data.append(set)
+        return cell_data
 
 
 if __name__ == "__main__":
