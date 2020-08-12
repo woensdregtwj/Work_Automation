@@ -10,7 +10,7 @@ storage_delivery_trade = {'delivery_storage': 0,
                           'trade_sales': 0,
                           'trade_profit': 0} # for storing the total net sales of all storage data and trade business
 
-trade_customers = ['Moriyama', 'Nagano Sanyo'] # Add here additional trade customers if they will ever come
+trade_customers = ['Moriyama', 'Nagano Sanyo', 'Shoei'] # Add here additional trade customers if they will ever come
 
 trade_business_error = []
 
