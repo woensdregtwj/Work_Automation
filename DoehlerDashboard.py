@@ -376,7 +376,7 @@ class Ui_Doehler_title(object):
         self.forecasting_box.setTitle(_translate("Doehler_title", "Forecasting"))
         self.sforecast_button.setText(_translate("Doehler_title", "Sales Forecast Update"))
         self.sforecast_eom_button.setText(_translate("Doehler_title", "Sales Forecast EOM"))
-        self.sforecast_visuals_button.setText(_translate("Doehler_title", "Sales Forecast Visuals"))
+        self.sforecast_visuals_button.setText(_translate("Doehler_title", "Sales Results Visuals"))
         self.bpm_forecast_button.setText(_translate("Doehler_title", "BPM Forecast"))
         self.bpm_visuals_button.setText(_translate("Doehler_title", "BPM Visuals"))
         self.forecast1_label.setText(_translate("Doehler_title", "MTD Sales <> Forecast"))

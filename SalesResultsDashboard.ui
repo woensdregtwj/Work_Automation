@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SalesResultsVis</class>
+ <widget class="QMainWindow" name="SalesResultsVis">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1876</width>
+    <height>955</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 35, 72);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(85, 255, 127);</string>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>YTD</string>
+       </attribute>
+       <widget class="QFrame" name="ytd_frame">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1861</width>
+          <height>905</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(186, 186, 186);</string>
+        </property>
+        <widget class="QFrame" name="ytd_le_frame2">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>600</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="ytd_le_chart2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="ytd_le_frame1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>600</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="ytd_le_chart1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="ytd_b2b2_frame1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>320</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="ytd_b2b2_chart1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="ytd_b2b2_frame2">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>320</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="ytd_b2b2_chart2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="ytd_b2b1_frame2">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>40</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="ytd_b2b1_chart2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="ytd_b2b1_frame1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="ytd_b2b1_chart1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QTableView" name="ytd_b2b1_table">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>90</y>
+           <width>591</width>
+           <height>221</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="ytd_b2b2_table">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>370</y>
+           <width>591</width>
+           <height>221</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="ytd_le_table">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>650</y>
+           <width>591</width>
+           <height>221</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="ytd_b2b_label1">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>50</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>YTD B2B Level 1</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="ytd_b2b_label2">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>330</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>YTD B2B Level 2</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="ytd_le_label">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>610</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>YTD Local/Destination comparison</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>YTD 0 Top Performers</string>
+       </attribute>
+       <widget class="QFrame" name="ytd_top_frame">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1861</width>
+          <height>905</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(186, 186, 186);</string>
+        </property>
+        <widget class="QLabel" name="ytd_top_bu2_label">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>40</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>YTD Top 5 - BU 2</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="ytd_top_bu1_label">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>40</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>YTD Top 5 - BU 1</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="ytd_top_label">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Top ranking all Business Units YTD</string>
+         </property>
+        </widget>
+        <widget class="QTableView" name="ytd_top_bu2_table">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>80</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="ytd_top_bu1_table">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>80</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="ytd_top_table">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>50</y>
+           <width>591</width>
+           <height>821</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="ytd_top_bu4_label">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>490</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>YTD Top 5 - BU 4</string>
+         </property>
+        </widget>
+        <widget class="QTableView" name="ytd_top_bu3_table">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>530</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="ytd_top_bu3_label">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>490</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>YTD Top 5 - BU 3</string>
+         </property>
+        </widget>
+        <widget class="QTableView" name="ytd_top_bu4_table">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>530</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>MTD</string>
+       </attribute>
+       <widget class="QFrame" name="mtd_frame">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1861</width>
+          <height>905</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(186, 186, 186);</string>
+        </property>
+        <widget class="QFrame" name="mtd_le_frame2">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>600</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="mtd_le_chart2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="mtd_le_frame1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>600</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="mtd_le_chart1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="mtd_b2b2_frame1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>320</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="mtd_b2b2_chart1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="mtd_b2b2_frame2">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>320</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="mtd_b2b2_chart2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="mtd_b2b1_frame2">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>40</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="mtd_b2b1_chart2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="mtd_b2b1_frame1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>591</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>29</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>10</number>
+         </property>
+         <property name="midLineWidth">
+          <number>10</number>
+         </property>
+         <widget class="QGridLayout" name="mtd_b2b1_chart1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>571</width>
+            <height>251</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QLabel" name="mtd_le_label">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>610</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MTD Local/Destination comparison</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="mtd_b2b_label2">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>330</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MTD B2B Level 2</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="mtd_b2b_label1">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>50</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MTD B2B Level 1</string>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_le_table">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>650</y>
+           <width>591</width>
+           <height>221</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_b2b_table2">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>370</y>
+           <width>591</width>
+           <height>221</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_b2b_table1">
+         <property name="geometry">
+          <rect>
+           <x>1230</x>
+           <y>90</y>
+           <width>591</width>
+           <height>221</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>MTD - Top Performers</string>
+       </attribute>
+       <widget class="QFrame" name="mtd_top_frame">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1861</width>
+          <height>905</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(186, 186, 186);</string>
+        </property>
+        <widget class="QLabel" name="mtd_top_bu2_label">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>40</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MTD Top 5 - BU 2</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="mtd_top_bu1_label">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>40</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MTD Top 5 - BU 1</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="mtd_top_label">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Top ranking all Business Units MTD</string>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_top_bu2_table">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>80</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_top_bu1_table">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>80</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_top_table">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>50</y>
+           <width>591</width>
+           <height>821</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="mtd_top_bu4_table_2">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>490</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MTD Top 5 - BU 4</string>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_top_bu3_table">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>530</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="mtd_top_bu3_table_2">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>490</y>
+           <width>511</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>30</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MTD Top 5 - BU 3</string>
+         </property>
+        </widget>
+        <widget class="QTableView" name="mtd_top_bu4_table">
+         <property name="geometry">
+          <rect>
+           <x>1260</x>
+           <y>530</y>
+           <width>591</width>
+           <height>341</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1876</width>
+     <height>18</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QGridLayout</class>
+   <extends>QGraphicsView</extends>
+   <header>qgridlayout.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
