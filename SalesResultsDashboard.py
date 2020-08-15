@@ -5,7 +5,13 @@
 # Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
+import numpy
 
+import matplotlib
+matplotlib.use('Qt5Agg')
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
@@ -505,6 +511,16 @@ class Ui_SalesResultsVis(object):
                                             f"GROUP BY customer "
                                             f"ORDER BY SUM(cm1) DESC")
 
+        self.prepare_chart_data("YTD PIE 1", "SELECT bu1, SUM(ns) FROM sales GROUP BY bu1")
+        self.prepare_chart_data("YTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales GROUP BY bu1")
+        # self.prepare_chart_data("YTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2")
+        # self.prepare_chart_data("YTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2")
+        self.prepare_chart_data("YTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code")
+        self.prepare_chart_data("YTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code")
+
+        self.prepare_bar_chart_data("YTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2 ORDER BY SUM(ns) ASC")
+        self.prepare_bar_chart_data("YTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2 ORDER BY SUM(cm1) ASC")
+
     def retranslateUi(self, SalesResultsVis):
         _translate = QtCore.QCoreApplication.translate
         SalesResultsVis.setWindowTitle(_translate("SalesResultsVis", "MainWindow"))
@@ -609,6 +625,79 @@ class Ui_SalesResultsVis(object):
             scale_to_tableframe.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeToContents)
         scale_to_tableframe.setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
 
+    def prepare_chart_data(self, chart_push, query_push):
+        assign_charts = {"YTD PIE 1": self.ytd_b2b1_chart1, "YTD PIE 2": self.ytd_b2b1_chart2,
+                         "YTD PIE 3": self.ytd_b2b2_chart1, "YTD PIE 4": self.ytd_b2b2_chart2,
+                         "YTD PIE 5": self.ytd_le_chart1, "YTD PIE 6": self.ytd_le_chart2}
+
+
+        connect = sqlite3.connect("Databases\\sales.db")
+        c = connect.cursor()
+
+        c.execute(query_push)
+        data = c.fetchall()
+
+        chart_labels = [i for i in data for i in i if isinstance(i, str)]  # A list in list, so we need nested comprehension
+        chart_data = [i for i in data for i in i if isinstance(i, int)]
+
+        for index, value in enumerate(chart_data):  # Cant put minus values in a pie. Just put to 0
+            if value < 0:
+                chart_data[index] = 0
+
+        chart_figure = Figure()
+        chart_canvas = FigureCanvasQTAgg(chart_figure)
+        chart_final = chart_figure.add_subplot(111)
+
+        chart_final.pie(chart_data, labels=chart_labels, startangle=30)
+
+        chart_final.legend(loc="upper left", bbox_to_anchor=(-1.4, 1.1), fontsize=8)
+
+        chart_figure.subplots_adjust(left=0.4)
+
+        chart_canvas.show()
+
+        assign_charts[chart_push].addWidget(chart_canvas)
+
+    def prepare_bar_chart_data(self, chart_push, query_push):
+        assign_charts = {"YTD PIE 3": self.ytd_b2b2_chart1, "YTD PIE 4": self.ytd_b2b2_chart2}
+
+        connect = sqlite3.connect("Databases\\sales.db")
+        c = connect.cursor()
+
+        c.execute(query_push)
+        data = c.fetchall()
+
+        chart_labels = [i for i in data for i in i if isinstance(i, str)]  # A list in list, so we need nested comprehension
+        chart_data = [i for i in data for i in i if isinstance(i, int)]
+
+        summed_data = 0
+        for amt in chart_data:
+            summed_data += amt
+        percentages = [round(float(p / summed_data * 100), 1) for p in chart_data]
+        print(percentages)
+
+        chart_labels_pct = ['%s, %1.1f %%' % (l, s) for l, s in zip(chart_labels, percentages)]
+
+        for index, value in enumerate(chart_data):
+            if value < 0:
+                chart_data[index] = 0
+
+
+        chart_figure = Figure()
+        chart_canvas = FigureCanvasQTAgg(chart_figure)
+        chart_final = chart_figure.add_subplot(111)
+
+        chart_final.barh(chart_labels_pct, chart_data)
+
+        chart_figure.subplots_adjust(left=0.3, right=0.99)
+
+        chart_canvas.show()
+
+        assign_charts[chart_push].addWidget(chart_canvas)
+
+
+
+
 
 if __name__ == "__main__":
     import sys
@@ -618,6 +707,6 @@ if __name__ == "__main__":
     app.setStyle("Fusion")
     SalesResultsVis = QtWidgets.QMainWindow()
     ui = Ui_SalesResultsVis()
-    ui.setupUi(SalesResultsVis, '03')
+    ui.setupUi(SalesResultsVis, '07')
     SalesResultsVis.show()
     sys.exit(app.exec_())
