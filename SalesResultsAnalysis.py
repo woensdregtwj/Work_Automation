@@ -21,14 +21,14 @@ db = QSqlDatabase("QSQLITE")
 db.setDatabaseName("Databases\\sales.db")
 db.open()
 
-class Ui_lto_database(object):
-    def setupUi(self, lto_database):
-        lto_database.setObjectName("lto_database")
-        lto_database.resize(1600, 805)
-        lto_database.setMinimumSize(QtCore.QSize(1600, 800))
-        lto_database.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        lto_database.setStyleSheet("background-color: rgb(0, 40, 72);")
-        self.centralwidget = QtWidgets.QWidget(lto_database)
+class Ui_sales_database(object):
+    def setupUi(self, sales_database):
+        sales_database.setObjectName("sales_database")
+        sales_database.resize(1600, 805)
+        sales_database.setMinimumSize(QtCore.QSize(1600, 800))
+        sales_database.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        sales_database.setStyleSheet("background-color: rgb(0, 40, 72);")
+        self.centralwidget = QtWidgets.QWidget(sales_database)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -145,17 +145,17 @@ class Ui_lto_database(object):
         font.setPixelSize(14)
         self.table_data.setFont(font)
         self.verticalLayout.addWidget(self.table_data)
-        lto_database.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(lto_database)
+        sales_database.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(sales_database)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1600, 18))
         self.menubar.setObjectName("menubar")
-        lto_database.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(lto_database)
+        sales_database.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(sales_database)
         self.statusbar.setObjectName("statusbar")
-        lto_database.setStatusBar(self.statusbar)
+        sales_database.setStatusBar(self.statusbar)
 
-        self.retranslateUi(lto_database)
-        QtCore.QMetaObject.connectSlotsByName(lto_database)
+        self.retranslateUi(sales_database)
+        QtCore.QMetaObject.connectSlotsByName(sales_database)
 
         self.model = QSqlTableModel(db=db)
         self.model.setTable("sales")
@@ -174,17 +174,17 @@ class Ui_lto_database(object):
         self.extract_button.clicked.connect(self.extract_query)
         self.visualize_button.clicked.connect(self.visualize_clicked)
 
-    def retranslateUi(self, lto_database):
+    def retranslateUi(self, sales_database):
         _translate = QtCore.QCoreApplication.translate
-        lto_database.setWindowTitle(_translate("lto_database", "MainWindow"))
-        self.app_title.setText(_translate("lto_database", "Sales Results EURk - Doehler Japan"))
-        self.query_label.setText(_translate("lto_database", "Query Box (SQLite syntax)"))
-        self.visualize_button.setText(_translate("lto_database", "Visualize displayed data"))
-        self.extract_button.setText(_translate("lto_database,", "Extract shown data"))
-        self.update_button.setText(_translate("lto_database", "Update database"))
+        sales_database.setWindowTitle(_translate("sales_database", "MainWindow"))
+        self.app_title.setText(_translate("sales_database", "Sales Results EURk - Doehler Japan"))
+        self.query_label.setText(_translate("sales_database", "Query Box (SQLite syntax)"))
+        self.visualize_button.setText(_translate("sales_database", "Visualize displayed data"))
+        self.extract_button.setText(_translate("sales_database,", "Extract shown data"))
+        self.update_button.setText(_translate("sales_database", "Update database"))
         self.update_label.setText(
-            _translate("lto_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
-        self.tableload_label.setText(_translate("lto_database", "sales table loaded"))
+            _translate("sales_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
+        self.tableload_label.setText(_translate("sales_database", "sales table loaded"))
 
     def update_lto_clicked(self):
         self.SalesResultsUploadWindow = QtWidgets.QMainWindow()
@@ -289,7 +289,7 @@ class Ui_SalesResultsUploadWindow(object):
         self.example_picture = QtWidgets.QLabel(self.centralwidget)
         self.example_picture.setGeometry(QtCore.QRect(0, 360, 1381, 201))
         self.example_picture.setText("")
-        self.example_picture.setPixmap(QtGui.QPixmap("Images/sales_result_example.png"))
+        self.example_picture.setPixmap(QtGui.QPixmap("Images/sales_results_new_example.png"))
         self.example_picture.setObjectName("example_picture")
         self.upload_box = QtWidgets.QGroupBox(self.centralwidget)
         self.upload_box.setGeometry(QtCore.QRect(9, 79, 621, 261))
@@ -532,6 +532,7 @@ class Ui_SalesResultsUploadWindow(object):
         return data_amt[0][0]
 
     def overwrite_month(self):
+
         connect = sqlite3.connect("Databases\\sales.db")
         c = connect.cursor()
         c.execute(f"DELETE FROM sales WHERE month = '{self.month}'")
@@ -553,9 +554,14 @@ class Ui_VisualizeMonth(object):
         self.combo.addItems(["Select Month for visuals", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"])
         self.combo.setStyleSheet("background-color: rgb(174, 217, 167);")
 
+        self.combo2 = QtWidgets.QComboBox()
+        self.combo2.addItems(["Select 'Local' or 'Destination' results", "Local Sales Results", "Destination Sales Results"])
+        self.combo2.setStyleSheet("background-color: rgb(100, 217, 167);")
+
         self.button = QtWidgets.QPushButton("Proceed with visualization")
 
         self.layout.addWidget(self.combo)
+        self.layout.addWidget(self.combo2)
         self.layout.addWidget(self.button)
 
         self.widget = QtWidgets.QWidget()
@@ -568,6 +574,13 @@ class Ui_VisualizeMonth(object):
         if self.combo.currentText() == "Select Month for visuals":
             message = QtWidgets.QMessageBox()
             message.setText("You did not select a month.\n\nPlease select a month.")
+            message.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            message.exec_()
+            return
+
+        if self.combo2.currentText() == "Select 'Local' or 'Destination' results":
+            message = QtWidgets.QMessageBox()
+            message.setText("Please select what sales results should be visualized.\n\nPlease select 'Local' or Destination.")
             message.setStandardButtons(QtWidgets.QMessageBox.Ok)
             message.exec_()
             return
@@ -588,7 +601,7 @@ class Ui_VisualizeMonth(object):
     def show_dashboard(self):
         self.SalesResultsVis = QtWidgets.QMainWindow()
         self.ui = Ui_SalesResultsVis()
-        self.ui.setupUi(self.SalesResultsVis, self.combo.currentText())
+        self.ui.setupUi(self.SalesResultsVis, self.combo.currentText(), self.combo2.currentText())
         self.SalesResultsVis.show()
 
 
@@ -621,8 +634,8 @@ if __name__ == "__main__":
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle("Fusion")
-    lto_database = QtWidgets.QMainWindow()
-    ui = Ui_lto_database()
-    ui.setupUi(lto_database)
-    lto_database.show()
+    sales_database = QtWidgets.QMainWindow()
+    ui = Ui_sales_database()
+    ui.setupUi(sales_database)
+    sales_database.show()
     sys.exit(app.exec_())

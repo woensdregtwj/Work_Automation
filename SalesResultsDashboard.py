@@ -24,8 +24,9 @@ db.open()
 
 
 class Ui_SalesResultsVis(object):
-    def setupUi(self, SalesResultsVis, month):
+    def setupUi(self, SalesResultsVis, month, results_type):
         self.month = month  # Making it global for the methods
+        self.results_type = results_type
 
 
         #self.charts_stylesheet = "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0.329864, y2:0.704091, stop:0 rgba(149, 200, 216, 100), stop:0.926136 rgba(29, 41, 81, 255));"
@@ -475,103 +476,245 @@ class Ui_SalesResultsVis(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(SalesResultsVis)
 
-        # Filling the YTD and MTD tables
-        self.fill_chart_tables("YTD 1",
-                               "SELECT bu1, SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                               "GROUP BY bu1 "
-                               "ORDER BY SUM(cm1) DESC")
-        self.fill_chart_tables("YTD 2",
-                               "SELECT bu2, SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                               "GROUP BY bu2 "
-                               "ORDER BY SUM(cm1) DESC")
-        self.fill_chart_tables("YTD 3",
-                               "SELECT code, company, SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                               "GROUP BY code "
-                               "ORDER BY SUM(cm1) DESC")
+        if self.results_type == "Destination Sales Results":
+            # Filling the YTD and MTD tables
+            self.fill_chart_tables("YTD 1",
+                                   "SELECT bu1, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', "
+                                   "(SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   "GROUP BY bu1 "
+                                   "ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables("YTD 2",
+                                   "SELECT bu2, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', "
+                                   "(SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   "GROUP BY bu2 "
+                                   "ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables("YTD 3",
+                                   "SELECT code, company, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,"
+                                   "d', (SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   "GROUP BY code "
+                                   "ORDER BY SUM(cm1) DESC")
 
-        self.fill_chart_tables(f"MTD 1",
-                               f"SELECT bu1, SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                               f"WHERE month = '{month}'"
-                               f"GROUP BY bu1 "
-                               f"ORDER BY SUM(cm1) DESC")
-        self.fill_chart_tables(f"MTD 2",
-                               f"SELECT bu2, SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                               f"WHERE month = '{month}'"
-                               f"GROUP BY bu2 "
-                               f"ORDER BY SUM(cm1) DESC")
-        self.fill_chart_tables(f"MTD 3",
-                               f"SELECT code, company, SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                               f"WHERE month = '{month}'"
-                               f"GROUP BY code "
-                               f"ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables(f"MTD 1",
+                                   f"SELECT bu1, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                   f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   f"WHERE month = '{month}'"
+                                   f"GROUP BY bu1 "
+                                   f"ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables(f"MTD 2",
+                                   f"SELECT bu2, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                   f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   f"WHERE month = '{month}'"
+                                   f"GROUP BY bu2 "
+                                   f"ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables(f"MTD 3",
+                                   f"SELECT code, company, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), "
+                                   f"printf('%,d', (SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   f"WHERE month = '{month}'"
+                                   f"GROUP BY code "
+                                   f"ORDER BY SUM(cm1) DESC")
 
-        # Filling the YTD and MTD Ranking lists
-        self.fill_ranking_tables("YTD R1", "SELECT code, bu1, bu2, customer, "
-                                           "SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                           "GROUP BY customer, bu1 "
-                                           "ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables("YTD R2", "SELECT code, bu1, bu2, customer, "
-                                           "SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                           "WHERE bu1 = 'PBN Plnt Based Nutr.' "
-                                           "GROUP BY customer "
-                                           "ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables("YTD R3", "SELECT code, bu1, bu2, customer, "
-                                           "SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                           "WHERE bu1 = 'NPI Nat. Perf. Ing.' "
-                                           "GROUP BY customer "
-                                           "ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables("YTD R4", "SELECT code, bu1, bu2, customer, "
-                                           "SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                           "WHERE bu1 = 'ISS Ing. Syst.&Sol.' "
-                                           "GROUP BY customer "
-                                           "ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables("YTD R5", "SELECT code, bu1, bu2, customer, "
-                                           "SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                           "WHERE bu1 = 'Others' "
-                                           "GROUP BY customer "
-                                           "ORDER BY SUM(cm1) DESC")
+            # Filling the YTD and MTD Ranking lists
+            self.fill_ranking_tables("YTD R1", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "GROUP BY customer, bu1 "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R2", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'PBN Plnt Based Nutr.' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R3", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'NPI Nat. Perf. Ing.' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R4", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'ISS Ing. Syst.&Sol.' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R5", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'Others' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
 
-        self.fill_ranking_tables(f"MTD R1", f"SELECT code, bu1, bu2, customer, "
-                                            f"SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                            f"WHERE month = '{month}'"
-                                            f"GROUP BY customer, bu1 "
-                                            f"ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables(f"MTD R2", f"SELECT code, bu1, bu2, customer, "
-                                            f"SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                            f"WHERE bu1 = 'PBN Plnt Based Nutr.' AND month = '{month}' "
-                                            f"GROUP BY customer "
-                                            f"ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables(f"MTD R3", f"SELECT code, bu1, bu2, customer, "
-                                            f"SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                            f"WHERE bu1 = 'NPI Nat. Perf. Ing.' AND month = '{month}' "
-                                            f"GROUP BY customer "
-                                            f"ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables(f"MTD R4", f"SELECT code, bu1, bu2, customer, "
-                                            f"SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                            f"WHERE bu1 = 'ISS Ing. Syst.&Sol.' AND month = '{month}' "
-                                            f"GROUP BY customer "
-                                            f"ORDER BY SUM(cm1) DESC")
-        self.fill_ranking_tables(f"MTD R5", f"SELECT code, bu1, bu2, customer, "
-                                            f"SUM(vol), SUM(ns), SUM(gs), SUM(gm), SUM(cm1) FROM sales "
-                                            f"WHERE bu1 = 'Others' AND month = '{month}' "
-                                            f"GROUP BY customer "
-                                            f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R1", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE month = '{month}'"
+                                                f"GROUP BY customer, bu1 "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R2", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'PBN Plnt Based Nutr.' AND month = '{month}' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R3", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'NPI Nat. Perf. Ing.' AND month = '{month}' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R4", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'ISS Ing. Syst.&Sol.' AND month = '{month}' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R5", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'Others' AND month = '{month}' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
 
-        self.prepare_chart_data("YTD PIE 1", "SELECT bu1, SUM(ns) FROM sales GROUP BY bu1 ORDER BY SUM(ns) DESC")
-        self.prepare_chart_data("YTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales GROUP BY bu1 ORDER BY SUM(cm1) DESC")
-        self.prepare_chart_data("YTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code ORDER BY SUM(ns) DESC")
-        self.prepare_chart_data("YTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code ORDER BY SUM(cm1) DESC")
+            self.prepare_chart_data("YTD PIE 1", "SELECT bu1, SUM(ns) FROM sales GROUP BY bu1 ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("YTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales GROUP BY bu1 ORDER BY SUM(cm1) DESC")
+            self.prepare_chart_data("YTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("YTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code ORDER BY SUM(cm1) DESC")
 
-        self.prepare_bar_chart_data("YTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2 ORDER BY SUM(ns) ASC")
-        self.prepare_bar_chart_data("YTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2 ORDER BY SUM(cm1) ASC")
+            self.prepare_bar_chart_data("YTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2 ORDER BY SUM(ns) ASC")
+            self.prepare_bar_chart_data("YTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2 ORDER BY SUM(cm1) ASC")
 
-        self.prepare_chart_data("MTD PIE 1", "SELECT bu1, SUM(ns) FROM sales GROUP BY bu1 ORDER BY SUM(ns) DESC")
-        self.prepare_chart_data("MTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales GROUP BY bu1 ORDER BY SUM(cm1) DESC")
-        self.prepare_chart_data("MTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code ORDER BY SUM(ns) DESC")
-        self.prepare_chart_data("MTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code ORDER BY SUM(cm1) DESC")
+            self.prepare_chart_data("MTD PIE 1", f"SELECT bu1, SUM(ns) FROM sales WHERE month = '{month}' GROUP BY bu1 ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("MTD PIE 2", f"SELECT bu1, SUM(cm1) FROM sales WHERE month = '{month}' GROUP BY bu1 ORDER BY SUM(cm1) DESC")
+            self.prepare_chart_data("MTD PIE 5", f"SELECT code, SUM(ns) FROM sales WHERE month = '{month}' GROUP BY code ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("MTD PIE 6", f"SELECT code, SUM(cm1) FROM sales WHERE month = '{month}' GROUP BY code ORDER BY SUM(cm1) DESC")
 
-        self.prepare_bar_chart_data("MTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2 ORDER BY SUM(ns) ASC")
-        self.prepare_bar_chart_data("MTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2 ORDER BY SUM(cm1) ASC")
+            self.prepare_bar_chart_data("MTD PIE 3", f"SELECT bu2, SUM(ns) FROM sales WHERE month = '{month}' GROUP BY bu2 ORDER BY SUM(ns) ASC")
+            self.prepare_bar_chart_data("MTD PIE 4", f"SELECT bu2, SUM(cm1) FROM sales WHERE month = '{month}' GROUP BY bu2 ORDER BY SUM(cm1) ASC")
+        elif self.results_type == "Local Sales Results":
+            # Filling the YTD and MTD tables
+            self.fill_chart_tables("YTD 1",
+                                   "SELECT bu1, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', "
+                                   "(SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   "WHERE code = 'JP10' "
+                                   "GROUP BY bu1 "
+                                   "ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables("YTD 2",
+                                   "SELECT bu2, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', "
+                                   "(SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   "WHERE code = 'JP10' "
+                                   "GROUP BY bu2 "
+                                   "ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables("YTD 3",
+                                   "SELECT code, company, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,"
+                                   "d', (SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   "WHERE code = 'JP10'"
+                                   "GROUP BY code "
+                                   "ORDER BY SUM(cm1) DESC")
+
+            self.fill_chart_tables(f"MTD 1",
+                                   f"SELECT bu1, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                   f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   f"WHERE month = '{month}' AND code = 'JP10' "
+                                   f"GROUP BY bu1 "
+                                   f"ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables(f"MTD 2",
+                                   f"SELECT bu2, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                   f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   f"WHERE month = '{month}' AND code = 'JP10' "
+                                   f"GROUP BY bu2 "
+                                   f"ORDER BY SUM(cm1) DESC")
+            self.fill_chart_tables(f"MTD 3",
+                                   f"SELECT code, company, printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), "
+                                   f"printf('%,d', (SUM(gs))), printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                   f"WHERE month = '{month}' AND code = 'JP10' "
+                                   f"GROUP BY code "
+                                   f"ORDER BY SUM(cm1) DESC")
+
+            # Filling the YTD and MTD Ranking lists
+            self.fill_ranking_tables("YTD R1", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE code = 'JP10' "
+                                               "GROUP BY customer, bu1 "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R2", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'PBN Plnt Based Nutr.' AND code = 'JP10' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R3", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'NPI Nat. Perf. Ing.' AND code = 'JP10' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R4", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'ISS Ing. Syst.&Sol.' AND code = 'JP10' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables("YTD R5", "SELECT code, bu1, bu2, customer, "
+                                               "printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                               "printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                               "WHERE bu1 = 'Others' AND code = 'JP10' "
+                                               "GROUP BY customer "
+                                               "ORDER BY SUM(cm1) DESC")
+
+            self.fill_ranking_tables(f"MTD R1", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE month = '{month}' AND code = 'JP10' "
+                                                f"GROUP BY customer, bu1 "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R2", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'PBN Plnt Based Nutr.' AND month = '{month}' AND code = 'JP10' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R3", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'NPI Nat. Perf. Ing.' AND month = '{month}' AND code = 'JP10' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R4", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'ISS Ing. Syst.&Sol.' AND month = '{month}' AND code = 'JP10' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
+            self.fill_ranking_tables(f"MTD R5", f"SELECT code, bu1, bu2, customer, "
+                                                f"printf('%,d', (SUM(vol))), printf('%,d', (SUM(ns))), printf('%,d', (SUM(gs))), "
+                                                f"printf('%,d', (SUM(gm))), printf('%,d', (SUM(cm1))) FROM sales "
+                                                f"WHERE bu1 = 'Others' AND month = '{month}' AND code = 'JP10' "
+                                                f"GROUP BY customer "
+                                                f"ORDER BY SUM(cm1) DESC")
+
+            self.prepare_chart_data("YTD PIE 1", "SELECT bu1, SUM(ns) FROM sales WHERE code = 'JP10' GROUP BY bu1 ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("YTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales WHERE code = 'JP10' GROUP BY bu1 ORDER BY SUM(cm1) DESC")
+            self.prepare_chart_data("YTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("YTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code ORDER BY SUM(cm1) DESC")
+
+            # self.prepare_chart_data("YTD PIE 5", "SELECT code, SUM(ns) FROM sales WHERE code = 'JP10' GROUP BY code ORDER BY SUM(ns) DESC")
+            # self.prepare_chart_data("YTD PIE 6", "SELECT code, SUM(cm1) FROM sales WHERE code = 'JP10' GROUP BY code ORDER BY SUM(cm1) DESC")
+
+            self.prepare_bar_chart_data("YTD PIE 3", "SELECT bu2, SUM(ns) FROM sales WHERE code = 'JP10' GROUP BY bu2 ORDER BY SUM(ns) ASC")
+            self.prepare_bar_chart_data("YTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales WHERE code = 'JP10' GROUP BY bu2 ORDER BY SUM(cm1) ASC")
+
+            self.prepare_chart_data("MTD PIE 1", f"SELECT bu1, SUM(ns) FROM sales WHERE month = '{month}' AND code = 'JP10' GROUP BY bu1 ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("MTD PIE 2", f"SELECT bu1, SUM(cm1) FROM sales WHERE month = '{month}' AND code = 'JP10' GROUP BY bu1 ORDER BY SUM(cm1) DESC")
+            self.prepare_chart_data("MTD PIE 5", f"SELECT code, SUM(ns) FROM sales WHERE month = '{month}' GROUP BY code ORDER BY SUM(ns) DESC")
+            self.prepare_chart_data("MTD PIE 6", f"SELECT code, SUM(cm1) FROM sales WHERE month = '{month}' GROUP BY code ORDER BY SUM(cm1) DESC")
+
+
+            # self.prepare_chart_data("MTD PIE 5", f"SELECT code, SUM(ns) FROM sales WHERE month = '{month}' AND code = 'JP10' GROUP BY code ORDER BY SUM(ns) DESC")
+            # self.prepare_chart_data("MTD PIE 6", f"SELECT code, SUM(cm1) FROM sales WHERE month = '{month}' AND code = 'JP10' GROUP BY code ORDER BY SUM(cm1) DESC")
+
+            self.prepare_bar_chart_data("MTD PIE 3", f"SELECT bu2, SUM(ns) FROM sales WHERE month = '{month}' AND code = 'JP10' GROUP BY bu2 ORDER BY SUM(ns) ASC")
+            self.prepare_bar_chart_data("MTD PIE 4", f"SELECT bu2, SUM(cm1) FROM sales WHERE month = '{month}' AND code = 'JP10' GROUP BY bu2 ORDER BY SUM(cm1) ASC")
 
     def retranslateUi(self, SalesResultsVis):
         _translate = QtCore.QCoreApplication.translate
@@ -644,6 +787,7 @@ class Ui_SalesResultsVis(object):
             scale_to_tableframe = assign_tables[table_push].horizontalHeader()
             scale_to_tableframe.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
             scale_to_tableframe.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+            scale_to_tableframe.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
 
     def fill_ranking_tables(self, table_push, query_push):
         assign_tables = {"YTD R1": self.ytd_top_table, "YTD R2": self.ytd_top_bu1_table,
@@ -675,9 +819,9 @@ class Ui_SalesResultsVis(object):
 
         assign_tables[table_push].setModel(self.model)
         scale_to_tableframe = assign_tables[table_push].horizontalHeader()
-        for column in [0, 5, 6, 7, 8]:
+        for column in [0, 4, 5, 6, 7, 8]:
             scale_to_tableframe.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeToContents)
-        scale_to_tableframe.setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
+        #scale_to_tableframe.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
     def prepare_chart_data(self, chart_push, query_push):
         assign_charts = {"YTD PIE 1": self.ytd_b2b1_chart1, "YTD PIE 2": self.ytd_b2b1_chart2,
@@ -798,6 +942,6 @@ if __name__ == "__main__":
     app.setStyle("Fusion")
     SalesResultsVis = QtWidgets.QMainWindow()
     ui = Ui_SalesResultsVis()
-    ui.setupUi(SalesResultsVis, '07')
+    ui.setupUi(SalesResultsVis)
     SalesResultsVis.show()
     sys.exit(app.exec_())

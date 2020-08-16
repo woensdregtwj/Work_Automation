@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from SalesForecastUpdate import *
 from SalesForecastUpdateEOM import *
+from SalesResultsAnalysis import *
 from SendForecast import *
 from LTODateFormatting import *
 from ltoAnalysis import *
@@ -20,6 +21,12 @@ import datetime
 import webbrowser
 
 class Ui_Doehler_title(object):
+    def sales_visuals_pushed(self):
+        self.sales_database = QtWidgets.QMainWindow()
+        self.ui = Ui_sales_database()
+        self.ui.setupUi(self.sales_database)
+        self.sales_database.show()
+
 
     def lto_analysis_pushed(self):
         self.lto_database = QtWidgets.QMainWindow()
@@ -360,6 +367,7 @@ class Ui_Doehler_title(object):
         self.legal_button.clicked.connect(self.local_fc_analysis_pushed)
         self.bwaging_button.clicked.connect(self.aging_upload_pushed)
         self.lto_button.clicked.connect(self.lto_analysis_pushed)
+        self.sforecast_visuals_button.clicked.connect(self.sales_visuals_pushed)
 
         self.pushButton_13.clicked.connect(self.lto_date_convert_pushed)
 

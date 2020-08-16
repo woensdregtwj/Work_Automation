@@ -1,6 +1,7 @@
 import openpyxl as pyxl
 from openpyxl.utils import get_column_letter
 import sqlite3
+import math
 
 
 # TODO - Create a test for checking whether the template is okay
@@ -13,19 +14,18 @@ def UpdateSalesResultsTest(workbook, month):
     headers_location = {}
 
     # Testing empty cells at headers
-    for row in range(1, 3):  # Testing row 1 and 2
-        for c in range(1, 8):
-            column_letter = get_column_letter(c)
-            if ws.cell(row=row, column=c).value:
-                print(f"TEST FAILED 1 - cell is supposed to be empty at '{column_letter}{row}'")
-                return f"Header failed - cell is supposed to be empty at '{column_letter}{row}'"
-    print("Succesfully passed test 1 - Empty cells are empty in A1:G2")
+    for c in range(1, 8):
+        column_letter = get_column_letter(c)
+        if ws.cell(row=1, column=c).value:
+            print(f"TEST FAILED 1 - cell is supposed to be empty at '{column_letter}1'")
+            return f"Header failed - cell is supposed to be empty at '{column_letter}1'"
+    print("Succesfully passed test 1 - Empty cells are empty in A1:G1")
 
     # Testing Column headers data
     for c in range(8, 13):
         header = ws.cell(row=1, column=c).value
         report_date = ws.cell(row=2, column=c).value
-        num_format = ws.cell(row=3, column=c).value
+        #num_format = ws.cell(row=3, column=c).value
         column_letter = get_column_letter(c)
 
         if header not in headers:
@@ -39,9 +39,9 @@ def UpdateSalesResultsTest(workbook, month):
                    f"Month in file shows '{report_date}', while month header should be '{month}.YYYY'.\n\n" \
                    f"Please select the correct month from the upload window."
 
-        if num_format != "* 1.000 ":
-            print(f"TEST FAILED 2 - number format is not in *1.000 '{column_letter}3'")
-            return f"Header 2 failed - number format is not in *1.000 at '{column_letter}3'."
+        # if num_format != "* 1.000 ":
+        #     print(f"TEST FAILED 2 - number format is not in *1.000 '{column_letter}3'")
+        #     return f"Header 2 failed - number format is not in *1.000 at '{column_letter}3'."
 
         # Headers are OKAY, we save the header locations for writing to the database
         headers_location.setdefault(header, c)
@@ -52,13 +52,18 @@ def UpdateSalesResultsTest(workbook, month):
     # Testing Column headers data 2
     for index, value in enumerate(headers2):
         column_letter = get_column_letter(index+1)
-        if value != ws.cell(row=3, column=index+1).value:
+        if value != ws.cell(row=2, column=index+1).value:
             print(f"TEST FAILED 3 - Wrong header title at row 3 column {index+1}")
-            return f"Header 3 failed - Wrong header title at '{column_letter}3'. Please be sure to have the order of " \
+            return f"Header 3 failed - Wrong header title at '{column_letter}2'. Please be sure to have the order of " \
                    f"the headers the same as shown as in the example image."
     print("Succesfully passed test 3. Testing has been finalized!")
 
     return headers_location  # Dictionary with the column numbers will be used for grabbing data for the database
+
+def finance_rounding(value):
+    if value - math.floor(value) < 0.5:
+        return math.floor(value)
+    return math.ceil(value)
 
 # TODO - Create a new database if not exist.
 # Columns: Month, Company code, Company Name, Customer, B2B 1, B2B 2, Material, Material name, Volume, NS, GS, GM, CM1
@@ -79,7 +84,7 @@ def create_sales_db(workbook, month, column_dict):
     print("reading into workbook and worksheet")
 
     lines_added = 0
-    for cell in range(4, ws.max_row + 1):
+    for cell in range(3, ws.max_row + 1):
         # Skipping over the sub-sum "Result" rows in the sheet. They add no value to the db
         if ws.cell(row=cell, column=3).value == "Result" or ws.cell(row=cell, column=4).value == "Result":
             continue
@@ -108,11 +113,11 @@ def create_sales_db(workbook, month, column_dict):
         materialid = ws.cell(row=cell, column=6).value
         material = ws.cell(row=cell, column=7).value
 
-        vol = int(ws.cell(row=cell, column=column_dict["SALES VOLUME"]).value)
-        ns = int(ws.cell(row=cell, column=column_dict["NET SALES ex works"]).value)
-        gs = int(ws.cell(row=cell, column=column_dict["GROSS SALES"]).value)
-        gm = int(ws.cell(row=cell, column=column_dict["Standard GM"]).value)
-        cm1 = int(ws.cell(row=cell, column=column_dict["Standard CM1"]).value)
+        vol = finance_rounding(ws.cell(row=cell, column=column_dict["SALES VOLUME"]).value)
+        ns = finance_rounding(ws.cell(row=cell, column=column_dict["NET SALES ex works"]).value)
+        gs = finance_rounding(ws.cell(row=cell, column=column_dict["GROSS SALES"]).value)
+        gm = finance_rounding(ws.cell(row=cell, column=column_dict["Standard GM"]).value)
+        cm1 = finance_rounding(ws.cell(row=cell, column=column_dict["Standard CM1"]).value)
 
         # Writing the data to the database
         data_write = [month, code, company, customer, bu1, bu2, materialid, material, vol, ns, gs, gm, cm1]
