@@ -25,6 +25,14 @@ db.open()
 
 class Ui_SalesResultsVis(object):
     def setupUi(self, SalesResultsVis, month):
+        self.month = month  # Making it global for the methods
+
+
+        #self.charts_stylesheet = "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0.329864, y2:0.704091, stop:0 rgba(149, 200, 216, 100), stop:0.926136 rgba(29, 41, 81, 255));"
+        self.charts_stylesheet = "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0.329864, y2:0.704091, stop:0 rgba(14, 77, 146, 100), stop:0.926136 rgba(14, 77, 146, 150));"
+        self.charts_frame_stylesheet = "background-color: rgb(210, 210, 210); color: rgb(19, 55, 90);"
+
+
         SalesResultsVis.setObjectName("SalesResultsVis")
         SalesResultsVis.resize(1876, 955)
         SalesResultsVis.setStyleSheet("background-color: rgba(0, 35, 72, 255);")
@@ -42,7 +50,7 @@ class Ui_SalesResultsVis(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.ytd_frame = QtWidgets.QFrame(self.tab_2)
-        self.ytd_frame.setGeometry(QtCore.QRect(0, 0, 1861, 905))
+        self.ytd_frame.setGeometry(QtCore.QRect(0, 0, 1920, 1080))
         self.ytd_frame.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0.329864, y2:0.704091, stop:0 rgba(255, 255, 255, 100), stop:0.926136 rgba(0, 35, 72, 255));")
         self.ytd_frame.setObjectName("ytd_frame")
@@ -51,7 +59,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.ytd_le_frame2.setFont(font)
-        self.ytd_le_frame2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.ytd_le_frame2.setStyleSheet("background-color: rgb(210, 210, 210); color: rgb(19, 55, 90);")
         self.ytd_le_frame2.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.ytd_le_frame2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.ytd_le_frame2.setLineWidth(10)
@@ -65,7 +73,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.ytd_le_frame1.setFont(font)
-        self.ytd_le_frame1.setStyleSheet("color: rgb(255, 255, 255);")
+        self.ytd_le_frame1.setStyleSheet(self.charts_frame_stylesheet)
         self.ytd_le_frame1.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.ytd_le_frame1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.ytd_le_frame1.setLineWidth(10)
@@ -79,7 +87,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.ytd_b2b2_frame1.setFont(font)
-        self.ytd_b2b2_frame1.setStyleSheet("color: rgb(255, 255, 255);")
+        self.ytd_b2b2_frame1.setStyleSheet(self.charts_frame_stylesheet)
         self.ytd_b2b2_frame1.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.ytd_b2b2_frame1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.ytd_b2b2_frame1.setLineWidth(10)
@@ -93,7 +101,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.ytd_b2b2_frame2.setFont(font)
-        self.ytd_b2b2_frame2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.ytd_b2b2_frame2.setStyleSheet(self.charts_frame_stylesheet)
         self.ytd_b2b2_frame2.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.ytd_b2b2_frame2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.ytd_b2b2_frame2.setLineWidth(10)
@@ -107,7 +115,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.ytd_b2b1_frame2.setFont(font)
-        self.ytd_b2b1_frame2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.ytd_b2b1_frame2.setStyleSheet(self.charts_frame_stylesheet)
         self.ytd_b2b1_frame2.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.ytd_b2b1_frame2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.ytd_b2b1_frame2.setLineWidth(10)
@@ -121,7 +129,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.ytd_b2b1_frame1.setFont(font)
-        self.ytd_b2b1_frame1.setStyleSheet("color: rgb(255, 255, 255);")
+        self.ytd_b2b1_frame1.setStyleSheet(self.charts_frame_stylesheet)
         self.ytd_b2b1_frame1.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.ytd_b2b1_frame1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.ytd_b2b1_frame1.setLineWidth(10)
@@ -132,13 +140,16 @@ class Ui_SalesResultsVis(object):
         self.ytd_b2b1_chart1.setObjectName("ytd_b2b1_chart1")
         self.ytd_b2b1_table = QtWidgets.QTableView(self.ytd_frame)
         self.ytd_b2b1_table.setGeometry(QtCore.QRect(1230, 90, 591, 221))
+        self.ytd_b2b1_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_b2b1_table.setObjectName("ytd_b2b1_table")
         self.ytd_b2b2_table = QtWidgets.QTableView(self.ytd_frame)
         self.ytd_b2b2_table.setGeometry(QtCore.QRect(1230, 370, 591, 221))
         self.ytd_b2b2_table.setObjectName("ytd_b2b2_table")
+        self.ytd_b2b2_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_le_table = QtWidgets.QTableView(self.ytd_frame)
         self.ytd_le_table.setGeometry(QtCore.QRect(1230, 650, 591, 221))
         self.ytd_le_table.setObjectName("ytd_le_table")
+        self.ytd_le_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_b2b_label1 = QtWidgets.QLabel(self.ytd_frame)
         self.ytd_b2b_label1.setGeometry(QtCore.QRect(1230, 40, 590, 51))
         self.ytd_b2b_label1.setStyleSheet("background-color: rgba(230, 230, 230, 30); color: rgb(255, 255, 255);")
@@ -167,10 +178,22 @@ class Ui_SalesResultsVis(object):
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
         self.ytd_top_frame = QtWidgets.QFrame(self.tab_5)
-        self.ytd_top_frame.setGeometry(QtCore.QRect(0, 0, 1861, 905))
+        self.ytd_top_frame.setGeometry(QtCore.QRect(0, 0, 1920, 1080))
         self.ytd_top_frame.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0.329864, y2:0.704091, stop:0 rgba(255, 255, 255, 100), stop:0.926136 rgba(0, 35, 72, 255));")
         self.ytd_top_frame.setObjectName("ytd_top_frame")
+
+        self.ytd_top_order_label = QtWidgets.QLabel(self.ytd_top_frame)
+        self.ytd_top_order_label.setGeometry(QtCore.QRect(660, 440, 1191, 31))
+        self.ytd_top_order_label.setStyleSheet("background-color: rgba(230, 230, 230, 30); color: rgb(255, 255, 255);")
+        self.ytd_top_order_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.ytd_top_order_label.setFont(font)
+        self.ytd_top_order_label.setObjectName("ytd_top_order_label")
+
+
+
         self.ytd_top_bu2_label = QtWidgets.QLabel(self.ytd_top_frame)
         self.ytd_top_bu2_label.setGeometry(QtCore.QRect(1260, 40, 590, 41))
         self.ytd_top_bu2_label.setStyleSheet("background-color: rgba(230, 230, 230, 30); color: rgb(255, 255, 255);")
@@ -197,12 +220,15 @@ class Ui_SalesResultsVis(object):
         self.ytd_top_label.setObjectName("ytd_top_label")
         self.ytd_top_bu2_table = QtWidgets.QTableView(self.ytd_top_frame)
         self.ytd_top_bu2_table.setGeometry(QtCore.QRect(1260, 80, 591, 341))
+        self.ytd_top_bu2_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_top_bu2_table.setObjectName("ytd_top_bu2_table")
         self.ytd_top_bu1_table = QtWidgets.QTableView(self.ytd_top_frame)
         self.ytd_top_bu1_table.setGeometry(QtCore.QRect(660, 80, 591, 341))
+        self.ytd_top_bu1_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_top_bu1_table.setObjectName("ytd_top_bu1_table")
         self.ytd_top_table = QtWidgets.QTableView(self.ytd_top_frame)
         self.ytd_top_table.setGeometry(QtCore.QRect(20, 50, 591, 821))
+        self.ytd_top_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_top_table.setObjectName("ytd_top_table")
         self.ytd_top_bu4_label = QtWidgets.QLabel(self.ytd_top_frame)
         self.ytd_top_bu4_label.setGeometry(QtCore.QRect(1260, 490, 590, 41))
@@ -214,6 +240,7 @@ class Ui_SalesResultsVis(object):
         self.ytd_top_bu4_label.setObjectName("ytd_top_bu4_label")
         self.ytd_top_bu3_table = QtWidgets.QTableView(self.ytd_top_frame)
         self.ytd_top_bu3_table.setGeometry(QtCore.QRect(660, 530, 591, 341))
+        self.ytd_top_bu3_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_top_bu3_table.setObjectName("ytd_top_bu3_table")
         self.ytd_top_bu3_label = QtWidgets.QLabel(self.ytd_top_frame)
         self.ytd_top_bu3_label.setGeometry(QtCore.QRect(660, 490, 590, 41))
@@ -225,12 +252,13 @@ class Ui_SalesResultsVis(object):
         self.ytd_top_bu3_label.setObjectName("ytd_top_bu3_label")
         self.ytd_top_bu4_table = QtWidgets.QTableView(self.ytd_top_frame)
         self.ytd_top_bu4_table.setGeometry(QtCore.QRect(1260, 530, 591, 341))
+        self.ytd_top_bu4_table.setStyleSheet(self.charts_stylesheet)
         self.ytd_top_bu4_table.setObjectName("ytd_top_bu4_table")
         self.tabWidget.addTab(self.tab_5, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.mtd_frame = QtWidgets.QFrame(self.tab_3)
-        self.mtd_frame.setGeometry(QtCore.QRect(0, 0, 1861, 905))
+        self.mtd_frame.setGeometry(QtCore.QRect(0, 0, 1920, 1080))
         self.mtd_frame.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0.329864, y2:0.704091, stop:0 rgba(255, 255, 255, 100), stop:0.926136 rgba(0, 35, 72, 255));")
         self.mtd_frame.setObjectName("mtd_frame")
@@ -239,7 +267,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.mtd_le_frame2.setFont(font)
-        self.mtd_le_frame2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.mtd_le_frame2.setStyleSheet(self.charts_frame_stylesheet)
         self.mtd_le_frame2.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.mtd_le_frame2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.mtd_le_frame2.setLineWidth(10)
@@ -253,7 +281,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.mtd_le_frame1.setFont(font)
-        self.mtd_le_frame1.setStyleSheet("color: rgb(255, 255, 255);")
+        self.mtd_le_frame1.setStyleSheet(self.charts_frame_stylesheet)
         self.mtd_le_frame1.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.mtd_le_frame1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.mtd_le_frame1.setLineWidth(10)
@@ -267,7 +295,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.mtd_b2b2_frame1.setFont(font)
-        self.mtd_b2b2_frame1.setStyleSheet("color: rgb(255, 255, 255);")
+        self.mtd_b2b2_frame1.setStyleSheet(self.charts_frame_stylesheet)
         self.mtd_b2b2_frame1.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.mtd_b2b2_frame1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.mtd_b2b2_frame1.setLineWidth(10)
@@ -281,7 +309,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.mtd_b2b2_frame2.setFont(font)
-        self.mtd_b2b2_frame2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.mtd_b2b2_frame2.setStyleSheet(self.charts_frame_stylesheet)
         self.mtd_b2b2_frame2.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.mtd_b2b2_frame2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.mtd_b2b2_frame2.setLineWidth(10)
@@ -295,7 +323,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.mtd_b2b1_frame2.setFont(font)
-        self.mtd_b2b1_frame2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.mtd_b2b1_frame2.setStyleSheet(self.charts_frame_stylesheet)
         self.mtd_b2b1_frame2.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.mtd_b2b1_frame2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.mtd_b2b1_frame2.setLineWidth(10)
@@ -309,7 +337,7 @@ class Ui_SalesResultsVis(object):
         font = QtGui.QFont()
         font.setPixelSize(29)
         self.mtd_b2b1_frame1.setFont(font)
-        self.mtd_b2b1_frame1.setStyleSheet("color: rgb(255, 255, 255);")
+        self.mtd_b2b1_frame1.setStyleSheet(self.charts_frame_stylesheet)
         self.mtd_b2b1_frame1.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.mtd_b2b1_frame1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.mtd_b2b1_frame1.setLineWidth(10)
@@ -344,21 +372,34 @@ class Ui_SalesResultsVis(object):
         self.mtd_b2b_label1.setObjectName("mtd_b2b_label1")
         self.mtd_le_table = QtWidgets.QTableView(self.mtd_frame)
         self.mtd_le_table.setGeometry(QtCore.QRect(1230, 650, 591, 221))
+        self.mtd_le_table.setStyleSheet(self.charts_stylesheet)
         self.mtd_le_table.setObjectName("mtd_le_table")
         self.mtd_b2b_table2 = QtWidgets.QTableView(self.mtd_frame)
         self.mtd_b2b_table2.setGeometry(QtCore.QRect(1230, 370, 591, 221))
+        self.mtd_b2b_table2.setStyleSheet(self.charts_stylesheet)
         self.mtd_b2b_table2.setObjectName("mtd_b2b_table2")
         self.mtd_b2b_table1 = QtWidgets.QTableView(self.mtd_frame)
         self.mtd_b2b_table1.setGeometry(QtCore.QRect(1230, 90, 591, 221))
+        self.mtd_b2b_table1.setStyleSheet(self.charts_stylesheet)
         self.mtd_b2b_table1.setObjectName("mtd_b2b_table1")
         self.tabWidget.addTab(self.tab_3, "")
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.mtd_top_frame = QtWidgets.QFrame(self.tab_4)
-        self.mtd_top_frame.setGeometry(QtCore.QRect(0, 0, 1861, 905))
+        self.mtd_top_frame.setGeometry(QtCore.QRect(0, 0, 1920, 1080))
         self.mtd_top_frame.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0.329864, y2:0.704091, stop:0 rgba(255, 255, 255, 100), stop:0.926136 rgba(0, 35, 72, 255));")
         self.mtd_top_frame.setObjectName("mtd_top_frame")
+
+        self.mtd_top_order_label = QtWidgets.QLabel(self.mtd_top_frame)
+        self.mtd_top_order_label.setGeometry(QtCore.QRect(660, 440, 1191, 31))
+        self.mtd_top_order_label.setStyleSheet("background-color: rgba(230, 230, 230, 30); color: rgb(255, 255, 255);")
+        self.mtd_top_order_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+        font = QtGui.QFont()
+        font.setPixelSize(22)
+        self.mtd_top_order_label.setFont(font)
+        self.mtd_top_order_label.setObjectName("mtd_top_order_label")
+
         self.mtd_top_bu2_label = QtWidgets.QLabel(self.mtd_top_frame)
         self.mtd_top_bu2_label.setGeometry(QtCore.QRect(1260, 40, 590, 41))
         self.mtd_top_bu2_label.setStyleSheet("background-color: rgba(230, 230, 230, 30); color: rgb(255, 255, 255);")
@@ -385,12 +426,15 @@ class Ui_SalesResultsVis(object):
         self.mtd_top_label.setObjectName("mtd_top_label")
         self.mtd_top_bu2_table = QtWidgets.QTableView(self.mtd_top_frame)
         self.mtd_top_bu2_table.setGeometry(QtCore.QRect(1260, 80, 591, 341))
+        self.mtd_top_bu2_table.setStyleSheet(self.charts_stylesheet)
         self.mtd_top_bu2_table.setObjectName("mtd_top_bu2_table")
         self.mtd_top_bu1_table = QtWidgets.QTableView(self.mtd_top_frame)
         self.mtd_top_bu1_table.setGeometry(QtCore.QRect(660, 80, 591, 341))
+        self.mtd_top_bu1_table.setStyleSheet(self.charts_stylesheet)
         self.mtd_top_bu1_table.setObjectName("mtd_top_bu1_table")
         self.mtd_top_table = QtWidgets.QTableView(self.mtd_top_frame)
         self.mtd_top_table.setGeometry(QtCore.QRect(20, 50, 591, 821))
+        self.mtd_top_table.setStyleSheet(self.charts_stylesheet)
         self.mtd_top_table.setObjectName("mtd_top_table")
         self.mtd_top_bu4_label = QtWidgets.QLabel(self.mtd_top_frame)
         self.mtd_top_bu4_label.setGeometry(QtCore.QRect(1260, 490, 590, 41))
@@ -402,6 +446,7 @@ class Ui_SalesResultsVis(object):
         self.mtd_top_bu4_label.setObjectName("mtd_top_bu4_label")
         self.mtd_top_bu3_table = QtWidgets.QTableView(self.mtd_top_frame)
         self.mtd_top_bu3_table.setGeometry(QtCore.QRect(660, 530, 591, 341))
+        self.mtd_top_bu3_table.setStyleSheet(self.charts_stylesheet)
         self.mtd_top_bu3_table.setObjectName("mtd_top_bu3_table")
         self.mtd_top_bu3_label = QtWidgets.QLabel(self.mtd_top_frame)
         self.mtd_top_bu3_label.setGeometry(QtCore.QRect(660, 490, 590, 41))
@@ -413,6 +458,7 @@ class Ui_SalesResultsVis(object):
         self.mtd_top_bu3_label.setObjectName("mtd_top_bu3_label")
         self.mtd_top_bu4_table = QtWidgets.QTableView(self.mtd_top_frame)
         self.mtd_top_bu4_table.setGeometry(QtCore.QRect(1260, 530, 591, 341))
+        self.mtd_top_bu4_table.setStyleSheet(self.charts_stylesheet)
         self.mtd_top_bu4_table.setObjectName("mtd_top_bu4_table")
         self.tabWidget.addTab(self.tab_4, "")
         self.verticalLayout.addWidget(self.tabWidget)
@@ -511,39 +557,47 @@ class Ui_SalesResultsVis(object):
                                             f"GROUP BY customer "
                                             f"ORDER BY SUM(cm1) DESC")
 
-        self.prepare_chart_data("YTD PIE 1", "SELECT bu1, SUM(ns) FROM sales GROUP BY bu1")
-        self.prepare_chart_data("YTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales GROUP BY bu1")
-        # self.prepare_chart_data("YTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2")
-        # self.prepare_chart_data("YTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2")
-        self.prepare_chart_data("YTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code")
-        self.prepare_chart_data("YTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code")
+        self.prepare_chart_data("YTD PIE 1", "SELECT bu1, SUM(ns) FROM sales GROUP BY bu1 ORDER BY SUM(ns) DESC")
+        self.prepare_chart_data("YTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales GROUP BY bu1 ORDER BY SUM(cm1) DESC")
+        self.prepare_chart_data("YTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code ORDER BY SUM(ns) DESC")
+        self.prepare_chart_data("YTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code ORDER BY SUM(cm1) DESC")
 
         self.prepare_bar_chart_data("YTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2 ORDER BY SUM(ns) ASC")
         self.prepare_bar_chart_data("YTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2 ORDER BY SUM(cm1) ASC")
 
+        self.prepare_chart_data("MTD PIE 1", "SELECT bu1, SUM(ns) FROM sales GROUP BY bu1 ORDER BY SUM(ns) DESC")
+        self.prepare_chart_data("MTD PIE 2", "SELECT bu1, SUM(cm1) FROM sales GROUP BY bu1 ORDER BY SUM(cm1) DESC")
+        self.prepare_chart_data("MTD PIE 5", "SELECT code, SUM(ns) FROM sales GROUP BY code ORDER BY SUM(ns) DESC")
+        self.prepare_chart_data("MTD PIE 6", "SELECT code, SUM(cm1) FROM sales GROUP BY code ORDER BY SUM(cm1) DESC")
+
+        self.prepare_bar_chart_data("MTD PIE 3", "SELECT bu2, SUM(ns) FROM sales GROUP BY bu2 ORDER BY SUM(ns) ASC")
+        self.prepare_bar_chart_data("MTD PIE 4", "SELECT bu2, SUM(cm1) FROM sales GROUP BY bu2 ORDER BY SUM(cm1) ASC")
+
     def retranslateUi(self, SalesResultsVis):
         _translate = QtCore.QCoreApplication.translate
         SalesResultsVis.setWindowTitle(_translate("SalesResultsVis", "MainWindow"))
+        self.ytd_top_order_label.setText(_translate("SalesResultsVis", "All rankings are ordered by CM1"))
         self.ytd_b2b_label1.setText(_translate("SalesResultsVis", "YTD B2B Level 1"))
         self.ytd_b2b_label2.setText(_translate("SalesResultsVis", "YTD B2B Level 2"))
         self.ytd_le_label.setText(_translate("SalesResultsVis", "YTD Local/Destination comparison"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("SalesResultsVis", "YTD"))
-        self.ytd_top_bu2_label.setText(_translate("SalesResultsVis", "YTD Top 5 - BU 2"))
-        self.ytd_top_bu1_label.setText(_translate("SalesResultsVis", "YTD Top 5 - BU 1"))
+        self.ytd_top_bu2_label.setText(_translate("SalesResultsVis", "YTD Top ranking - NPI"))
+        self.ytd_top_bu1_label.setText(_translate("SalesResultsVis", "YTD Top ranking - PBN"))
         self.ytd_top_label.setText(_translate("SalesResultsVis", "Top ranking all Business Units YTD"))
-        self.ytd_top_bu4_label.setText(_translate("SalesResultsVis", "YTD Top 5 - BU 4"))
-        self.ytd_top_bu3_label.setText(_translate("SalesResultsVis", "YTD Top 5 - BU 3"))
+        self.ytd_top_bu4_label.setText(_translate("SalesResultsVis", "YTD Top ranking - Others"))
+        self.ytd_top_bu3_label.setText(_translate("SalesResultsVis", "YTD Top ranking - ISS"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5),
                                   _translate("SalesResultsVis", "YTD - Top Performers"))
-        self.mtd_le_label.setText(_translate("SalesResultsVis", "MTD Local/Destination comparison"))
-        self.mtd_b2b_label2.setText(_translate("SalesResultsVis", "MTD B2B Level 2"))
-        self.mtd_b2b_label1.setText(_translate("SalesResultsVis", "MTD B2B Level 1"))
+        self.mtd_top_order_label.setText(_translate("SalesResultsVis", "All rankings are ordered by CM1"))
+        self.mtd_le_label.setText(_translate("SalesResultsVis", f"Month {self.month} - Local/Destination comparison"))
+        self.mtd_b2b_label2.setText(_translate("SalesResultsVis", f"Month {self.month} - B2B Level 2"))
+        self.mtd_b2b_label1.setText(_translate("SalesResultsVis", f"Month {self.month} - B2B Level 1"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("SalesResultsVis", "MTD"))
-        self.mtd_top_bu2_label.setText(_translate("SalesResultsVis", "MTD Top 5 - BU 2"))
-        self.mtd_top_bu1_label.setText(_translate("SalesResultsVis", "MTD Top 5 - BU 1"))
-        self.mtd_top_label.setText(_translate("SalesResultsVis", "Top ranking all Business Units MTD"))
-        self.mtd_top_bu4_label.setText(_translate("SalesResultsVis", "MTD Top 5 - BU 4"))
-        self.mtd_top_bu3_label.setText(_translate("SalesResultsVis", "MTD Top 5 - BU 3"))
+        self.mtd_top_bu2_label.setText(_translate("SalesResultsVis", f"Month {self.month} - Top ranking - NPI"))
+        self.mtd_top_bu1_label.setText(_translate("SalesResultsVis", f"Month {self.month} - ranking - PBN"))
+        self.mtd_top_label.setText(_translate("SalesResultsVis", f"Top ranking all Business Units - Month {self.month}"))
+        self.mtd_top_bu4_label.setText(_translate("SalesResultsVis", f"Month {self.month} - Top ranking - Others"))
+        self.mtd_top_bu3_label.setText(_translate("SalesResultsVis", f"Month {self.month} - Top ranking - ISS"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4),
                                   _translate("SalesResultsVis", "MTD - Top Performers"))
 
@@ -628,7 +682,19 @@ class Ui_SalesResultsVis(object):
     def prepare_chart_data(self, chart_push, query_push):
         assign_charts = {"YTD PIE 1": self.ytd_b2b1_chart1, "YTD PIE 2": self.ytd_b2b1_chart2,
                          "YTD PIE 3": self.ytd_b2b2_chart1, "YTD PIE 4": self.ytd_b2b2_chart2,
-                         "YTD PIE 5": self.ytd_le_chart1, "YTD PIE 6": self.ytd_le_chart2}
+                         "YTD PIE 5": self.ytd_le_chart1, "YTD PIE 6": self.ytd_le_chart2,
+
+                         "MTD PIE 1": self.mtd_b2b1_chart1, "MTD PIE 2": self.mtd_b2b1_chart2,
+                         "MTD PIE 3": self.mtd_b2b2_chart1, "MTD PIE 4": self.mtd_b2b2_chart2,
+                         "MTD PIE 5": self.mtd_le_chart1, "MTD PIE 6": self.mtd_le_chart2}
+
+        assign_titles = {"YTD PIE 1": "Net Sales B2B Level 1 - YTD", "YTD PIE 2": "CM1 B2B Level 1 - YTD",
+                         "YTD PIE 3": "Net Sales B2B Level 2 - YTD", "YTD PIE 4": "CM1 B2B Level 2- YTD",
+                         "YTD PIE 5": "Net Sales Legal Entity - YTD", "YTD PIE 6": "CM1 Legal Entity - YTD",
+
+                         "MTD PIE 1": "Net Sales B2B Level 1 - MTD", "MTD PIE 2": "CM1 B2B Level 1 - MTD",
+                         "MTD PIE 3": "Net Sales B2B Level 2 - MTD", "MTD PIE 4": "CM1 B2B Level 2 - MTD",
+                         "MTD PIE 5": "Net Sales Legal Entity - MTD", "MTD PIE 6": "CM1 Legal Entity - MTD"}
 
 
         connect = sqlite3.connect("Databases\\sales.db")
@@ -637,8 +703,22 @@ class Ui_SalesResultsVis(object):
         c.execute(query_push)
         data = c.fetchall()
 
-        chart_labels = [i for i in data for i in i if isinstance(i, str)]  # A list in list, so we need nested comprehension
+        chart_labels_legend = [i for i in data for i in i if isinstance(i, str)]  # A list in list, so we need nested comprehension
         chart_data = [i for i in data for i in i if isinstance(i, int)]
+
+        summed_data = 0
+        for amt in chart_data:
+            summed_data += amt
+        percentages = [round(float(p / summed_data * 100), 1) for p in chart_data]
+
+        if "JP10" in chart_labels_legend:  # for the LE pie chart, we only want to show JP10 in the chart
+            chart_labels_chart = ["" if i != "JP10" else "JP10" for i in chart_labels_legend]
+        else:
+            chart_labels_chart = chart_labels_legend
+
+        chart_labels_legend = ['%s, %1.1f %%' % (l, s) for l, s in zip(chart_labels_legend, percentages)]
+
+
 
         for index, value in enumerate(chart_data):  # Cant put minus values in a pie. Just put to 0
             if value < 0:
@@ -648,18 +728,23 @@ class Ui_SalesResultsVis(object):
         chart_canvas = FigureCanvasQTAgg(chart_figure)
         chart_final = chart_figure.add_subplot(111)
 
-        chart_final.pie(chart_data, labels=chart_labels, startangle=30)
+        chart_final.pie(chart_data, labels=chart_labels_chart, startangle=180, autopct=self.autopct)
 
-        chart_final.legend(loc="upper left", bbox_to_anchor=(-1.4, 1.1), fontsize=8)
+        chart_final.set_title(label=assign_titles[chart_push], fontsize=16)
+        chart_final.legend(labels=chart_labels_legend, loc="upper left", bbox_to_anchor=(-1.65, 1.25), fontsize=8)
+        chart_figure.patch.set_facecolor("#E6E6E6")
 
-        chart_figure.subplots_adjust(left=0.4)
+        chart_figure.subplots_adjust(left=0.4, top=0.8)
 
         chart_canvas.show()
 
         assign_charts[chart_push].addWidget(chart_canvas)
 
     def prepare_bar_chart_data(self, chart_push, query_push):
-        assign_charts = {"YTD PIE 3": self.ytd_b2b2_chart1, "YTD PIE 4": self.ytd_b2b2_chart2}
+        assign_charts = {"YTD PIE 3": self.ytd_b2b2_chart1, "YTD PIE 4": self.ytd_b2b2_chart2,
+                         "MTD PIE 3": self.mtd_b2b2_chart1, "MTD PIE 4": self.mtd_b2b2_chart2}
+        assign_titles = {"YTD PIE 3": "Net Sales B2B Level 2 - YTD", "YTD PIE 4": "CM1 B2B Level 2 - YTD",
+                         "MTD PIE 3": "Net Sales B2B Level 2 - MTD", "MTD PIE 4": "CM1 B2B Level 2 - MTD"}
 
         connect = sqlite3.connect("Databases\\sales.db")
         c = connect.cursor()
@@ -682,21 +767,27 @@ class Ui_SalesResultsVis(object):
             if value < 0:
                 chart_data[index] = 0
 
-
         chart_figure = Figure()
         chart_canvas = FigureCanvasQTAgg(chart_figure)
         chart_final = chart_figure.add_subplot(111)
 
-        chart_final.barh(chart_labels_pct, chart_data)
+        chart_final.barh(chart_labels_pct, percentages)
 
-        chart_figure.subplots_adjust(left=0.3, right=0.99)
+        chart_final.set_title(assign_titles[chart_push], fontsize=16)
+        #chart_final.set_xlim([0, 100])
+        chart_final.tick_params(axis="both", labelsize=8)
+        chart_figure.patch.set_facecolor("#E6E6E6")
+        chart_final.patch.set_facecolor("#E6E6E6")
+
+
+        chart_figure.subplots_adjust(left=0.3, right=0.9)
 
         chart_canvas.show()
 
         assign_charts[chart_push].addWidget(chart_canvas)
 
-
-
+    def autopct(self, pct):
+        return ('%1.1f%%' % pct) if pct > 12 else ''
 
 
 if __name__ == "__main__":
