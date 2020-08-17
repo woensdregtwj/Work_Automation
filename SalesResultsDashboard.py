@@ -884,6 +884,9 @@ class Ui_SalesResultsVis(object):
 
         assign_charts[chart_push].addWidget(chart_canvas)
 
+        c.close()
+        connect.close()
+
     def prepare_bar_chart_data(self, chart_push, query_push):
         assign_charts = {"YTD PIE 3": self.ytd_b2b2_chart1, "YTD PIE 4": self.ytd_b2b2_chart2,
                          "MTD PIE 3": self.mtd_b2b2_chart1, "MTD PIE 4": self.mtd_b2b2_chart2}
@@ -929,6 +932,9 @@ class Ui_SalesResultsVis(object):
         chart_canvas.show()
 
         assign_charts[chart_push].addWidget(chart_canvas)
+
+        c.close()
+        connect.close()
 
     def autopct(self, pct):
         return ('%1.1f%%' % pct) if pct > 12 else ''

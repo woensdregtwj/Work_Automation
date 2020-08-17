@@ -123,6 +123,16 @@ def create_sales_db(workbook, month, column_dict):
         data_write = [month, code, company, customer, bu1, bu2, materialid, material, vol, ns, gs, gm, cm1]
         print(data_write)
 
+        connect = sqlite3.connect("Databases\\sales.db")
+        c = connect.cursor()
+        print("Connected")
+
+        c.execute(
+            "CREATE TABLE IF NOT EXISTS sales (month TEXT, code TEXT, company TEXT, customer TEXT, bu1 TEXT, bu2 TEXT, "
+            "materialid TEXT, material TEXT, vol INT, ns INT, gs INT, gm INT, cm1 INT)")
+        print("Created table if not existed, along with the columns")
+
+
         c.execute("INSERT INTO sales VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data_write)
         print("Inserted")
         connect.commit()

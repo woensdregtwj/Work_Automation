@@ -162,7 +162,7 @@ class Ui_sales_database(object):
         self.model.setEditStrategy(QSqlTableModel.OnManualSubmit)
 
         self.query = QSqlQuery(db=db)
-        self.query.prepare("SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2") # setSort not working, have to do through Query
+        self.query.prepare("SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2")  # setSort not working, have to do through Query
         self.query.exec_()
         self.model.setQuery(self.query)
 
@@ -173,6 +173,8 @@ class Ui_sales_database(object):
         self.query_lineedit.returnPressed.connect(self.update_query)
         self.extract_button.clicked.connect(self.extract_query)
         self.visualize_button.clicked.connect(self.visualize_clicked)
+
+        db.close()
 
     def retranslateUi(self, sales_database):
         _translate = QtCore.QCoreApplication.translate
@@ -212,12 +214,16 @@ class Ui_sales_database(object):
 
             self.table_data.setModel(self.model)
             self.table_data.resizeColumnsToContents()
+            db.close()
         else:
+            db.close()
+            db.open()
             self.query.prepare(self.query_lineedit.text())
 
             self.query.exec_()
             self.model.setQuery(self.query)
             self.table_data.resizeColumnsToContents()
+            db.close()
 
     def extract_query(self):
         self.extract_dir = QtWidgets.QFileDialog.getSaveFileName(filter="*.xlsx")
@@ -268,6 +274,9 @@ class Ui_sales_database(object):
         print(column_width)
 
         extract.save(self.extract_dir[0])
+
+        c.close()
+        connect.close()
 
         # with open(self.extract_dir[0], "w", newline="", errors="ignore") as new:
         #     print("opened")
