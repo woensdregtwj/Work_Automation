@@ -20,45 +20,46 @@ from AgingList import *
 import datetime
 import webbrowser
 
+from LinkApplications import WindowApplication
+
 class Ui_Doehler_title(object):
-    def sales_visuals_pushed(self):
+    def open_sales_visuals(self):
         self.sales_database = QtWidgets.QMainWindow()
         self.ui = Ui_sales_database()
         self.ui.setupUi(self.sales_database)
         self.sales_database.show()
 
-
-    def lto_analysis_pushed(self):
+    def open_lto_analysis(self):
         self.lto_database = QtWidgets.QMainWindow()
         self.ui = Ui_lto_database()
         self.ui.setupUi(self.lto_database)
         self.lto_database.show()
 
-    def aging_upload_pushed(self):
+    def open_aging_upload(self):
         self.AgingWindow = QtWidgets.QMainWindow()
         self.ui = Ui_AgingWindow()
         self.ui.setupUi(self.AgingWindow)
         self.AgingWindow.show()
 
-    def sales_forecast_update_pushed(self):
+    def open_sales_forecast_update(self):
         self.forecast_updater = QtWidgets.QMainWindow()
         self.ui = Ui_forecast_update_window()
         self.ui.setup_fc_update(self.forecast_updater)
         self.forecast_updater.show()
 
-    def sales_forecast_EOM_pushed(self):
+    def open_sales_forecast_EOM(self):
         self.forecast_EOM_updater = QtWidgets.QMainWindow()
         self.ui = Ui_forecast_EOM_window()
         self.ui.setup_fc_update(self.forecast_EOM_updater)
         self.forecast_EOM_updater.show()
 
-    def local_fc_analysis_pushed(self):
+    def open_local_fc_analysis(self):
         self.individual_forecast = QtWidgets.QMainWindow()
         self.ui = Ui_individual_forecast()
         self.ui.setupUi(self.individual_forecast)
         self.individual_forecast.show()
 
-    def lto_date_convert_pushed(self):
+    def open_lto_date_convert(self):
         self.lto_date = QtWidgets.QMainWindow()
         self.ui = Ui_lto_date()
         self.ui.setupUi(self.lto_date)
@@ -100,6 +101,9 @@ class Ui_Doehler_title(object):
         self.label.setPixmap(QtGui.QPixmap("Images/DoehlerLogo.png"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
+
+
+
         self.forecasting_box = QtWidgets.QGroupBox(self.centralwidget)
         self.forecasting_box.setGeometry(QtCore.QRect(10, 80, 361, 431))
         font = QtGui.QFont()
@@ -156,6 +160,9 @@ class Ui_Doehler_title(object):
         font.setPixelSize(10)
         self.forecast2_label.setFont(font)
         self.forecast2_label.setObjectName("forecast2_label")
+
+
+
         self.monthly_box = QtWidgets.QGroupBox(self.centralwidget)
         self.monthly_box.setGeometry(QtCore.QRect(420, 80, 371, 431))
         font = QtGui.QFont()
@@ -362,20 +369,21 @@ class Ui_Doehler_title(object):
         self.retranslateUi(Doehler_title)
         QtCore.QMetaObject.connectSlotsByName(Doehler_title)
 
-        self.sforecast_button.clicked.connect(self.sales_forecast_update_pushed)
-        self.sforecast_eom_button.clicked.connect(self.sales_forecast_EOM_pushed)
-        self.legal_button.clicked.connect(self.local_fc_analysis_pushed)
-        self.bwaging_button.clicked.connect(self.aging_upload_pushed)
-        self.lto_button.clicked.connect(self.lto_analysis_pushed)
-        self.sforecast_visuals_button.clicked.connect(self.sales_visuals_pushed)
+        self.open_app = WindowApplication()
 
-        self.pushButton_13.clicked.connect(self.lto_date_convert_pushed)
+        self.sforecast_button.clicked.connect(self.open_app.sales_forecast_update)
+        self.sforecast_eom_button.clicked.connect(self.open_app.sales_forecast_EOM)
+        self.legal_button.clicked.connect(self.open_app.local_fc_analysis)
+        self.bwaging_button.clicked.connect(self.open_app.aging_upload)
+        self.lto_button.clicked.connect(self.open_app.lto_analysis)
+        self.sforecast_visuals_button.clicked.connect(self.open_app.sales_visuals)
 
-        self.pushButton_5.clicked.connect(lambda: webbrowser.open("https://doehler.mytm5.com/system/portal.asp?url=%2FLMCash%2FKAmanValuten%2Easp&a_Meldung=AutoLogout&AG=1u&#e_Benutzer"))
-        self.pushButton_6.clicked.connect(lambda: webbrowser.open("https://login.salesforce.com/"))
-        self.pushButton_7.clicked.connect(lambda: webbrowser.open("https://cbportal.commerzbank.com/lp/login?fk&cifSecParams=SUxAAYR38N76HAQAKnx47VTw6hOzbzYbex3iUzOItBm4jsqr6GpZQg"))
-        self.pushButton_8.clicked.connect(lambda: webbrowser.open("http://bpm.doehler.com.cn/Login.html"))
-        self.pushButton_9.clicked.connect(lambda: webbrowser.open("https://portal.doehler.com/logon/LogonPoint/tmindex.html"))
+        self.pushButton_13.clicked.connect(self.open_app.lto_date_convert)
+        self.pushButton_5.clicked.connect(self.open_app.tm5_website)
+        self.pushButton_6.clicked.connect(self.open_app.salesforce_website)
+        self.pushButton_7.clicked.connect(self.open_app.commerz_website)
+        self.pushButton_8.clicked.connect(self.open_app.bpm_website)
+        self.pushButton_9.clicked.connect(self.open_app.doehler_website)
 
     def retranslateUi(self, Doehler_title):
         _translate = QtCore.QCoreApplication.translate
