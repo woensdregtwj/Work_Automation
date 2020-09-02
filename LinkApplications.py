@@ -10,7 +10,6 @@ the DoehlerDashboard.py
 from PyQt5.QtWidgets import QMainWindow
 import webbrowser
 
-from SalesForecastUpdate import *
 from SalesForecastUpdateEOM import *
 from SalesResultsAnalysis import *
 from SendForecast import *
@@ -18,12 +17,14 @@ from LTODateFormatting import *
 from ltoAnalysis import *
 from AgingList import *
 
+from Apps.ForecastUpdate import SalesForecastUpdate
+
 class WindowApplication:
     """This class is meant to be a composition for DoehlerDashboard.py"""
     def sales_forecast_update(self):
         """For button - Sales Forecast Update; From GroupBox - Forecasting"""
         self.forecast_updater = QMainWindow()
-        self.ui = Ui_forecast_update_window()
+        self.ui = SalesForecastUpdate.Ui_forecast_update_window()
         self.ui.setup_fc_update(self.forecast_updater)
         self.forecast_updater.show()
 

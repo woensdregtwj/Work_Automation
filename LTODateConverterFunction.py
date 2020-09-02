@@ -27,6 +27,7 @@ def format_test1(sheet):
             if header == test_sheet.cell(row=1, column=index + 1).value:
                 print("Header correct, data for this column should be OK")
             else:
+                print(f"{test_sheet.cell(row=1, column=index + 1).value} is incorrect!! Should be {header}.")
                 return False
     else:
         for index, header in enumerate(test_column_headers_unformatted):
@@ -34,6 +35,7 @@ def format_test1(sheet):
                 if test_sheet.cell(row=3, column=1).value == "Totals":
                     print("Header correct, data for this column should be OK")
             else:
+                print(f"{test_sheet.cell(row=2, column=index + 1).value} is incorrect!! Should be {header}")
                 return False
 
     return True
