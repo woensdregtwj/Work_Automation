@@ -18,6 +18,7 @@ from ltoAnalysis import *
 from AgingList import *
 
 from Apps.ForecastUpdate import SalesForecastUpdate
+from Apps.ForecastUpdateEOM import SalesForecastUpdateEOM
 
 class WindowApplication:
     """This class is meant to be a composition for DoehlerDashboard.py"""
@@ -31,7 +32,7 @@ class WindowApplication:
     def sales_forecast_EOM(self):
         """For button - Sales Forecast EOM; From GroupBox - Forecasting"""
         self.forecast_EOM_updater = QMainWindow()
-        self.ui = Ui_forecast_EOM_window()
+        self.ui = SalesForecastUpdateEOM.Ui_forecast_EOM_window()
         self.ui.setup_fc_update(self.forecast_EOM_updater)
         self.forecast_EOM_updater.show()
 
