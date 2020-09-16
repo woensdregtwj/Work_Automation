@@ -68,7 +68,7 @@ def finance_rounding(value):
 # TODO - Create a new database if not exist.
 # Columns: Month, Company code, Company Name, Customer, B2B 1, B2B 2, Material, Material name, Volume, NS, GS, GM, CM1
 def create_sales_db(workbook, month, column_dict):
-    connect = sqlite3.connect("Databases\\sales.db")
+    connect = sqlite3.connect("..\\..\\Databases\\sales.db")
     c = connect.cursor()
     print("Connected")
 
@@ -123,7 +123,7 @@ def create_sales_db(workbook, month, column_dict):
         data_write = [month, code, company, customer, bu1, bu2, materialid, material, vol, ns, gs, gm, cm1]
         print(data_write)
 
-        connect = sqlite3.connect("Databases\\sales.db")
+        connect = sqlite3.connect("..\\..\\Databases\\sales.db")
         c = connect.cursor()
         print("Connected")
 

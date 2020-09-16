@@ -1,25 +1,21 @@
 """Classses and functions for connecting to the database"""
-from PyQt5.QtSql import QSqlDatabase
+from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 import sqlite3
 
 import os
+from pathlib import Path
 
 class DatabaseConnector:
     def __init__(self, database):
         """Adds argument to an attribute. Only accepts string."""
         self.dbpath = self.format_path(database)
 
-        self.qsql_isConnected = False
-        self.sqlite_isConnected = False
-
     def format_path(self, database):
         if not database.endswith(".db"):
             raise InvalidDBExt(
                 "This class only accepts '.db' file names as a string.")
 
-        return "{}\\Databases\\{}".format(
-            os.path.dirname(os.path.abspath(__file__)), database
-        )
+        return "..\\..\\Databases\\{}".format(database)
 
 
 class SQLiteAuth(DatabaseConnector):
@@ -51,7 +47,8 @@ class SQLiteAuth(DatabaseConnector):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sqlite_close()
 
-
+"""Try and use the context manager as much as possible for preventing
+non-closed instances connections to the database."""
 class QSqlAuth(DatabaseConnector):
     """Inheritance of DatabaseConnector that will connect
      "or disconnect to the SQLite database."""
@@ -62,10 +59,11 @@ class QSqlAuth(DatabaseConnector):
     def qsql_open(self):
         """Connects to the database and creates a cursor
         for executing queries through """
-        self.qsql = QSqlDatabase("SQLITE")
+        self.qsql = QSqlDatabase("QSQLITE")
         self.qsql.setDatabaseName(self.dbpath)
         self.qsql.open()
 
+        self.query = QSqlQuery(db=self.qsql)
         self.qsql_isConnected = True
 
     def qsql_close(self):
@@ -89,3 +87,8 @@ class InvalidDBExt(Exception):
 
 class NotConnectedError(Exception):
     pass
+
+if __name__ == "__main__":
+    dbb = QSqlAuth("sales.db")
+    dbb.qsql_open()
+    dbb.qsql_close()
