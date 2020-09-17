@@ -154,30 +154,27 @@ class Ui_sales_database(object):
         self.retranslateUi(sales_database)
         QtCore.QMetaObject.connectSlotsByName(sales_database)
 
-        self.__display_database_items("sales.db")
+        self.database_used = "sales.db"
+
+        self.__display_database_items()
+
         self.__connect_buttons()
 
-    def __display_database_items(self, database):
+    def __display_database_items(self):
         """Integrates database rows into PyQt5 SQL table"""
-        with QSqlAuth(database) as datab:
-            self.model = QSqlTableModel(db=datab.qsql)
-            self.model.setTable("sales")
-            self.model.setEditStrategy(QSqlTableModel.OnManualSubmit)
-
-            datab.query.prepare(
-                "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2"
+        with QSqlAuth(self.database_used) as datab:
+            datab.qsql_show(
+                self,
+                "sales",
+                "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2",
+                "table_data"
             )
-            datab.query.exec_()
-            self.model.setQuery(datab.query)
-
-            self.table_data.setModel(self.model)
-            self.table_data.resizeColumnsToContents()
 
     def __connect_buttons(self):
         self.open_app = SalesResultsAnalysisApplications()
 
         self.update_button.clicked.connect(self.open_app.sales_results_update)
-        self.query_lineedit.returnPressed.connect(self.update_query)
+        self.query_lineedit.returnPressed.connect(self.__update_query)
         self.extract_button.clicked.connect(self.extract_query)
 
         self.visualize_button.clicked.connect(self.open_app.sales_visualize_param)
@@ -195,30 +192,25 @@ class Ui_sales_database(object):
             _translate("sales_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
         self.tableload_label.setText(_translate("sales_database", "sales table loaded"))
 
-    def update_query(self):
-        if not self.query_lineedit.text():  # No input basically means the user wants to refresh the database
-            db.close()  # In order to refresh, we close and re-open the database
-            db.open()
-            self.model = QSqlTableModel(db=db)
-            self.model.setTable("sales")
-            # self.model.setEditStrategy(QSqlTableModel.OnRowChange)
-
-            self.query.prepare("SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2")
-            self.query.exec_()
-            self.model.setQuery(self.query)
-
-            self.table_data.setModel(self.model)
-            self.table_data.resizeColumnsToContents()
-            db.close()
+    def __update_query(self):
+        """Updates table display based on query. If blank query,
+        default query will be used."""
+        if not self.query_lineedit.text():
+            with QSqlAuth(self.database_used) as datab:
+                datab.qsql_show(
+                    self,
+                    "sales",
+                    "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2",
+                    "table_data"
+                )
         else:
-            db.close()
-            db.open()
-            self.query.prepare(self.query_lineedit.text())
-
-            self.query.exec_()
-            self.model.setQuery(self.query)
-            self.table_data.resizeColumnsToContents()
-            db.close()
+            with QSqlAuth(self.database_used) as datab:
+                datab.qsql_show(
+                    self,
+                    "sales",
+                    self.query_lineedit.text(),
+                    "table_data"
+                )
 
     def extract_query(self):
         self.extract_dir = QtWidgets.QFileDialog.getSaveFileName(filter="*.xlsx")
