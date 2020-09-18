@@ -1,21 +1,33 @@
 # -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ltoSQLTableEnlarged.ui'
-#
 # Created by: PyQt5 UI code generator 5.13.2
-#
-# WARNING! All changes made in this file will be lost!
+"""Sales Results Analysis window that displays data of actual sales
+only through a QSql Table View. Can adjust what data to display
+through inserting a SQLite3 syntax-based query.
 
+The data is uploaded monthly by the user into the SQLite3
+database, uploading can only be done via this window.
+Possibility for overwriting a certain month also implemented.
 
+Through this window the user can also open a statistics dashboard
+that displays multiple charts and tables for analytical purposes.
+
+This window also makes it possible to extract the data being displayed
+in the QSql Table View. Based on the inserted query, a personalized
+data extraction is possible. Export file is a .xlsx workbook.
+
+This is the UI file, backend code is separated in
+'SalesResultsAnalysis_backend'.
+"""
+
+import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtSql import QSqlTableModel
-from UpdateSalesDatabase import *
-from SalesResultsDashboard import *
 
+from Apps.SalesResultsVisuals.Backend import SalesResultsAnalysis_backend \
+    as backend
 from Apps.SalesResultsVisuals.LinkApplications import \
     SalesResultsAnalysisApplications
 from Apps.ConnectDatabase import QSqlAuth, SQLiteAuth
-
 
 
 class Ui_sales_database(object):
@@ -154,31 +166,9 @@ class Ui_sales_database(object):
         self.retranslateUi(sales_database)
         QtCore.QMetaObject.connectSlotsByName(sales_database)
 
-        self.database_used = "sales.db"
-
-        self.__display_database_items()
-
-        self.__connect_buttons()
-
-    def __display_database_items(self):
-        """Integrates database rows into PyQt5 SQL table"""
-        with QSqlAuth(self.database_used) as datab:
-            datab.qsql_show(
-                self,
-                "sales",
-                "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2",
-                "table_data"
-            )
-
-    def __connect_buttons(self):
-        self.open_app = SalesResultsAnalysisApplications()
-
-        self.update_button.clicked.connect(self.open_app.sales_results_update)
-        self.query_lineedit.returnPressed.connect(self.__update_query)
-        self.extract_button.clicked.connect(self.extract_query)
-
-        self.visualize_button.clicked.connect(self.open_app.sales_visualize_param)
-
+        ######  Initiating the backend code.
+        #################################################
+        back = backend.SalesResultsAnalysisBackend(self)
 
     def retranslateUi(self, sales_database):
         _translate = QtCore.QCoreApplication.translate
@@ -191,80 +181,6 @@ class Ui_sales_database(object):
         self.update_label.setText(
             _translate("sales_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
         self.tableload_label.setText(_translate("sales_database", "sales table loaded"))
-
-    def __update_query(self):
-        """Updates table display based on query. If blank query,
-        default query will be used."""
-        if not self.query_lineedit.text():
-            with QSqlAuth(self.database_used) as datab:
-                datab.qsql_show(
-                    self,
-                    "sales",
-                    "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2",
-                    "table_data"
-                )
-        else:
-            with QSqlAuth(self.database_used) as datab:
-                datab.qsql_show(
-                    self,
-                    "sales",
-                    self.query_lineedit.text(),
-                    "table_data"
-                )
-
-    def extract_query(self):
-        self.extract_dir = QtWidgets.QFileDialog.getSaveFileName(filter="*.xlsx")
-
-        if not self.extract_dir[0]:
-            return
-
-        connect = sqlite3.connect("..\\Databases\\sales.db")
-        c = connect.cursor()
-        print("Connected")
-
-        if not self.query_lineedit.text():
-            print("No query, setting default")
-            extract_query = "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2"
-        else:
-            print("Query found")
-            extract_query = self.query_lineedit.text()
-
-        c.execute(extract_query)
-        extract_data = c.fetchall()
-        column_headers = c.description  # c.description displays the column header in tuple ('column', None, None)
-        # Which is why it is important to only grab the [0][0] from the column_Headers.
-
-        self.database_columns = [column_header[0] for column_header in column_headers]  # Grabbing [0][0] and appending
-        print(self.database_columns)
-
-        extract = pyxl.Workbook()
-        extract_ws = extract.active
-
-        # Creating headers
-        for index, data in enumerate(self.database_columns):
-            extract_ws.cell(row=1, column=index + 1).value = data
-            print(data)
-
-        column_width = []
-        for index, data in enumerate(extract_data):
-            for index2, data2 in enumerate(data):
-                extract_ws.cell(row=index + 2, column=index2 + 1).value = data2  # +2 is because we start in row 2
-                if len(column_width) > index2:  # If the length of list is smaller than index, then we stil lhave to add column data
-                    if len(str(data2)) > column_width[index2]:  #
-                        column_width[index2] = len(str(data2))
-                else:
-                    column_width.append(len(str(data2)))
-
-        for index, column_sizing in enumerate(column_width):
-            extract_ws.column_dimensions[get_column_letter(index + 1)].width = column_sizing * 1.2
-
-        print(column_width)
-
-        extract.save(self.extract_dir[0])
-
-        c.close()
-        connect.close()
-
 
 if __name__ == "__main__":
     import sys
