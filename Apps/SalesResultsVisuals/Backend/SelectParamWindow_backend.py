@@ -1,6 +1,5 @@
 """Backend code for buttons."""
 
-from PyQt5 import QtWidgets
 from Apps.ConnectDatabase import SQLiteAuth
 from Apps.MessageBoxes import ErrorMessage
 from Apps.ErrorClass import *
@@ -22,11 +21,13 @@ class ParamBackend:
         self.__connect_buttons()
 
     def __connect_buttons(self):
+        """Connects button to method"""
         self.main.button.clicked.connect(
             lambda: self.start_dashboard()
         )
 
     def start_dashboard(self):
+        """Manager that starts workflow for starting dashboard."""
         try:
             self.__check_month_box()
             self.__check_results_box()
@@ -37,11 +38,13 @@ class ParamBackend:
         self.show_data()
 
     def __check_month_box(self):
+        """Checks whether month was selected."""
         if self.main.combo.currentText() == "Select Month for visuals":
             ErrorMessage("You did not select a month. Please select a month.")
             raise MonthNotFound
 
     def __check_results_box(self):
+        """Checks whether sales results type was selected."""
         if self.main.combo2.currentText() == \
                 "Select 'Local' or 'Destination' results":
             ErrorMessage(
@@ -67,6 +70,8 @@ class ParamBackend:
             raise IncorrectMonth
 
     def show_data(self):
+        """Opens the dashboard app with month and sales results
+        type as parameters."""
         from Apps.SalesResultsVisuals.LinkApplications import \
             SalesResultsAnalysisApplications
 
