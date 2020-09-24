@@ -20,6 +20,14 @@ class ErrorMessage(MessageBox):
         error_dialog.show()
         error_dialog.exec_()
 
+class BasicMessage(MessageBox):
+    def __init__(self, message, buttons=QMessageBox.Ok):
+        super().__init__(message)
+        message_dialog = QMessageBox()
+        message_dialog.setText(message)
+        message_dialog.setStandardButtons(buttons)
+        self.button_pressed = message_dialog.exec_()
+
 
 class InvalidInput(Exception):
     pass
