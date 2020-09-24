@@ -1,10 +1,7 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-import sqlite3
-import os
 
-from Apps.SalesResultsVisuals.UpdateSalesDatabase import (
-create_sales_db, UpdateSalesResultsTest
-)
+from Apps.SalesResultsVisuals.Backend import UploadSalesWindow_backend as backend
+
 
 class Ui_SalesResultsUploadWindow(object):
     def setupUi(self, SalesResultsUploadWindow):
@@ -17,7 +14,7 @@ class Ui_SalesResultsUploadWindow(object):
         self.example_picture = QtWidgets.QLabel(self.centralwidget)
         self.example_picture.setGeometry(QtCore.QRect(0, 360, 1381, 201))
         self.example_picture.setText("")
-        self.example_picture.setPixmap(QtGui.QPixmap("../../Images/sales_results_new_example.png"))
+        self.example_picture.setPixmap(QtGui.QPixmap("Images/sales_results_new_example.png"))
         self.example_picture.setObjectName("example_picture")
         self.upload_box = QtWidgets.QGroupBox(self.centralwidget)
         self.upload_box.setGeometry(QtCore.QRect(9, 79, 621, 261))
@@ -107,7 +104,7 @@ class Ui_SalesResultsUploadWindow(object):
         self.doehler_label = QtWidgets.QLabel(self.centralwidget)
         self.doehler_label.setGeometry(QtCore.QRect(0, 0, 101, 81))
         self.doehler_label.setText("")
-        self.doehler_label.setPixmap(QtGui.QPixmap("../../Images/DoehlerLogo.png"))
+        self.doehler_label.setPixmap(QtGui.QPixmap("Images/DoehlerLogo.png"))
         self.doehler_label.setScaledContents(True)
         self.doehler_label.setObjectName("doehler_label")
         SalesResultsUploadWindow.setCentralWidget(self.centralwidget)
@@ -122,7 +119,9 @@ class Ui_SalesResultsUploadWindow(object):
         self.retranslateUi(SalesResultsUploadWindow)
         QtCore.QMetaObject.connectSlotsByName(SalesResultsUploadWindow)
 
-        self.upload1_lbutton.clicked.connect(self.upload_sales)
+        ######  Initiating the backend code.
+        #################################################
+        back = backend.UploadSalesBackend(self)
 
     def retranslateUi(self, SalesResultsUploadWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -178,93 +177,3 @@ class Ui_SalesResultsUploadWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS UI Gothic\'; font-size:18pt;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS UI Gothic\';\"><br /></p></body></html>"))
         self.app_title.setText(_translate("SalesResultsUploadWindow", "Doehler Japan - Upload Sales Results"))
-
-
-    def upload_sales(self):
-
-        # Making sure a month is selected
-        self.month = self.month_combobox.currentText()
-        if self.month == "Select":
-            error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.showMessage("No month has been selected. Please select a month")
-            error_dialog.show()
-            error_dialog.exec_()
-            return
-
-        # Checking whether this month already is in the database. If it is, give the user the option to overwrite
-        month_in = self.month_check()
-
-        if month_in != 0:
-            message_dialog = QtWidgets.QMessageBox()
-            message_dialog.setText(f"{month_in} lines of data for month {self.month} are already in the database.\n"
-                                   f"Do you want to overwrite these lines with new sales results data?")
-            message_dialog.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
-            message_dialog_pressed = message_dialog.exec_()
-
-            if message_dialog_pressed != QtWidgets.QMessageBox.Ok:
-                message_dialog.setText(f"Upload canceled.")
-                message_dialog.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                message_dialog.exec_()
-                return
-            else:
-                self.overwrite_month()  # If Ok was pressed, we overwrite.
-
-        # Obtaining the file path from the file dialog
-        self.sales_dir = QtWidgets.QFileDialog.getOpenFileName(filter="*xlsx")
-        if not self.sales_dir[0]:
-            self.upload1_label.setText("File was not selected.")
-            self.upload1_label.setStyleSheet("background-color: rgb(255, 0, 0);")
-            return
-
-        self.sales_dir = os.path.abspath(self.sales_dir[0])
-        self.upload1_label.setText(f"{os.path.basename(self.sales_dir)} is currently loaded")
-        self.upload1_label.setStyleSheet("background-color: rgb(174, 217, 167);")
-
-        # Testing the template of the file, whether it is eligible for upload to db
-        # Todo - Connect the functions of UpdateSalesDatabase.py to here.
-        template_test = UpdateSalesResultsTest(self.sales_dir, self.month)
-
-        # template_test returns one of: "Header failed", "Header 2 failed", "Header 3 failed", dictionary of headers
-        if isinstance(template_test, str):  # Test has failed if this gets read
-            error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.showMessage(f"There seems to be a mismatch in the template:\n"
-                                     f"{template_test}")
-            error_dialog.exec_()
-            return
-
-        #Test is OK, we received a dictionary value with the header co-ordinates.
-        upload_to_db = create_sales_db(self.sales_dir, self.month, template_test)
-        print("Exited the poop")
-        print(upload_to_db)
-
-        message_dialog = QtWidgets.QMessageBox()
-        message_dialog.setText(f"Writing completed. {upload_to_db} new lines have been added to the database.")
-        message_dialog.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        message_dialog.exec_()
-
-
-    def month_check(self):
-        connect = sqlite3.connect("..\\..\\Databases\\sales.db")
-        c = connect.cursor()
-        print('Connected to db')
-
-        c.execute(f"SELECT COUNT(month) FROM sales WHERE month = '{self.month}'")
-        print("Succesfully executed")
-
-        data_amt = c.fetchall()
-        print(data_amt[0][0])
-
-        c.close()
-        connect.close()
-
-        return data_amt[0][0]
-
-    def overwrite_month(self):
-
-        connect = sqlite3.connect("..\\..\\Databases\\sales.db")
-        c = connect.cursor()
-        c.execute(f"DELETE FROM sales WHERE month = '{self.month}'")
-
-        connect.commit()
-        c.close()
-        connect.close()

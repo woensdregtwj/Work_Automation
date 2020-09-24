@@ -19,7 +19,7 @@ import sqlite3
 import os
 
 db = QSqlDatabase("QSQLITE")
-db.setDatabaseName("..\\..\\Databases\\sales.db")
+db.setDatabaseName("Databases\\sales.db")
 db.open()
 
 
@@ -841,7 +841,7 @@ class Ui_SalesResultsVis(object):
                          "MTD PIE 5": "Net Sales Legal Entity - MTD", "MTD PIE 6": "CM1 Legal Entity - MTD"}
 
 
-        connect = sqlite3.connect("..\\..\\Databases\\sales.db")
+        connect = sqlite3.connect("Databases\\sales.db")
         c = connect.cursor()
 
         c.execute(query_push)
@@ -893,7 +893,7 @@ class Ui_SalesResultsVis(object):
         assign_titles = {"YTD PIE 3": "Net Sales B2B Level 2 - YTD", "YTD PIE 4": "CM1 B2B Level 2 - YTD",
                          "MTD PIE 3": "Net Sales B2B Level 2 - MTD", "MTD PIE 4": "CM1 B2B Level 2 - MTD"}
 
-        connect = sqlite3.connect("..\\..\\Databases\\sales.db")
+        connect = sqlite3.connect("Databases\\sales.db")
         c = connect.cursor()
 
         c.execute(query_push)

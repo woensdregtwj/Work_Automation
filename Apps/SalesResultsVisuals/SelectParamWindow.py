@@ -72,7 +72,7 @@ class Ui_VisualizeMonth(object):
     def check_month(self):
         month = self.combo.currentText()
 
-        connect = sqlite3.connect("..\\..\\Databases\\sales.db")
+        connect = sqlite3.connect("Databases\\sales.db")
         c = connect.cursor()
 
         c.execute(f"SELECT COUNT(month) FROM sales WHERE month = '{month}'")

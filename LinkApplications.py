@@ -19,6 +19,7 @@ from AgingList import *
 
 from Apps.ForecastUpdate import SalesForecastUpdate
 from Apps.ForecastUpdateEOM import SalesForecastUpdateEOM
+from Apps.SalesResultsVisuals import SalesResultsAnalysis
 
 class WindowApplication:
     """This class is meant to be a composition for DoehlerDashboard.py"""
@@ -39,7 +40,7 @@ class WindowApplication:
     def sales_visuals(self):
         """For button - Sales Results Visuals; From GroupBox - Forecasting"""
         self.sales_database = QMainWindow()
-        self.ui = Ui_sales_database()
+        self.ui = SalesResultsAnalysis.Ui_sales_database()
         self.ui.setupUi(self.sales_database)
         self.sales_database.show()
 
