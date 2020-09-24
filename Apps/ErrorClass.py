@@ -36,3 +36,7 @@ class WrongNumberFormatting(Exception):
 
 class NoFileSelected(Exception):
     pass
+
+
+class InvalidOption(Exception):
+    pass
