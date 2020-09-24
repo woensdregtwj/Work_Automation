@@ -9,8 +9,18 @@ from Apps.SalesResultsVisuals.LinkApplications import \
 from Apps.ConnectDatabase import QSqlAuth, SQLiteAuth
 
 
+
 class SalesResultsAnalysisBackend:
     def __init__(self, windowclass):
+        """
+        Attributes
+        ---------------
+        self.main : instance of Ui_sales_database
+            Receives the GUI as instance.
+        self.database_used : str
+            Sets the database name that will be a parameter for
+            multiple executions in methods.
+        """
         self.main = windowclass
         self.database_used = "sales.db"
 
@@ -18,7 +28,7 @@ class SalesResultsAnalysisBackend:
         self.__connect_buttons()
 
     def __display_database_items(self):
-        """Integrates database rows into PyQt5 SQL table"""
+        """Integrates database rows into PyQt5 SQL table."""
         with QSqlAuth(self.database_used) as datab:
             datab.qsql_show(
                 self.main,
