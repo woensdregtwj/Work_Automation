@@ -7,19 +7,17 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 import os
-from LTODateConverterFunction import *
 from UpdateLTODatabase import *
-from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
-import sqlite3
 from openpyxl.utils import get_column_letter
-from ltoAnalysisUpdater import LTOUpdate
-from Apps.ErrorClass import HeaderMissing
 
-db = QSqlDatabase("QSQLITE")
-db.setDatabaseName("Databases\\LTO.db")
-db.open()
+from Apps.LTOAnalysis.Backend.ltoAnalysisUpdater import LTOUpdate
+from Apps.ErrorClass import HeaderMissing, WrongMonthFormatting, UploadFailure, NoDataFound
+from Apps.ConnectDatabase import QSqlAuth, SQLiteAuth
+
+from Apps.LTOAnalysis.Backend.LTOAnalysis_backend import LTOAnalysisBackend
+
 
 class Ui_lto_database(object):
     def setupUi(self, lto_database):
@@ -157,21 +155,28 @@ class Ui_lto_database(object):
         self.retranslateUi(lto_database)
         QtCore.QMetaObject.connectSlotsByName(lto_database)
 
-        self.model = QSqlTableModel(db=db)
-        self.model.setTable("lto")
-        self.model.setEditStrategy(QSqlTableModel.OnRowChange)
+        back = LTOAnalysisBackend(self)
 
-        self.query = QSqlQuery(db=db)
-        self.query.prepare("SELECT * FROM lto ORDER BY launch") # setSort does not working, have to do through Query
-        self.query.exec_()
-        self.model.setQuery(self.query)
+        # self.database_used = "LTO.db"
+        #
+        # # self.query = QSqlQuery(db=db)
+        # self.update_query()
 
-        self.table_data.setModel(self.model)
-        self.table_data.resizeColumnsToContents()
+        # self.model = QSqlTableModel(db=db)
+        # self.model.setTable("lto")
+        # self.model.setEditStrategy(QSqlTableModel.OnRowChange)
+        #
+        # self.query = QSqlQuery(db=db)
+        # self.query.prepare("SELECT * FROM lto ORDER BY launch") # setSort does not working, have to do through Query
+        # self.query.exec_()
+        # self.model.setQuery(self.query)
+        #
+        # self.table_data.setModel(self.model)
+        # self.table_data.resizeColumnsToContents()
 
-        self.update_button.clicked.connect(self.update_lto_clicked)
-        self.query_lineedit.returnPressed.connect(self.update_query)
-        self.extract_button.clicked.connect(self.extract_query)
+        # self.update_button.clicked.connect(self.update_lto_clicked)
+        # self.query_lineedit.returnPressed.connect(self.update_query)
+        # self.extract_button.clicked.connect(self.extract_query)
 
     def retranslateUi(self, lto_database):
         _translate = QtCore.QCoreApplication.translate
@@ -184,156 +189,108 @@ class Ui_lto_database(object):
         self.update_label.setText(
             _translate("lto_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
         self.tableload_label.setText(_translate("lto_database", "lto table loaded"))
-
-    def update_lto_clicked(self):
-        lto_dir = QtWidgets.QFileDialog.getOpenFileName(filter="*.xlsx")
-
-        if not lto_dir[0]:
-            self.update_label.setText("Update file not inserted.")
-            self.update_label.setStyleSheet("background-color: rgb(255, 0, 0);")
-            return
-
-        lto_dir = os.path.abspath(lto_dir[0])
-        self.update_label.setText(f"{os.path.basename(lto_dir)} - Updating database, please wait...")
-
-        update_lto = LTOUpdate(lto_dir)
-        try:
-            update_lto.start_formatting()
-            update_lto.start_uploading()
-        except HeaderMissing:
-            return
-
-
-
-        # First making sure that the file is correctly formatted
-        ##########
-        try:
-            self.lto_data_file = lto_date_format(self.lto_dir_file)
-
-            if not self.lto_data_file:  # If the function returned False, it has failed the test.
-                error_dialog = QtWidgets.QErrorMessage()
-                error_dialog.showMessage("The file uploaded does not match the desired format. Please check whether "
-                                         "the correct file has been uploaded.")
-                error_dialog.exec_()
-                return
-        except (TypeError, ValueError):
-            error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.showMessage("TypeError has occured. File format was correct, but something went wrong "
-                                     "when re-formatting the data")
-            error_dialog.exec_()
-            return
-        ##################
-
-        # Importing the excel data into the database ---ERROR HANDLING WHEN WE FIND A BUG HERE---
-        db.close() # We have to close the database first before writing in the new data
-        self.lto_data_updated = updateLTO(self.lto_data_file)
-
-        print("Succesfully written into database")
-        message = QtWidgets.QMessageBox()
-        message.setText(f'New opportunities added: {self.lto_data_updated[0]}\n'
-                        f'Existing Opportunities updated: {self.lto_data_updated[1]}\n'
-                        f'Old opportunities deleted: {self.lto_data_updated[2]}\n'
-                        f'\nTotal opportunities active: {self.lto_data_updated[3]}\n')
-        message.exec_()
-        self.update_label.setText("Database updated!")
-
-        # After done writing, we re-open the file and load in the updated data into the table
-        # This is a literal copy from the main class
-        db.open()
-        self.model = QSqlTableModel(db=db)
-        self.model.setTable("lto")
-        # self.model.setEditStrategy(QSqlTableModel.OnRowChange)
-
-        self.query.prepare("SELECT * from lto ORDER BY launch")
-        self.query.exec_()
-        self.model.setQuery(self.query)
-
-        self.table_data.setModel(self.model)
-        self.table_data.resizeColumnsToContents()
-
-    def update_query(self):
-        if not self.query_lineedit.text():  # No input basically means the user wants to refresh the database
-            db.close()  # In order to refresh, we close and re-open the database
-            db.open()
-            self.model = QSqlTableModel(db=db)
-            self.model.setTable("lto")
-            # self.model.setEditStrategy(QSqlTableModel.OnRowChange)
-
-            self.query.prepare("SELECT * from lto ORDER BY launch")
-            self.query.exec_()
-            self.model.setQuery(self.query)
-
-            self.table_data.setModel(self.model)
-            self.table_data.resizeColumnsToContents()
-        else:
-            self.query.prepare(self.query_lineedit.text())
-
-            self.query.exec_()
-            self.model.setQuery(self.query)
-            self.table_data.resizeColumnsToContents()
-
-    def extract_query(self):
-        self.extract_dir = QtWidgets.QFileDialog.getSaveFileName(filter="*.xlsx")
-
-        if not self.extract_dir[0]:
-            return
-
-        connect = sqlite3.connect("Databases\\LTO.db")
-        c = connect.cursor()
-        print("Connected")
-
-        if not self.query_lineedit.text():
-            print("No query, setting default")
-            extract_query = "SELECT * FROM lto ORDER BY launch"
-        else:
-            print("Query found")
-            extract_query = self.query_lineedit.text()
-
-        c.execute(extract_query)
-        extract_data = c.fetchall()
-        column_headers = c.description  # c.description displays the column header in tuple ('column', None, None)
-        # Which is why it is important to only grab the [0][0] from the column_Headers.
-
-        self.database_columns = [column_header[0] for column_header in column_headers]  # Grabbing [0][0] and appending
-        print(self.database_columns)
-
-        extract = pyxl.Workbook()
-        extract_ws = extract.active
-
-        # Creating headers
-        for index, data in enumerate(self.database_columns):
-            extract_ws.cell(row=1, column=index + 1).value = data
-            print(data)
-
-        column_width = []
-        for index, data in enumerate(extract_data):
-            for index2, data2 in enumerate(data):
-                extract_ws.cell(row=index + 2, column=index2 + 1).value = data2  # +2 is because we start in row 2
-                if len(column_width) > index2:  # If the length of list is smaller than index, then we stil lhave to add column data
-                    if len(str(data2)) > column_width[index2]:  #
-                        column_width[index2] = len(str(data2))
-                else:
-                    column_width.append(len(str(data2)))
-
-        for index, column_sizing in enumerate(column_width):
-            extract_ws.column_dimensions[get_column_letter(index + 1)].width = column_sizing * 1.2
-
-        print(column_width)
-
-        extract.save(self.extract_dir[0])
-
-        # with open(self.extract_dir[0], "w", newline="", errors="ignore") as new:
-        #     print("opened")
-        #     writer = csv.writer(new, delimiter=";")
-        #     writer.writerow(self.database_columns)
-        #     for line in extract_data:
-        #         writer.writerow(line)
-
-
-
-
-
-
+#
+#     def update_lto_clicked(self):
+#         lto_dir = QtWidgets.QFileDialog.getOpenFileName(filter="*.xlsx")
+#
+#         if not lto_dir[0]:
+#             self.update_label.setText(
+#                 "Update file not inserted.")
+#             self.update_label.setStyleSheet(
+#                 "background-color: rgb(255, 0, 0);")
+#             return
+#
+#         lto_dir = os.path.abspath(lto_dir[0])
+#         self.update_label.setText(
+#             f"{os.path.basename(lto_dir)} - Updating database, please wait..."
+#         )
+#
+#         update_lto = LTOUpdate(lto_dir)
+#         try:
+#             update_lto.start_formatting()
+#             update_lto.start_uploading()
+#         except (HeaderMissing, WrongMonthFormatting,
+#                 UploadFailure, NoDataFound):
+#             return
+#
+#         self.update_label.setText("Database updated!")
+#
+#         self.update_query()
+#
+#     def update_query(self):
+#         query_line = self.read_query()
+#
+#         with QSqlAuth(self.database_used) as datab:
+#             datab.qsql_show(self, "lto", query_line, "table_data")
+#
+#     def extract_query(self):
+#         self.extract_dir = QtWidgets.QFileDialog.getSaveFileName(
+#             filter="*.xlsx")
+#
+#         if not self.extract_dir[0]:
+#             return
+#
+#         extract_query = self.read_query()
+#
+#         with SQLiteAuth(self.database_used) as datab:
+#             datab.sqlite_show(extract_query)
+#             headers = [header[0] for header in datab.data_headers]
+#             extract_data = datab.data_extract
+#
+#         extract_wb = ExtractedQueryWb()
+#         extract_wb.add_headers(headers)
+#         extract_wb.add_query_data(extract_data, col_width=True)
+#         extract_wb.save(self.extract_dir[0])
+#
+#     def read_query(self):
+#         if not self.query_lineedit.text():
+#             return "SELECT * from lto ORDER BY launch"
+#         else:
+#             return self.query_lineedit.text()
+#
+#
+# class ExtractedQueryWb:
+#     def __init__(self):
+#         self.wb = pyxl.Workbook()
+#         self.ws = self.wb.active
+#         self.column_width = []
+#
+#     def add_headers(self, headers):
+#         for index, header in enumerate(headers):
+#             self.ws.cell(row=1, column=index + 1).value = header
+#
+#     def add_query_data(self, extracted_data, col_width=False):
+#         for index, data_items in enumerate(extracted_data):
+#             for index2, data_item in enumerate(data_items):
+#                 self.ws.cell(
+#                     row=index + 2, column=index2 + 1).value = data_item
+#                 if col_width:
+#                     self._measure_col_width(index2, data_item)
+#
+#         if col_width:
+#             self._fix_column_sizing()
+#
+#     def _measure_col_width(self, index, data):
+#         # If the length of list is smaller than index, then we stil lhave to add column data
+#         if len(self.column_width) > index:
+#             if len(str(data)) > self.column_width[index]:
+#                 self.column_width[index] = len(str(data))
+#         else:
+#             self.column_width.append(len(str(data)))
+#
+#     def _fix_column_sizing(self):
+#         for index, column_sizing in enumerate(self.column_width):
+#             self.ws.column_dimensions[
+#                 get_column_letter(index + 1)].width = column_sizing * 1.2
+#
+#     def reset_column_width(self):
+#         self.column_width = []
+#
+#     def save(self, dir):
+#         self.wb.save(dir)
+#
+#
+#
 
 if __name__ == "__main__":
     import sys
