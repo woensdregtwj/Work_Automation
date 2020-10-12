@@ -3,6 +3,23 @@ from openpyxl.styles import *
 import datetime
 import re
 
+class LTOFormat:
+    original_headers = {
+        "Opportunity ID": "",
+        "Opportunity Name": "",
+        "Customer": "",
+        "Customer Responsibility": "",
+        "Opportunity Stage": "",
+        "Launch Date": "",
+        "EUR": "",
+        "VOL": ""  # This will always be location of EUR + 1
+    }
+    def __init__(self, wb_directory):
+        pass
+
+
+
+
 
 def format_test1(sheet):
     test_sheet = sheet

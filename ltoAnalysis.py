@@ -7,9 +7,8 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 import os
-from LTODateConverterFunction import *
 from UpdateLTODatabase import *
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
 import sqlite3
@@ -184,15 +183,15 @@ class Ui_lto_database(object):
         self.tableload_label.setText(_translate("lto_database", "lto table loaded"))
 
     def update_lto_clicked(self):
-        self.lto_dir_file = QtWidgets.QFileDialog.getOpenFileName(filter="*.xlsx")
+        lto_dir = QtWidgets.QFileDialog.getOpenFileName(filter="*.xlsx")
 
-        if not self.lto_dir_file[0]:
+        if not lto_dir[0]:
             self.update_label.setText("Update file not inserted.")
             self.update_label.setStyleSheet("background-color: rgb(255, 0, 0);")
             return
 
-        self.lto_dir_file = os.path.abspath(self.lto_dir_file[0])
-        self.update_label.setText(f"{os.path.basename(self.lto_dir_file)} - Updating database, please wait...")
+        lto_dir = os.path.abspath(lto_dir[0])
+        self.update_label.setText(f"{os.path.basename(lto_dir)} - Updating database, please wait...")
 
         # First making sure that the file is correctly formatted
         try:
