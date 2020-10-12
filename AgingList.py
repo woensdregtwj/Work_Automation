@@ -210,12 +210,8 @@ class Ui_AgingWindow(object):
         self.database_table.resizeColumnsToContents()
 
         # Buttons clicked actions
-        self.upload_button.clicked.connect(self.upload_aging)
-        self.save_button.clicked.connect(self.save_aging)
-        self.remove_button.clicked.connect(self.remove_term)
-        self.add_button.clicked.connect(self.add_term)
+        self._buttons_clicked()
 
-        self.find_lineedit.returnPressed.connect(self.find_payment_term)
 
     def retranslateUi(self, AgingWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -245,6 +241,14 @@ class Ui_AgingWindow(object):
         self.type_label.setText(_translate("AgingWindow", "Reporting Type"))
         self.save_button.setText(_translate("AgingWindow", "Save Formatted File"))
         self.upload_label.setText(_translate("AgingWindow", "Please upload 142 Accounts Receivable  細目残高一覧"))
+
+    def _buttons_clicked(self):
+        self.upload_button.clicked.connect(lambda: self.upload_aging())
+        self.save_button.clicked.connect(lambda: self.save_aging())
+        self.remove_button.clicked.connect(lambda: self.remove_term())
+        self.add_button.clicked.connect(lambda: self.add_term())
+
+        self.find_lineedit.returnPressed.connect(self.find_payment_term)
 
     def upload_aging(self):
         self.aging_file = QtWidgets.QFileDialog.getOpenFileName(filter="*.xlsx")
