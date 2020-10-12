@@ -40,3 +40,12 @@ class NoFileSelected(Exception):
 
 class InvalidOption(Exception):
     pass
+
+class WrongMonthFormatting(Exception):
+    pass
+
+class NotFormatted(Exception):
+    pass
+
+class NoDataFound(Exception):
+    pass
