@@ -67,7 +67,7 @@ class SalesRFile:
 
     info = {
         "Company code": "",
-        "Rep. Customer": "",
+        "Customer L1": "",
         "B2B Level 1": "",
         "B2B Level 2": "",
         "Material (1-9)": ""
@@ -267,6 +267,7 @@ class SalesRUpload:
         where 'Result' are present as a cell."""
         valid_rows = []
         for row in range(3, self.file.ws.max_row + 1):
+
             if self.file.ws.cell(row=row, column=3).value == "Result":
                 continue
             elif self.file.ws.cell(row=row, column=4).value == "Result":
@@ -291,7 +292,7 @@ class SalesRUpload:
         company = self.file.ws.cell(
             row=row, column=self.file.info["Company"]).value
         customer = self.file.ws.cell(
-            row=row, column=self.file.info["Rep. Customer"]).value
+            row=row, column=self.file.info["Customer L1"]).value
         bu1 = self.file.ws.cell(
             row=row, column=self.file.info["B2B Level 1"]).value
         bu2 = self.file.ws.cell(

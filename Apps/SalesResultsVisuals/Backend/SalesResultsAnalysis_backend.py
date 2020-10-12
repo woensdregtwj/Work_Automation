@@ -29,13 +29,9 @@ class SalesResultsAnalysisBackend:
 
     def __display_database_items(self):
         """Integrates database rows into PyQt5 SQL table."""
+        query_line = self.read_query()
         with QSqlAuth(self.database_used) as datab:
-            datab.qsql_show(
-                self.main,
-                "sales",
-                "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2",
-                "table_data"
-            )
+            datab.qsql_show(self.main, "sales", query_line, "table_data")
 
     def __connect_buttons(self):
         """Connects buttons to correct method when pressed.
@@ -54,11 +50,7 @@ class SalesResultsAnalysisBackend:
     def __update_query(self):
         """Updates table display based on query. If blank query,
         default query will be used."""
-        if not self.main.query_lineedit.text():
-            query_line = \
-                "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2"
-        else:
-            query_line = self.main.query_lineedit.text()
+        query_line = self.read_query()
 
         with QSqlAuth(self.database_used) as datab:
             datab.qsql_show(self.main, "sales", query_line, "table_data")
@@ -70,11 +62,7 @@ class SalesResultsAnalysisBackend:
         if not extract_dir[0]:
             return
 
-        if not self.main.query_lineedit.text():  # Using default query
-            extract_query = \
-                "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2"
-        else:
-            extract_query = self.main.query_lineedit.text()
+        extract_query = self.read_query()
 
         with SQLiteAuth(self.database_used) as datab:
             datab.sqlite_show(extract_query)
@@ -120,3 +108,10 @@ class SalesResultsAnalysisBackend:
                 get_column_letter(index + 1)].width = column_sizing * 1.2
 
         extract_wb.save(filepath[0])
+
+    def read_query(self):
+        if not self.main.query_lineedit.text():  # Using default query
+            return \
+                "SELECT * FROM sales ORDER BY month, code, customer, bu1, bu2"
+        else:
+            return self.main.query_lineedit.text()
