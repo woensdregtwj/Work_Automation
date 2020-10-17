@@ -135,7 +135,7 @@ class Ui_sales_database(object):
                                         "background-color: rgb(0, 85, 127);")
         self.update_label.setObjectName("update_label")
         self.tableload_label = QtWidgets.QLabel(self.actions_frame)
-        self.tableload_label.setGeometry(QtCore.QRect(570, 0, 171, 21))
+        self.tableload_label.setGeometry(QtCore.QRect(260, 0, 451, 21))
         font = QtGui.QFont()
         font.setPixelSize(20)
         font.setBold(True)
@@ -174,13 +174,14 @@ class Ui_sales_database(object):
         _translate = QtCore.QCoreApplication.translate
         sales_database.setWindowTitle(_translate("sales_database", "MainWindow"))
         self.app_title.setText(_translate("sales_database", "Sales Results EURk - Doehler Japan"))
-        self.query_label.setText(_translate("sales_database", "Query Box (SQLite syntax)"))
+        self.query_label.setText(_translate("sales_database", "SQLite syntax"))
         self.visualize_button.setText(_translate("sales_database", "Visualize displayed data"))
         self.extract_button.setText(_translate("sales_database,", "Extract shown data"))
         self.update_button.setText(_translate("sales_database", "Update database"))
         self.update_label.setText(
             _translate("sales_database", "To update  - Please select excel file originating from \'WE LEAD ANALYTICS\'"))
-        self.tableload_label.setText(_translate("sales_database", "sales table loaded"))
+        self.tableload_label.setText(_translate("sales_database", "'sales' table loaded - Available tables: 'sales', "
+                                                                  "'local'."))
 
 if __name__ == "__main__":
     import sys

@@ -46,20 +46,25 @@ class ParamBackend:
     def __check_results_box(self):
         """Checks whether sales results type was selected."""
         if self.main.combo2.currentText() == \
-                "Select 'Local' or 'Destination' results":
+                "Select 'Local', 'Destination' or 'Legal'":
             ErrorMessage(
                 "Please select what sales results should be visualized. "
-                "Please select 'Local' or 'Destination'"
+                "Please select 'Local', 'Destination' or 'Legal'"
             )
             raise InvalidOption
 
     def __check_existing_data(self):
-        """Checks whether the month in the combobox has any rows."""
+        """Checks whether the month in the combobox from the
+        correct table has any rows."""
         month = self.main.combo.currentText()
+        if self.main.combo2.currentText() == "Legal View":
+            table = "local"
+        else:
+            table = "sales"
 
         with SQLiteAuth(self.database_used) as datab:
             datab.sqlite_show(
-                f"SELECT COUNT(month) FROM sales WHERE month = '{month}'")
+                f"SELECT COUNT(month) FROM {table} WHERE month = '{month}'")
             data_amt = datab.data_extract
 
         if data_amt[0][0] == 0:

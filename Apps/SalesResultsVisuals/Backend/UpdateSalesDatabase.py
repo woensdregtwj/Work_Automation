@@ -108,9 +108,9 @@ class SalesRConfirmFormat:
         """Holds an instance of class 'SalesRFile'"""
         self.file = salesrclass
 
-    def start_test(self):  # Default structure, can also methods call manually
+    def start_test(self, headers_dict):  # Default structure, can also methods call manually
         """Manager method for executing testing methods accordingly."""
-        self.confirm_headers(self.file.group, 1)
+        self.confirm_headers(headers_dict, 1)
         self.confirm_headers(self.file.info, 2)
         self.confirm_date()
         self.confirm_numbering()
@@ -126,9 +126,18 @@ class SalesRConfirmFormat:
         self._missing_headers : Checks whether Keys in dict all has
             a Value assigned. No Value assigned means header was not
             found and errors will be raised.
+
+        Execution
+        -----------
+        Checks for necessary headers as described above. Some formats
+        have different header names such as 'Rep. Customer' and
+        'Customer L1', however these are the same. We therefore grab
+        the column of 'Rep. Customer' for the Key 'Customer L1'.
         """
         for column in range(1, self.file.ws.max_column + 1):
             header = self.file.ws.cell(row=row, column=column).value
+            if header == "Rep. Customer":  # Same header as Customer L1
+                header = "Customer L1"
             if header in headers_dict.keys():
                 headers_dict[header] = column
         print(headers_dict)
@@ -366,7 +375,7 @@ class SalesRUpload:
                 cm1
                 ]
 
-    def _upload_to_db(self, info_list, results_list):
+    def _upload_to_db(self, info_list, results_list, table):
         """Combines lists of the '_prepare' methods and turns it into
         one list, which will be used as the parameter for executing
         a query of data insertion to the database."""
@@ -379,24 +388,24 @@ class SalesRUpload:
             raise NotConnectedError("No connection with db.")
 
         self.database.execute_query(
-            "CREATE TABLE IF NOT EXISTS sales ("
-            "month TEXT, "
-            "code TEXT, "
-            "company TEXT, "
-            "customer TEXT, "
-            "bu1 TEXT, "
-            "bu2 TEXT, "
-            "materialid TEXT, "
-            "material TEXT, "
-            "vol INT, "
-            "ns INT, "
-            "gs INT, "
-            "gm INT, "
-            "cm1 INT)"
+            f"CREATE TABLE IF NOT EXISTS {table} ("
+            f"month TEXT, "
+            f"code TEXT, "
+            f"company TEXT, "
+            f"customer TEXT, "
+            f"bu1 TEXT, "
+            f"bu2 TEXT, "
+            f"materialid TEXT, "
+            f"material TEXT, "
+            f"vol INT, "
+            f"ns INT, "
+            f"gs INT, "
+            f"gm INT, "
+            f"cm1 INT)"
         )
 
         self.database.execute_query(
-            "INSERT INTO sales VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            f"INSERT INTO {table} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             data
         )
 
@@ -430,13 +439,14 @@ class SalesRUpload:
             for row in valid_rows:
                 info_col = self._prepare_info(row)
                 results_col = self._prepare_group(row)
-                self._upload_to_db(info_col, results_col)
+                self._upload_to_db(info_col, results_col, "sales")
                 data_added += 1
         else:
             for row in valid_rows:
                 info_col = self._prepare_info(row)
                 results_col = self._prepare_local(row)
-                self._upload_to_db(info_col, results_col)
+                print(info_col, results_col)
+                self._upload_to_db(info_col, results_col, "local")
                 data_added += 1
 
         self.close_db()

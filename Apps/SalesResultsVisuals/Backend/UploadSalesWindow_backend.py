@@ -10,6 +10,7 @@ from Apps.ErrorClass import HeaderMissing
 from Apps.ErrorClass import UploadFailure
 from Apps.ErrorClass import UserCancel
 from Apps.ErrorClass import NoFileSelected
+from sqlite3 import OperationalError
 
 from Apps.SalesResultsVisuals.Backend.UpdateSalesDatabase import SalesRConfirmFormat
 from Apps.SalesResultsVisuals.Backend.UpdateSalesDatabase import SalesRUpload
@@ -78,24 +79,48 @@ class UploadSalesBackend:
             return  # Raised from 'upload_to_db()'
 
     def __confirm_combobox(self):
-        """Confirms that a month is selected in the combo box."""
+        """Confirms that a month and view type
+         is selected in the combo box."""
         self.month = self.main.month_combobox.currentText()
+        self.data_view = self.main.data_type_combobox.currentText()
         if self.month == "Select":
             ErrorMessage(
                 "No month has been selected. Please select a month."
             )
             raise UploadFailure()
+        elif self.data_view == "Select":
+            ErrorMessage(
+                "No data view type has been selected. "
+                "Please select the correct type."
+            )
+            raise UploadFailure()
 
     def __check_existing_data(self):
-        """Checks whether the selected month from combo box already has
-        data in the database. User input requested for whether to
+        """Depending on selected data view, will check the proper db table.
+        Then checks whether the selected month from combo box already
+        has data in the database. User input requested for whether to
         overwrite or not. If yes, calls method for clearing data of
-        selected month."""
+        selected month.
+
+        If in combo box 2 'Destination' view has been selected, then
+        we set our table to 'sales', if not, then we check the data
+        of table 'local'."""
+        if self.data_view == "Destination View":
+            db_table = "sales"
+        else:  # Local View
+            db_table = "local"
+
         with SQLiteAuth(self.database_used) as datab:
-            datab.sqlite_show(
-                f"SELECT COUNT(month) FROM sales WHERE month = '{self.month}'"
-            )
-            data_count = datab.data_extract[0][0]
+            try:
+                datab.sqlite_show(
+                    f"SELECT COUNT(month) FROM {db_table} "
+                    f"WHERE month = '{self.month}'"
+                )
+                data_count = datab.data_extract[0][0]
+            except OperationalError:  # Table does not exist
+                self.__create_db_table(datab, db_table)
+                print("error")
+                data_count = 0
 
         if data_count != 0:
             message_box = BasicMessage(
@@ -109,16 +134,37 @@ class UploadSalesBackend:
                 BasicMessage("Upload canceled.")
                 raise UserCancel("Overwriting data canceled by user.")
             else:
-                self.__delete_month()
+                self.__delete_month(db_table)
                 '''Clearing data of month in db and next method called
                 in upload manager method will add new data.'''
 
-    def __delete_month(self):
+    def __delete_month(self, table):
         """Deletes data of month if user agreed."""
         with SQLiteAuth(self.database_used) as datab:
             datab.execute_query(
-                f"DELETE FROM sales WHERE month = '{self.month}'"
+                f"DELETE FROM {table} "
+                f"WHERE month = '{self.month}'"
             )
+
+    def __create_db_table(self, datab, db_table):
+        datab.execute_query(
+            f"CREATE TABLE IF NOT EXISTS {db_table} ("
+            f"month TEXT, "
+            f"code TEXT, "
+            f"company TEXT, "
+            f"customer TEXT, "
+            f"bu1 TEXT, "
+            f"bu2 TEXT, "
+            f"materialid TEXT, "
+            f"material TEXT, "
+            f"vol INT, "
+            f"ns INT, "
+            f"gs INT, "
+            f"gm INT, "
+            f"cm1 INT)"
+        )
+
+
 
     def __obtain_directory(self):
         """"Obtains file path from file dialog. If no dialog inserted,
@@ -170,8 +216,12 @@ class UploadSalesBackend:
         sales_results = SalesRFile(self.sales_dir, self.month)
 
         test_format = SalesRConfirmFormat(sales_results)
+
         try:
-            test_format.start_test()
+            if self.data_view == "Destination View":
+                test_format.start_test(test_format.file.group)
+            else:
+                test_format.start_test(test_format.file.local)
         except IncorrectMonth:
             raise IncorrectMonth
         except MonthNotFound:

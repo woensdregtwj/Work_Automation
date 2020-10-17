@@ -49,9 +49,11 @@ class SalesResultsAnalysisBackend:
 
     def __update_query(self):
         """Updates table display based on query. If blank query,
-        default query will be used."""
+        default query will be used.
+        If 'local' in the query line, then we want to show the
+        'local' table rather than the default 'sales' table."""
         query_line = self.read_query()
-        if "local" in query_line:
+        if "local" in query_line.lower():
             db_table = "local"
         else:
             db_table = "sales"

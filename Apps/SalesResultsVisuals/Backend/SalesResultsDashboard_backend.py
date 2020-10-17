@@ -45,6 +45,12 @@ class SalesDashboardBackend:
         If the combobox is on 'Destination Sales Results', then we
         prepare the dashboard with data of all entities. Else, the
         dashboard will be prepared with JP10 entity only.
+        Local and Legal Results both only require JP10.
+
+        Reads the combobox for defining what table in the database
+        to read. If 'Legal View', we have to read from a different
+        table as opposed to 'Destination Sales Results' and
+        'Local Sales Results'.
 
         Attributes
         -----------
@@ -63,6 +69,11 @@ class SalesDashboardBackend:
         else:
             self.result_type = "WHERE code = 'JP10'"
             self.result_type_and = f"AND code = 'JP10'"
+
+        if self.main.results_type == "Legal View":
+            self.db_table = "local"
+        else:
+            self.db_table = "sales"
 
     def define_qsql_connections(self):
         """Sets up a QSqlAuth connection that will be used by the
@@ -93,7 +104,7 @@ class SalesDashboardBackend:
                                f"printf('%,d', (SUM(gs))), "
                                f"printf('%,d', (SUM(gm))), "
                                f"printf('%,d', (SUM(cm1))) "
-                               f"FROM sales "
+                               f"FROM {self.db_table} "
                                f"{self.result_type} "
                                f"GROUP BY bu1 "
                                f"ORDER BY SUM(cm1) DESC")
@@ -104,7 +115,7 @@ class SalesDashboardBackend:
                                f"printf('%,d', (SUM(gs))), "
                                f"printf('%,d', (SUM(gm))), "
                                f"printf('%,d', (SUM(cm1))) "
-                               f"FROM sales "
+                               f"FROM {self.db_table} "
                                f"{self.result_type} "
                                f"GROUP BY bu2 "
                                f"ORDER BY SUM(cm1) DESC")
@@ -115,7 +126,7 @@ class SalesDashboardBackend:
                                f"printf('%,d', (SUM(gs))), "
                                f"printf('%,d', (SUM(gm))), "
                                f"printf('%,d', (SUM(cm1))) "
-                               f"FROM sales "
+                               f"FROM {self.db_table} "
                                f"{self.result_type} "
                                f"GROUP BY code "
                                f"ORDER BY SUM(cm1) DESC")
@@ -127,7 +138,7 @@ class SalesDashboardBackend:
                                f"printf('%,d', (SUM(gs))), "
                                f"printf('%,d', (SUM(gm))), "
                                f"printf('%,d', (SUM(cm1))) "
-                               f"FROM sales "
+                               f"FROM {self.db_table} "
                                f"WHERE month = '{self.main.month}' "
                                f"{self.result_type_and} "
                                f"GROUP BY bu1 "
@@ -139,7 +150,7 @@ class SalesDashboardBackend:
                                f"printf('%,d', (SUM(gs))), "
                                f"printf('%,d', (SUM(gm))), "
                                f"printf('%,d', (SUM(cm1))) "
-                               f"FROM sales "
+                               f"FROM {self.db_table} "
                                f"WHERE month = '{self.main.month}' "
                                f"{self.result_type_and} "
                                f"GROUP BY bu2 "
@@ -151,7 +162,7 @@ class SalesDashboardBackend:
                                f"printf('%,d', (SUM(gs))), "
                                f"printf('%,d', (SUM(gm))), "
                                f"printf('%,d', (SUM(cm1))) "
-                               f"FROM sales "
+                               f"FROM {self.db_table} "
                                f"WHERE month = '{self.main.month}' "
                                f"{self.result_type_and} "
                                f"GROUP BY code "
@@ -180,7 +191,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"{self.result_type} "
                                  f"GROUP BY customer, bu1 "
                                  f"ORDER BY SUM(cm1) DESC")
@@ -191,7 +202,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'PBN Plnt Based Nutr.' "
                                  f"{self.result_type_and} "
                                  f"GROUP BY customer "
@@ -203,7 +214,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'NPI Nat. Perf. Ing.' "
                                  f"{self.result_type_and} "
                                  f"GROUP BY customer "
@@ -215,7 +226,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'ISS Ing. Syst.&Sol.' "
                                  f"{self.result_type_and} "
                                  f"GROUP BY customer "
@@ -227,7 +238,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'Others' "
                                  f"{self.result_type_and} "
                                  f"GROUP BY customer "
@@ -240,7 +251,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE month = '{self.main.month}' "
                                  f"{self.result_type_and} "
                                  f"GROUP BY customer, bu1 "
@@ -252,7 +263,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'PBN Plnt Based Nutr.' "
                                  f"AND month = '{self.main.month}' "
                                  f"{self.result_type_and} "
@@ -265,7 +276,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'NPI Nat. Perf. Ing.' "
                                  f"AND month = '{self.main.month}' "
                                  f"{self.result_type_and} "
@@ -278,7 +289,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'ISS Ing. Syst.&Sol.' "
                                  f"AND month = '{self.main.month}' "
                                  f"{self.result_type_and} "
@@ -291,7 +302,7 @@ class SalesDashboardBackend:
                                  f"printf('%,d', (SUM(gs))), "
                                  f"printf('%,d', (SUM(gm))), "
                                  f"printf('%,d', (SUM(cm1))) "
-                                 f"FROM sales "
+                                 f"FROM {self.db_table} "
                                  f"WHERE bu1 = 'Others' "
                                  f"AND month = '{self.main.month}' "
                                  f"{self.result_type_and} "
@@ -315,77 +326,77 @@ class SalesDashboardBackend:
         is necessary to be put into the query."""
         self.prepare_chart_data("YTD PIE 1",
                                 f"SELECT bu1, SUM(ns) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"{self.result_type} "
                                 f"GROUP BY bu1 "
                                 f"ORDER BY SUM(ns) DESC")
         self.prepare_chart_data("YTD PIE 2",
                                 f"SELECT bu1, SUM(cm1) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"{self.result_type} "
                                 f"GROUP BY bu1 "
                                 f"ORDER BY SUM(cm1) DESC")
         self.prepare_chart_data("YTD PIE 5",
                                 f"SELECT code, SUM(ns) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"GROUP BY code "
                                 f"ORDER BY SUM(ns) DESC")
         self.prepare_chart_data("YTD PIE 6",
                                 f"SELECT code, SUM(cm1) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"GROUP BY code "
                                 f"ORDER BY SUM(cm1) DESC")
 
         self.prepare_bar_chart_data("YTD PIE 3",
                                     f"SELECT bu2, SUM(ns) "
-                                    f"FROM sales "
+                                    f"FROM {self.db_table} "
                                     f"{self.result_type} "
                                     f"GROUP BY bu2 "
                                     f"ORDER BY SUM(ns) ASC")
         self.prepare_bar_chart_data("YTD PIE 4",
                                     f"SELECT bu2, SUM(cm1) "
-                                    f"FROM sales "
+                                    f"FROM {self.db_table} "
                                     f"{self.result_type} "
                                     f"GROUP BY bu2 "
                                     f"ORDER BY SUM(cm1) ASC")
 
         self.prepare_chart_data("MTD PIE 1",
                                 f"SELECT bu1, SUM(ns) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"WHERE month = '{self.main.month}' "
                                 f"{self.result_type_and} "
                                 f"GROUP BY bu1 "
                                 f"ORDER BY SUM(ns) DESC")
         self.prepare_chart_data("MTD PIE 2",
                                 f"SELECT bu1, SUM(cm1) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"WHERE month = '{self.main.month}' "
                                 f"{self.result_type_and} "
                                 f"GROUP BY bu1 "
                                 f"ORDER BY SUM(cm1) DESC")
         self.prepare_chart_data("MTD PIE 5",
                                 f"SELECT code, SUM(ns) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"WHERE month = '{self.main.month}' "
                                 f"GROUP BY code "
                                 f"ORDER BY SUM(ns) DESC")
         self.prepare_chart_data("MTD PIE 6",
                                 f"SELECT code, SUM(cm1) "
-                                f"FROM sales "
+                                f"FROM {self.db_table} "
                                 f"WHERE month = '{self.main.month}' "
                                 f"GROUP BY code "
                                 f"ORDER BY SUM(cm1) DESC")
 
         self.prepare_bar_chart_data("MTD PIE 3",
                                     f"SELECT bu2, SUM(ns) "
-                                    f"FROM sales "
+                                    f"FROM {self.db_table} "
                                     f"WHERE month = '{self.main.month}' "
                                     f"{self.result_type_and} "
                                     f"GROUP BY bu2 "
                                     f"ORDER BY SUM(ns) ASC")
         self.prepare_bar_chart_data("MTD PIE 4",
                                     f"SELECT bu2, SUM(cm1) "
-                                    f"FROM sales "
+                                    f"FROM {self.db_table} "
                                     f"WHERE month = '{self.main.month}' "
                                     f"{self.result_type_and} "
                                     f"GROUP BY bu2 "
@@ -412,7 +423,7 @@ class SalesDashboardBackend:
                          }
 
         self.model = QSqlTableModel(db=self.connection.qsql)
-        self.model.setTable("sales")
+        self.model.setTable(self.db_table)
         self.model.setEditStrategy(QSqlTableModel.OnManualSubmit)
 
         self.connection.query.prepare(query_push)
@@ -484,7 +495,7 @@ class SalesDashboardBackend:
                          "MTD R5": self.main.mtd_top_bu4_table}
 
         self.model = QSqlTableModel(db=self.connection.qsql)
-        self.model.setTable("sales")
+        self.model.setTable(self.db_table)
         self.model.setEditStrategy(QSqlTableModel.OnManualSubmit)
 
         self.connection.query.prepare(query_push)
