@@ -51,9 +51,13 @@ class SalesResultsAnalysisBackend:
         """Updates table display based on query. If blank query,
         default query will be used."""
         query_line = self.read_query()
+        if "local" in query_line:
+            db_table = "local"
+        else:
+            db_table = "sales"
 
         with QSqlAuth(self.database_used) as datab:
-            datab.qsql_show(self.main, "sales", query_line, "table_data")
+            datab.qsql_show(self.main, db_table, query_line, "table_data")
 
     def __extract_query(self):
         """Extracts query based on user input on 'self.query_lineedit'"""
