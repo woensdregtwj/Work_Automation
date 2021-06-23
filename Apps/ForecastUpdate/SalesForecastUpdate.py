@@ -264,7 +264,8 @@ class Ui_forecast_update_window(object):
             self.progress_update("Sales Results")  # updating text browser
 
             self.sales_forecast_info = UploadSalesResult(self.result_filepath, self.forecast_filepath)  # Calling function from other file
-        except:
+        except Exception as e:
+            print(e)
             error_dialog = QtWidgets.QErrorMessage()
             error_dialog.showMessage("Please be sure to have the correct files uploaded!")
 

@@ -21,6 +21,7 @@ from Apps.ForecastUpdate import SalesForecastUpdate
 from Apps.ForecastUpdateEOM import SalesForecastUpdateEOM
 from Apps.SalesResultsVisuals import SalesResultsAnalysis
 from Apps.LTOAnalysis import LTOAnalysis
+from Apps.DailySalesUpload import DailySales
 
 class WindowApplication:
     """This class is meant to be a composition for DoehlerDashboard.py"""
@@ -71,6 +72,14 @@ class WindowApplication:
         ui = Ui_AgingWindow()
         ui.setupUi(self.AgingWindow)
         self.AgingWindow.show()
+
+    def sales_upload(self):
+        """For button - Sales Upload;
+        From GroupBox - Monthly Closing"""
+        self.sales_upload = QMainWindow()
+        ui = DailySales.Ui_Daily_Sales_Upload()
+        ui.setupUi(self.sales_upload)
+        self.sales_upload.show()
 
     def lto_date_convert(self):
         """For button - LTO Date Format;

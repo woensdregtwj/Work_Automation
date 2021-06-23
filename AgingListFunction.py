@@ -63,7 +63,7 @@ def convert_aging_list(workbook, month, type):
             break
         payment_data.setdefault(ws.cell(row=row, column=6).value, ws.cell(row=row, column=10).value)
 
-    # Now we look for keys with "-" in its name, we have to delete these and concatinate the value to the key without "-"
+    # Now we look for keys with "-" in its name, we have to delete thews se and concatinate the value to the key without "-"
     for dup_data in payment_data.keys():
         if "-" in dup_data:
             original_data = dup_data.split("-")
@@ -79,7 +79,7 @@ def convert_aging_list(workbook, month, type):
     # Now that we have the data for being written to the upload template, we can start pasting the dictionary.
     paste_in_row = 2
     for key, value in payment_data.items():
-        paste_row = [datetime.datetime.now().year, reporting_month, key, 3900, "JPY", "", reporting_type, "Legal", 0, 0, 0,
+        paste_row = [datetime.datetime.now().year, reporting_month, key, 3900, "JPY", "", reporting_type, "", "", "", 0, 0, 0,
                      0, value, value, 0, 0, 0, 0, 0, 0, 0, 0]  # This is 1 row to be pasted. There are a lot of default
         # data, so change here if any values have to be changed. The empty "" is where we will paste the payment term
         print(f"Pasting in row {paste_in_row} - {paste_row}")

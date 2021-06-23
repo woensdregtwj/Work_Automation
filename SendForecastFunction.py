@@ -24,7 +24,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 
 def main_forecast_file(forecast_file, manager, current_month, fx_rate):
     main_wb = pyxl.load_workbook(forecast_file)
-    main_ws = main_wb['2020 All']
+    main_ws = main_wb['All']
 
     new_wb = pyxl.load_workbook("Excel Templates\\Sales forecast.xlsx")
     new_ws = new_wb.active

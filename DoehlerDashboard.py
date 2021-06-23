@@ -375,6 +375,7 @@ class Ui_Doehler_title(object):
         self.bwaging_button.clicked.connect(self.open_app.aging_upload)
         self.lto_button.clicked.connect(self.open_app.lto_analysis)
         self.sresults_visuals.clicked.connect(self.open_app.sales_visuals)
+        self.salesupload_button.clicked.connect(self.open_app.sales_upload)
 
         self.pushButton_13.clicked.connect(self.open_app.lto_date_convert)
         self.pushButton_5.clicked.connect(self.open_app.tm5_website)

@@ -2117,7 +2117,7 @@ class Ui_FCWindow(object):
                 if self.ws_all.cell(row=cell, column=12).value == kam:
                     customer = self.ws_all.cell(row=cell, column=11).value
                     jm_value = self.ws_all.cell(row=cell, column=52).value
-                    if not jm_value:
+                    if not jm_value or jm_value < 0:
                         jm_value = 0  # For avoiding value errors
 
                     cus_diversity.setdefault(customer, 0)

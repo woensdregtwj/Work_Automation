@@ -6,21 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1600</width>
-    <height>805</height>
+    <width>560</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1600</width>
+    <width>560</width>
     <height>800</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>16777215</width>
-    <height>16777215</height>
+    <width>1613</width>
+    <height>800</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>9</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -66,54 +71,30 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLabel" name="app_title">
+      <widget class="QLabel" name="update_label">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>0</x>
          <y>0</y>
-         <width>1491</width>
+         <width>551</width>
          <height>81</height>
         </rect>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
        <property name="font">
         <font>
-         <family>MS Reference Sans Serif</family>
-         <pointsize>32</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-         <kerning>true</kerning>
+         <pointsize>15</pointsize>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 35, 72);
-color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
+        <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);
+background-color: rgb(0, 85, 127);</string>
        </property>
        <property name="text">
-        <string>LTO Analysis - Doehler Japan</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::PlainText</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
+        <string>Upload: File must be without headers and with columns 'A' and 'B' as displayed below</string>
        </property>
       </widget>
      </widget>
@@ -140,7 +121,7 @@ color: rgb(255, 255, 255);</string>
         <rect>
          <x>10</x>
          <y>30</y>
-         <width>711</width>
+         <width>151</width>
          <height>31</height>
         </rect>
        </property>
@@ -158,7 +139,7 @@ color: rgb(255, 255, 255);</string>
         <rect>
          <x>10</x>
          <y>0</y>
-         <width>261</width>
+         <width>161</width>
          <height>21</height>
         </rect>
        </property>
@@ -175,15 +156,15 @@ color: rgb(255, 255, 255);</string>
         <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>Query Box (SQLite syntax)</string>
+        <string>Product Number</string>
        </property>
       </widget>
       <widget class="QPushButton" name="visualize_button">
        <property name="geometry">
         <rect>
-         <x>790</x>
+         <x>180</x>
          <y>10</y>
-         <width>181</width>
+         <width>81</width>
          <height>51</height>
         </rect>
        </property>
@@ -197,15 +178,15 @@ color: rgb(255, 255, 255);</string>
 background-color: rgb(0, 111, 196);</string>
        </property>
        <property name="text">
-        <string>Visualize displayed data</string>
+        <string>Extract</string>
        </property>
       </widget>
       <widget class="QPushButton" name="update_button">
        <property name="geometry">
         <rect>
-         <x>1040</x>
+         <x>270</x>
          <y>10</y>
-         <width>181</width>
+         <width>81</width>
          <height>51</height>
         </rect>
        </property>
@@ -219,42 +200,16 @@ background-color: rgb(0, 111, 196);</string>
 background-color: rgb(0, 111, 196);</string>
        </property>
        <property name="text">
-        <string>Update database</string>
+        <string>Update</string>
        </property>
       </widget>
-      <widget class="QLabel" name="update_label">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
+      <widget class="QLabel" name="query_label_2">
        <property name="geometry">
         <rect>
-         <x>1230</x>
-         <y>20</y>
-         <width>361</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);
-background-color: rgb(0, 85, 127);</string>
-       </property>
-       <property name="text">
-        <string>To update  - Please select excel file originating from 'WE LEAD ANALYTICS'</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="tableload_label">
-       <property name="geometry">
-        <rect>
-         <x>570</x>
-         <y>0</y>
-         <width>171</width>
-         <height>21</height>
+         <x>390</x>
+         <y>10</y>
+         <width>161</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="font">
@@ -270,7 +225,7 @@ background-color: rgb(0, 85, 127);</string>
         <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>lto2 table loaded</string>
+        <string>Japan Margin/kg</string>
        </property>
       </widget>
      </widget>
@@ -279,8 +234,14 @@ background-color: rgb(0, 85, 127);</string>
      <widget class="QTableView" name="table_data">
       <property name="minimumSize">
        <size>
-        <width>1581</width>
-        <height>611</height>
+        <width>400</width>
+        <height>400</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>550</width>
+        <height>600</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -295,7 +256,7 @@ background-color: rgb(0, 85, 127);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1600</width>
+     <width>560</width>
      <height>18</height>
     </rect>
    </property>

@@ -64,7 +64,7 @@ color: rgb(255, 255, 255);</string>
      <number>0</number>
     </property>
     <property name="text">
-     <string>Simple LTO Date Formatter</string>
+     <string>Daily Sales Upload</string>
     </property>
     <property name="textFormat">
      <enum>Qt::PlainText</enum>
@@ -89,7 +89,7 @@ color: rgb(255, 255, 255);</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>Images/DoehlerLogo.png</pixmap>
+     <pixmap>../Images/DoehlerLogo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -99,9 +99,9 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>100</y>
+      <y>90</y>
       <width>781</width>
-      <height>171</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="font">
@@ -110,27 +110,14 @@ color: rgb(255, 255, 255);</string>
      </font>
     </property>
     <property name="title">
-     <string>Upload Forecast File</string>
+     <string>Upload Sales Result Files</string>
     </property>
-    <widget class="QLabel" name="upload_label">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>30</y>
-       <width>491</width>
-       <height>18</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Upload raw .xlsx LTO File</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="uploaded_label">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>120</y>
-       <width>371</width>
+       <x>260</x>
+       <y>80</y>
+       <width>291</width>
        <height>31</height>
       </rect>
      </property>
@@ -150,13 +137,13 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>60</y>
+       <y>80</y>
        <width>211</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>Upload LTO File</string>
+      <string>Sales Results - Prev. Week</string>
      </property>
     </widget>
     <widget class="QPushButton" name="save_button">
@@ -165,15 +152,74 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>480</x>
+       <x>620</x>
        <y>40</y>
-       <width>261</width>
+       <width>121</width>
        <height>111</height>
       </rect>
      </property>
      <property name="text">
       <string>Save</string>
      </property>
+    </widget>
+    <widget class="QLabel" name="uploaded_label_2">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>130</y>
+       <width>291</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="text">
+      <string>No File Loaded</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="upload_button_2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>130</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Sales Results - Latest Data</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>First Upload Of Month?</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Yes</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>No</string>
+      </property>
+     </item>
     </widget>
    </widget>
   </widget>
@@ -183,7 +229,7 @@ color: rgb(255, 255, 255);</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

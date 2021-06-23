@@ -215,7 +215,7 @@ class Ui_individual_forecast(object):
         self.kam_box.setItemText(1, _translate("individual_forecast", "Seiichi Hiyoshi"))
         self.kam_box.setItemText(2, _translate("individual_forecast", "Takao Yamamoto"))
         self.kam_box.setItemText(3, _translate("individual_forecast", "Yasuhiko Suzuki"))
-        self.kam_box.setItemText(4, _translate("individual_forecast", "Kota Takahashi"))
+        self.kam_box.setItemText(4, _translate("individual_forecast", "Yasuyuki Kataoka"))
         self.month_box.setItemText(0, _translate("individual_forecast", "Jan"))
         self.month_box.setItemText(1, _translate("individual_forecast", "Feb"))
         self.month_box.setItemText(2, _translate("individual_forecast", "Mar"))
